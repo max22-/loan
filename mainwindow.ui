@@ -17,9 +17,9 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>50</y>
-      <width>371</width>
+      <x>20</x>
+      <y>20</y>
+      <width>351</width>
       <height>231</height>
      </rect>
     </property>
@@ -31,7 +31,7 @@
     </property>
     <widget class="QWidget" name="page_5">
      <property name="styleSheet">
-      <string notr="true">background-image: url(:/images/backgrounds/background.png);</string>
+      <string notr="true">border-image: url(:/images/backgrounds/background.png);</string>
      </property>
     </widget>
     <widget class="QWidget" name="page_6"/>
