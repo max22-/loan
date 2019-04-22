@@ -38,10 +38,41 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
       <widget class="QWidget" name="page_5">
        <property name="styleSheet">
         <string notr="true">border-image: url(:/images/backgrounds/background.png);</string>
        </property>
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>190</y>
+          <width>100</width>
+          <height>100</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border-image: url(:/images/buttons/forward_button.png);
+}
+
+QPushButton:hover {
+	border-image: url(:/images/buttons/forward_button_hovered.png);
+}
+
+QPushButton:pressed {
+	border-image: url(:/images/buttons/forward_button_pressed.png);	
+}
+
+</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="page_6"/>
      </widget>
