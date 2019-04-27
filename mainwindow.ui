@@ -51,7 +51,7 @@
        <property name="styleSheet">
         <string notr="true">border-image: url(:/images/backgrounds/background.png);</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout">
+       <layout class="QGridLayout" name="gridLayout" rowstretch="760,68,78" columnstretch="1420,128,61">
         <item row="0" column="1">
          <spacer name="verticalSpacer_2">
           <property name="orientation">
@@ -60,7 +60,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>96</height>
+            <height>176</height>
            </size>
           </property>
          </spacer>
@@ -72,7 +72,7 @@
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>145</width>
+            <width>263</width>
             <height>20</height>
            </size>
           </property>
@@ -113,7 +113,7 @@ QPushButton:pressed {
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>145</width>
+            <width>86</width>
             <height>20</height>
            </size>
           </property>
@@ -127,7 +127,7 @@ QPushButton:pressed {
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>96</height>
+            <height>57</height>
            </size>
           </property>
          </spacer>
