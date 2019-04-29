@@ -47,7 +47,7 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="page_5">
+      <widget class="QWidget" name="home_page">
        <property name="styleSheet">
         <string notr="true">border-image: url(:/images/backgrounds/background.png);</string>
        </property>
