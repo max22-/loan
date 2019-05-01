@@ -10,5 +10,8 @@
         <file>images/buttons/validate_button_pressed.png</file>
         <file>images/buttons/validate_button_hovered.png</file>
         <file>images/buttons/validate_button.png</file>
+        <file>images/buttons/record_button_selected.png</file>
+        <file>images/buttons/record_button_clicked.png</file>
+        <file>images/buttons/record_button.png</file>
     </qresource>
 </RCC>
