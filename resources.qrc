@@ -4,5 +4,8 @@
         <file>images/buttons/forward_button_pressed.png</file>
         <file>images/buttons/forward_button_hovered.png</file>
         <file>images/buttons/forward_button.png</file>
+        <file>images/buttons/up_button_pressed.png</file>
+        <file>images/buttons/up_button_hovered.png</file>
+        <file>images/buttons/up_button.png</file>
     </qresource>
 </RCC>
