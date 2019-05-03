@@ -16,5 +16,14 @@
         <file>images/buttons/stop_button_pressed.png</file>
         <file>images/buttons/stop_button_hovered.png</file>
         <file>images/buttons/stop_button.png</file>
+        <file>images/buttons/play_button_pressed.png</file>
+        <file>images/buttons/play_button_hovered.png</file>
+        <file>images/buttons/play_button.png</file>
+        <file>images/buttons/delete_button_pressed.png</file>
+        <file>images/buttons/delete_button_hovered.png</file>
+        <file>images/buttons/delete_button.png</file>
+        <file>images/buttons/cancel_button_pressed.png</file>
+        <file>images/buttons/cancel_button_hovered.png</file>
+        <file>images/buttons/cancel_button.png</file>
     </qresource>
 </RCC>
