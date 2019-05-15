@@ -2,13 +2,13 @@
 <scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" name="Statechart" qt:editorversion="4.9.0" initial="HomeState">
     <qt:editorinfo initialGeometry="390.26;47.12;-20;-20;40;40"/>
     <state id="HomeState">
-        <qt:editorinfo geometry="399.47;192.57;-66.28;-50;132.56;100" scenegeometry="399.47;192.57;333.19;142.57;132.56;100"/>
+        <qt:editorinfo scenegeometry="399.47;192.57;333.19;142.57;132.56;100" geometry="399.47;192.57;-66.28;-50;132.56;100"/>
         <transition type="external" event="toc" target="TocState">
             <qt:editorinfo endTargetFactors="74.10;12.91" movePoint="7.17;0"/>
         </transition>
     </state>
     <state id="TocState">
-        <qt:editorinfo geometry="399.47;397.43;-60;-50;120;100" scenegeometry="399.47;397.43;339.47;347.43;120;100"/>
+        <qt:editorinfo scenegeometry="399.47;397.43;339.47;347.43;120;100" geometry="399.47;397.43;-60;-50;120;100"/>
         <transition type="external" event="back" target="HomeState">
             <qt:editorinfo endTargetFactors="19.12;88.85" movePoint="-15.36;-25.60" localGeometry="-41.58;-97.31"/>
         </transition>
