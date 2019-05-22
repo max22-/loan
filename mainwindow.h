@@ -20,7 +20,7 @@ public:
 private:
     Ui::MainWindow *ui;
     Statechart stateMachine;
-    StateHandler stateHandler;
+    StateHandler *stateHandler;
 };
 
 #endif // MAINWINDOW_H

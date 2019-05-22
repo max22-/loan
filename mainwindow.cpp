@@ -6,9 +6,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    stateHandler = new StateHandler(ui);
 
     connect(ui->pushButton, &QPushButton::clicked, [this]() { this->stateMachine.submitEvent("toc"); });
-    stateMachine.connectToState("TocState", &stateHandler, SLOT(tocState(bool)));
+    stateMachine.connectToState("TocState", stateHandler, SLOT(tocState(bool)));
     stateMachine.start();
 
     //stateMachine.submitEvent("toc");
@@ -16,5 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete stateHandler;
     delete ui;
 }
