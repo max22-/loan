@@ -21,6 +21,9 @@ private:
     Ui::MainWindow *ui;
     Statechart stateMachine;
     StateHandler *stateHandler;
+
+    void connectButton(const QPushButton *, const char *);
+    void connectState(const char *, void (StateHandler::*)(bool));
 };
 
 #endif // MAINWINDOW_H

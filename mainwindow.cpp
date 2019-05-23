@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->stackedWidget->setCurrentIndex(0);
     stateHandler = new StateHandler(ui);
 
-    connect(ui->pushButton, &QPushButton::clicked, [this]() { this->stateMachine.submitEvent("toc"); });
-    stateMachine.connectToState("TocState", stateHandler, SLOT(tocState(bool)));
+    connectButton(ui->pushButton, "toc");
+    connectState("TocState", &StateHandler::tocState);
     stateMachine.start();
 
     //stateMachine.submitEvent("toc");
@@ -20,4 +20,12 @@ MainWindow::~MainWindow()
 {
     delete stateHandler;
     delete ui;
+}
+
+void MainWindow::connectButton(const QPushButton *button, const char *eventName) {
+    connect(button, &QPushButton::clicked, [this, eventName]() { this->stateMachine.submitEvent(eventName); });
+}
+
+void MainWindow::connectState(const char *stateName, void (StateHandler::*stateHandlerMember)(bool) ) {
+    stateMachine.connectToState(stateName, stateHandler, stateHandlerMember);
 }
