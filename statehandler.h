@@ -13,7 +13,10 @@ public:
 signals:
 
 public slots:
+    void homeState(bool);
     void tocState(bool);
+    void recordHomeState(bool);
+    void listenHomeState(bool);
 
 private:
     Ui::MainWindow *ui;

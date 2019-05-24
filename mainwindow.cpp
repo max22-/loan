@@ -9,11 +9,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->stackedWidget->setCurrentIndex(0);
     stateHandler = new StateHandler(ui);
 
-    connectButton(ui->pushButton, "toc");
+    connectButton(ui->tocButton, "toc");
+    connectButton(ui->recordHomeButton, "record");
+    connectButton(ui->listenHomeButton, "listen");
+    connectButton(ui->backButton1, "back");
+    connectButton(ui->backButton2, "back");
+
+    connectState("HomeState", &StateHandler::homeState);
     connectState("TocState", &StateHandler::tocState);
+    connectState("RecordHomeState", &StateHandler::recordHomeState);
+    connectState("ListenHomeState", &StateHandler::listenHomeState);
+
     stateMachine.start();
 
-    //stateMachine.submitEvent("toc");
 }
 
 MainWindow::~MainWindow()
