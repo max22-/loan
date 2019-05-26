@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connectButton(ui->tocButton, "toc");
     connectButton(ui->recordHomeButton, "record");
+    connectButton(ui->validateButton, "validate");
     connectButton(ui->listenHomeButton, "listen");
     connectButton(ui->backButton1, "back");
     connectButton(ui->backButton2, "back");
