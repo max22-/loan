@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
-    stateHandler = new StateHandler(ui);
+    stateHandler = new StateHandler(ui, &stateMachine);
 
     connectButton(ui->tocButton, "toc");
     connectButton(ui->recordHomeButton, "record");
@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectState("TocState", &StateHandler::tocState);
     connectState("RecordFormState", &StateHandler::recordFormState);
     connectState("ListenHomeState", &StateHandler::listenHomeState);
+    connectState("ValidateFormState", &StateHandler::validateFormState);
 
     stateMachine.start();
 
