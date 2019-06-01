@@ -15,7 +15,7 @@ signals:
 public slots:
     void homeState(bool);
     void tocState(bool);
-    void recordHomeState(bool);
+    void recordFormState(bool);
     void listenHomeState(bool);
 
 private:

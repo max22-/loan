@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connectState("HomeState", &StateHandler::homeState);
     connectState("TocState", &StateHandler::tocState);
-    connectState("RecordHomeState", &StateHandler::recordHomeState);
+    connectState("RecordFormState", &StateHandler::recordFormState);
     connectState("ListenHomeState", &StateHandler::listenHomeState);
 
     stateMachine.start();

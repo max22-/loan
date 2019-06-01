@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" name="Statechart" qt:editorversion="4.9.0" initial="HomeState">
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" name="Statechart" qt:editorversion="4.9.1" initial="HomeState">
     <qt:editorinfo initialGeometry="399.47;24.58;-20;-20;40;40"/>
     <state id="HomeState">
         <qt:editorinfo geometry="399.47;117.80;-66.28;-50;132.56;100" scenegeometry="399.47;117.80;333.19;67.80;132.56;100"/>
@@ -12,14 +12,14 @@
         <transition type="external" event="back" target="HomeState">
             <qt:editorinfo movePoint="-2.05;3.07" endTargetFactors="28.60;90.55" startTargetFactors="34.95;11.17"/>
         </transition>
-        <transition type="external" event="record" target="RecordHomeState">
+        <transition type="external" event="record" target="RecordFormState">
             <qt:editorinfo movePoint="23.56;1.02" endTargetFactors="71.71;41.17"/>
         </transition>
         <transition type="external" event="listen" target="ListenHomeState">
             <qt:editorinfo movePoint="14.35;6.14"/>
         </transition>
     </state>
-    <state id="RecordHomeState">
+    <state id="RecordFormState">
         <qt:editorinfo geometry="124.97;423.04;-60;-50;178.81;100" scenegeometry="124.97;423.04;64.97;373.04;178.81;100"/>
         <transition type="external" event="back" target="TocState">
             <qt:editorinfo movePoint="-11.27;6.14" endTargetFactors="10.09;59.71"/>

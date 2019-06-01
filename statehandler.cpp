@@ -18,7 +18,7 @@ void StateHandler::tocState(bool active) {
     }
 }
 
-void StateHandler::recordHomeState(bool active) {
+void StateHandler::recordFormState(bool active) {
     if(active) {
         ui->stackedWidget->setCurrentIndex(2);
     }
