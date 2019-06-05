@@ -45,7 +45,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>8</number>
       </property>
       <widget class="QWidget" name="home_page">
        <property name="styleSheet">
@@ -541,6 +541,23 @@ QPushButton:pressed {
               </item>
               <item row="2" column="1">
                <widget class="QLineEdit" name="cityLineEdit"/>
+              </item>
+              <item row="3" column="1">
+               <widget class="QSlider" name="evaluationSlider">
+                <property name="maximum">
+                 <number>5</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_19">
+                <property name="text">
+                 <string>Evaluation</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
@@ -1842,30 +1859,229 @@ QPushButton:pressed {
        <widget class="QTableWidget" name="tableWidget">
         <property name="geometry">
          <rect>
-          <x>320</x>
-          <y>130</y>
-          <width>256</width>
-          <height>192</height>
+          <x>160</x>
+          <y>120</y>
+          <width>571</width>
+          <height>261</height>
          </rect>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <property name="showGrid">
+         <bool>true</bool>
         </property>
         <property name="rowCount">
          <number>3</number>
         </property>
         <property name="columnCount">
-         <number>9</number>
+         <number>5</number>
         </property>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderStretchLastSection">
+         <bool>false</bool>
+        </attribute>
         <row/>
         <row/>
         <row/>
-        <column/>
-        <column/>
-        <column/>
-        <column/>
-        <column/>
-        <column/>
-        <column/>
-        <column/>
-        <column/>
+        <column>
+         <property name="text">
+          <string>Pseudonyme</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Âge</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Ville</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Date</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Evaluation</string>
+         </property>
+        </column>
+       </widget>
+       <widget class="QLabel" name="label_16">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>410</y>
+          <width>171</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Filtrer par pseudonyme :</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="nicknacmeFilterEdit">
+        <property name="geometry">
+         <rect>
+          <x>320</x>
+          <y>400</y>
+          <width>181</width>
+          <height>25</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>400</y>
+          <width>161</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Supprimer le filtre</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>550</y>
+          <width>121</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Mode aléatoire</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_16">
+        <property name="geometry">
+         <rect>
+          <x>230</x>
+          <y>510</y>
+          <width>100</width>
+          <height>100</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border-image: url(:/images/buttons/play_button.png);
+}
+
+QPushButton:hover {
+	border-image: url(:/images/buttons/play_button_hovered.png);
+}
+
+QPushButton:pressed {
+	border-image: url(:/images/buttons/play_button_pressed.png);	
+}
+
+</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QSlider" name="horizontalSlider">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>460</y>
+          <width>160</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_17">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>460</y>
+          <width>41</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>00:00</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_17">
+        <property name="geometry">
+         <rect>
+          <x>360</x>
+          <y>510</y>
+          <width>100</width>
+          <height>100</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border-image: url(:/images/buttons/stop_button.png);
+}
+
+QPushButton:hover {
+	border-image: url(:/images/buttons/stop_button_hovered.png);
+}
+
+QPushButton:pressed {
+	border-image: url(:/images/buttons/stop_button_pressed.png);	
+}
+
+</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_18">
+        <property name="geometry">
+         <rect>
+          <x>380</x>
+          <y>40</y>
+          <width>141</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Liste des messages&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
        </widget>
       </widget>
      </widget>
