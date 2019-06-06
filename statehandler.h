@@ -19,7 +19,7 @@ public slots:
     void recordFormState(bool);
     void listenHomeState(bool);
     void validateFormState(bool);
-    void DataEnteredState(bool);
+    void dataEnteredState(bool);
 
 private:
     Ui::MainWindow *ui;

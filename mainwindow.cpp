@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectState("RecordFormState", &StateHandler::recordFormState);
     connectState("ListenHomeState", &StateHandler::listenHomeState);
     connectState("ValidateFormState", &StateHandler::validateFormState);
+    connectState("DataEnteredState", &StateHandler::dataEnteredState);
 
     stateMachine.start();
 

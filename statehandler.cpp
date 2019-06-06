@@ -38,23 +38,44 @@ void StateHandler::validateFormState(bool active) {
         QString age = ui->ageLineEdit->text();
         QString city = ui->cityLineEdit->text();
         int pos = 0;
-        QRegExpValidator *nicknameValidator = new QRegExpValidator(QRegExp("^[a-z0-9_-]{3,15}$"), nullptr);
+        QRegExpValidator *nicknameValidator = new QRegExpValidator(QRegExp("^(?!\s*$).+"), nullptr);  // regex found on stackoverflow https://stackoverflow.com/questions/3085539/regular-expression-for-anything-but-an-empty-string
         QIntValidator *ageValidator = new QIntValidator(0, 200);
-        QRegExpValidator *cityValidator = new QRegExpValidator(QRegExp("^[a-z-]$"), nullptr);
+        QRegExpValidator *cityValidator = new QRegExpValidator(QRegExp("^(?!\s*$).+$"), nullptr);
         QMessageBox msgBox;
+        bool errorFlag = false;
+        msgBox.setWindowTitle("Erreur de saisie");
+        std::string errorMessage = "";
         if(nicknameValidator->validate(nickname, pos) != QValidator::Acceptable) {
-            msgBox.setWindowTitle("Erreur de saisie");
-            msgBox.setText("Pseudonyme invalide.");
+            errorFlag = true;
+            errorMessage += "Veuillez entrer un pseudonyme.\n";
+        }
+        if(ageValidator->validate(age, pos) != QValidator::Acceptable) {
+            errorFlag = true;
+            errorMessage += "L'âge doit être compris entre 0 et 200.\n";
+        }
+        if(cityValidator->validate(city, pos) != QValidator::Acceptable) {
+            errorFlag = true;
+            errorMessage += "Veuillez entrer votre ville.\n";
+        }
+        if(ui->evaluationSlider->value() < 1 || ui ->evaluationSlider->value() > 5) {
+            errorFlag = true;
+            errorMessage += "Veuillez entrer une note entre 1 et 5 inclus.";
+        }
+        if(errorFlag == true) {
+            msgBox.setText(errorMessage.c_str());
             msgBox.exec();
             stateMachine->submitEvent("notOk");
         }
+        else
+            stateMachine->submitEvent("ok");
         delete nicknameValidator;
         delete ageValidator;
         delete cityValidator;
     }
 }
 
-void StateHandler::DataEnteredState(bool active) {
+void StateHandler::dataEnteredState(bool active) {
+    qDebug("DataEnteredState");
     if(active) {
         ui->stackedWidget->setCurrentIndex(3);
     }
