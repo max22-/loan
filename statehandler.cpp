@@ -75,7 +75,6 @@ void StateHandler::validateFormState(bool active) {
 }
 
 void StateHandler::dataEnteredState(bool active) {
-    qDebug("DataEnteredState");
     if(active) {
         ui->stackedWidget->setCurrentIndex(3);
     }
