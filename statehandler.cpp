@@ -28,7 +28,7 @@ void StateHandler::recordFormState(bool active) {
 
 void StateHandler::listenHomeState(bool active) {
     if(active) {
-        ui->stackedWidget->setCurrentIndex(8);
+        ui->stackedWidget->setCurrentIndex(5);
     }
 }
 
