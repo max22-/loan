@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectButton(ui->listenHomeButton, "listen");
     connectButton(ui->backButton1, "back");
     connectButton(ui->backButton2, "back");
+    connectButton(ui->backButton3, "back");
 
     connectState("HomeState", &StateHandler::homeState);
     connectState("TocState", &StateHandler::tocState);

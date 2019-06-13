@@ -4,16 +4,16 @@
     <state id="HomeState">
         <qt:editorinfo scenegeometry="399.47;117.80;333.19;67.80;132.56;100" geometry="399.47;117.80;-66.28;-50;132.56;100"/>
         <transition type="external" event="toc" target="TocState">
-            <qt:editorinfo endTargetFactors="74.10;12.91" movePoint="7.17;0" startTargetFactors="72;90.57"/>
+            <qt:editorinfo movePoint="7.17;0" startTargetFactors="72;90.57" endTargetFactors="74.10;12.91"/>
         </transition>
     </state>
     <state id="TocState">
         <qt:editorinfo scenegeometry="399.47;264.27;339.47;214.27;120;100" geometry="399.47;264.27;-60;-50;120;100"/>
         <transition type="external" event="back" target="HomeState">
-            <qt:editorinfo endTargetFactors="28.60;90.55" movePoint="-2.05;3.07" startTargetFactors="34.95;11.17"/>
+            <qt:editorinfo movePoint="-2.05;3.07" startTargetFactors="34.95;11.17" endTargetFactors="28.60;90.55"/>
         </transition>
         <transition type="external" event="record" target="RecordFormState">
-            <qt:editorinfo endTargetFactors="71.71;41.17" movePoint="23.56;1.02"/>
+            <qt:editorinfo movePoint="23.56;1.02" endTargetFactors="71.71;41.17"/>
         </transition>
         <transition type="external" event="listen" target="ListenHomeState">
             <qt:editorinfo movePoint="14.35;6.14"/>
@@ -22,7 +22,7 @@
     <state id="RecordFormState">
         <qt:editorinfo scenegeometry="124.97;423.04;64.97;373.04;178.81;100" geometry="124.97;423.04;-60;-50;178.81;100"/>
         <transition type="external" event="back" target="TocState">
-            <qt:editorinfo endTargetFactors="10.09;59.71" movePoint="-11.27;6.14"/>
+            <qt:editorinfo movePoint="-11.27;6.14" endTargetFactors="10.09;59.71"/>
         </transition>
         <transition type="external" event="validate" target="ValidateFormState">
             <qt:editorinfo movePoint="30.73;2.15"/>
@@ -31,13 +31,13 @@
     <state id="ListenHomeState">
         <qt:editorinfo scenegeometry="573.61;423.04;513.61;373.04;181.89;100" geometry="573.61;423.04;-60;-50;181.89;100"/>
         <transition type="external" event="back" target="TocState">
-            <qt:editorinfo endTargetFactors="49.25;81.78" movePoint="6.14;6.14"/>
+            <qt:editorinfo movePoint="6.14;6.14" endTargetFactors="49.25;81.78"/>
         </transition>
     </state>
     <state id="ValidateFormState">
         <qt:editorinfo scenegeometry="127.01;616.36;67.01;566.36;174.72;100" geometry="127.01;616.36;-60;-50;174.72;100"/>
         <transition type="external" event="notOk" target="RecordFormState">
-            <qt:editorinfo endTargetFactors="20.18;88.85" localGeometry="-54.09;-100.12" movePoint="-21.94;-21.94"/>
+            <qt:editorinfo localGeometry="-54.09;-100.12" movePoint="-21.94;-21.94" endTargetFactors="20.18;88.85"/>
         </transition>
         <transition type="external" event="ok" target="DataEnteredState">
             <qt:editorinfo movePoint="6.93;4.62"/>
@@ -45,5 +45,8 @@
     </state>
     <state id="DataEnteredState">
         <qt:editorinfo scenegeometry="120.94;790.52;60.94;740.52;186.86;100" geometry="120.94;790.52;-60;-50;186.86;100"/>
+        <transition type="external" event="back" target="RecordFormState">
+            <qt:editorinfo localGeometry="-114.67;-104.27;-114.67;-307.17" endTargetFactors="7.44;77.43"/>
+        </transition>
     </state>
 </scxml>
