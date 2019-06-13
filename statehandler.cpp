@@ -20,7 +20,7 @@ void StateHandler::tocState(bool active) {
     }
 }
 
-void StateHandler::recordFormState(bool active) {
+void StateHandler::formState(bool active) {
     if(active) {
         ui->stackedWidget->setCurrentIndex(2);
     }

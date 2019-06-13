@@ -16,7 +16,7 @@ signals:
 public slots:
     void homeState(bool);
     void tocState(bool);
-    void recordFormState(bool);
+    void formState(bool);
     void listenHomeState(bool);
     void validateFormState(bool);
     void dataEnteredState(bool);

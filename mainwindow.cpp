@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connectState("HomeState", &StateHandler::homeState);
     connectState("TocState", &StateHandler::tocState);
-    connectState("RecordFormState", &StateHandler::recordFormState);
+    connectState("FormState", &StateHandler::formState);
     connectState("ListenHomeState", &StateHandler::listenHomeState);
     connectState("ValidateFormState", &StateHandler::validateFormState);
     connectState("DataEnteredState", &StateHandler::dataEnteredState);
