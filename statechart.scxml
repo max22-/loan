@@ -44,9 +44,12 @@
         </transition>
     </state>
     <state id="DataEnteredState">
-        <qt:editorinfo scenegeometry="120.94;790.52;60.94;740.52;186.86;100" geometry="120.94;790.52;-60;-50;186.86;100"/>
+        <qt:editorinfo scenegeometry="-31.90;846.69;-191.96;737.07;532.89;497.41" geometry="-31.90;846.69;-160.06;-109.62;532.89;497.41"/>
         <transition type="external" event="back" target="RecordFormState">
-            <qt:editorinfo localGeometry="-114.67;-104.27;-114.67;-307.17" endTargetFactors="7.44;77.43"/>
+            <qt:editorinfo localGeometry="-34.77;-299.54;-34.77;-502.44" endTargetFactors="7.44;77.43"/>
         </transition>
+        <initial>
+            <qt:editorinfo scenegeometry="66.63;826.91;46.63;806.91;40;40" geometry="98.53;-19.78;-20;-20;40;40"/>
+        </initial>
     </state>
 </scxml>
