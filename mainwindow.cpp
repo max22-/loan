@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectState("FormState", &StateHandler::formState);
     connectState("ListenHomeState", &StateHandler::listenHomeState);
     connectState("ValidateFormState", &StateHandler::validateFormState);
-    connectState("DataEnteredState", &StateHandler::dataEnteredState);
+    connectState("RecordState", &StateHandler::recordState);
 
     stateMachine.start();
 

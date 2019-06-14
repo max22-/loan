@@ -74,7 +74,7 @@ void StateHandler::validateFormState(bool active) {
     }
 }
 
-void StateHandler::dataEnteredState(bool active) {
+void StateHandler::recordState(bool active) {
     if(active) {
         ui->stackedWidget->setCurrentIndex(3);
     }
