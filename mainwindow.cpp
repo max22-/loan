@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->stackedWidget->setCurrentIndex(0);
     stateHandler = new StateHandler(ui, &stateMachine);
 
+    connect(ui->evaluationSlider, &QSlider::valueChanged, [this](int newValue) {ui->evaluationLabel->setText(QString::number(newValue)); } );
+
     connectButton(ui->tocButton, "toc");
     connectButton(ui->recordHomeButton, "record");
     connectButton(ui->validateButton, "validate");

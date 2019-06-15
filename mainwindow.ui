@@ -45,7 +45,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="home_page">
        <property name="styleSheet">
@@ -542,22 +542,33 @@ QPushButton:pressed {
               <item row="2" column="1">
                <widget class="QLineEdit" name="cityLineEdit"/>
               </item>
-              <item row="3" column="1">
-               <widget class="QSlider" name="evaluationSlider">
-                <property name="maximum">
-                 <number>5</number>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
               <item row="3" column="0">
                <widget class="QLabel" name="label_19">
                 <property name="text">
                  <string>Evaluation</string>
                 </property>
                </widget>
+              </item>
+              <item row="3" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout_14">
+                <item>
+                 <widget class="QSlider" name="evaluationSlider">
+                  <property name="maximum">
+                   <number>5</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="evaluationLabel">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
              </layout>
             </item>
