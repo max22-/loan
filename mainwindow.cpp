@@ -31,6 +31,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connectState("RecordState", &StateHandler::recordState);
     connectState("RecordHomeState", &StateHandler::recordHomeState);
     connectState("ValidateCancel1State", &StateHandler::validateCancel1State);
+    connectState("RecordingState", &StateHandler::recordingState);
+    connectState("RecordedMessageState", &StateHandler::recordedMessageState);
+    connectState("ListeningMessageState", &StateHandler::listeningMessageState);
+    connectState("ValidateCancel2State", &StateHandler::validateCancel2State);
 
     stateMachine.start();
 

@@ -10,6 +10,10 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, QObject
 void StateHandler::homeState(bool active) {
     if(active) {
         ui->stackedWidget->setCurrentIndex(0);
+        ui->nicknameLineEdit->setText("");
+        ui->ageLineEdit->setText("");
+        ui->cityLineEdit->setText("");
+        ui->evaluationSlider->setValue(0);
     }
 }
 
@@ -23,10 +27,6 @@ void StateHandler::tocState(bool active) {
 void StateHandler::formState(bool active) {
     if(active) {
         ui->stackedWidget->setCurrentIndex(2);
-        ui->nicknameLineEdit->setText("");
-        ui->ageLineEdit->setText("");
-        ui->cityLineEdit->setText("");
-        ui->evaluationSlider->setValue(0);
     }
 }
 
@@ -95,6 +95,47 @@ void StateHandler::validateCancel1State(bool active) {
         QMessageBox msgBox;
         msgBox.setText("Vous avez complété le formulaire.");
         msgBox.setInformativeText("Voulez-vous annuler et revenir à l'écran d'accueil ?");
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        int ret = msgBox.exec();
+        switch(ret) {
+            case QMessageBox::Yes:
+                stateMachine->submitEvent("yes");
+                break;
+            case QMessageBox::No:
+                stateMachine->submitEvent("no");
+                break;
+            default:
+                qDebug("msgBox.exec() returned something other than yes or no.");
+                break;
+        }
+    }
+}
+
+void StateHandler::recordingState(bool active) {
+    if (active) {
+        qDebug("recordingState");
+    }
+}
+
+void StateHandler::recordedMessageState(bool active) {
+    if (active) {
+        qDebug("recordedMessageState");
+    }
+}
+
+void StateHandler::listeningMessageState(bool active) {
+    if (active) {
+        qDebug("listeningMessageState");
+    }
+}
+
+void StateHandler::validateCancel2State(bool active) {
+    if(active) {
+        qDebug("validateCancel1State");
+        QMessageBox msgBox;
+        msgBox.setText("Vous avez complété le formulaire et enregistré un message audio");
+        msgBox.setInformativeText("Voulez-vous tout annuler et revenir à l'écran d'accueil ?");
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
         int ret = msgBox.exec();
