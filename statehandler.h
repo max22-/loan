@@ -20,6 +20,8 @@ public slots:
     void listenHomeState(bool);
     void validateFormState(bool);
     void recordState(bool);
+    void recordHomeState(bool);
+    void validateCancel1State(bool);
 
 private:
     Ui::MainWindow *ui;

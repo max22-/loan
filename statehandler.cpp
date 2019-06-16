@@ -23,6 +23,10 @@ void StateHandler::tocState(bool active) {
 void StateHandler::formState(bool active) {
     if(active) {
         ui->stackedWidget->setCurrentIndex(2);
+        ui->nicknameLineEdit->setText("");
+        ui->ageLineEdit->setText("");
+        ui->cityLineEdit->setText("");
+        ui->evaluationSlider->setValue(0);
     }
 }
 
@@ -77,5 +81,33 @@ void StateHandler::validateFormState(bool active) {
 void StateHandler::recordState(bool active) {
     if(active) {
         ui->stackedWidget->setCurrentIndex(3);
+    }
+}
+
+void StateHandler::recordHomeState(bool active) {
+    if (active) {
+    }
+}
+
+void StateHandler::validateCancel1State(bool active) {
+    if(active) {
+        qDebug("validateCancel1State");
+        QMessageBox msgBox;
+        msgBox.setText("Vous avez complété le formulaire.");
+        msgBox.setInformativeText("Voulez-vous annuler et revenir à l'écran d'accueil ?");
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        int ret = msgBox.exec();
+        switch(ret) {
+            case QMessageBox::Yes:
+                stateMachine->submitEvent("yes");
+                break;
+            case QMessageBox::No:
+                stateMachine->submitEvent("no");
+                break;
+            default:
+                qDebug("msgBox.exec() returned something other than yes or no.");
+                break;
+        }
     }
 }

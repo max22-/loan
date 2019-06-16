@@ -18,6 +18,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connectButton(ui->backButton1, "back");
     connectButton(ui->backButton2, "back");
     connectButton(ui->backButton3, "back");
+    connectButton(ui->recordButton, "record");
+    connectButton(ui->stopButton, "stop");
+    connectButton(ui->playButton, "play");
+    connectButton(ui->cancelButton, "cancel");
 
     connectState("HomeState", &StateHandler::homeState);
     connectState("TocState", &StateHandler::tocState);
@@ -25,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connectState("ListenHomeState", &StateHandler::listenHomeState);
     connectState("ValidateFormState", &StateHandler::validateFormState);
     connectState("RecordState", &StateHandler::recordState);
+    connectState("RecordHomeState", &StateHandler::recordHomeState);
+    connectState("ValidateCancel1State", &StateHandler::validateCancel1State);
 
     stateMachine.start();
 

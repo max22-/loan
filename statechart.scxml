@@ -57,7 +57,7 @@
             <transition type="external" event="record" target="RecordingState">
                 <qt:editorinfo movePoint="21.66;0"/>
             </transition>
-            <transition type="external" event="cancel" target="ValidanteCancel1State">
+            <transition type="external" event="cancel" target="ValidateCancel1State">
                 <qt:editorinfo endTargetFactors="55.27;78.59" startTargetFactors="4.79;68.31" movePoint="4.11;8.21"/>
             </transition>
         </state>
@@ -82,7 +82,7 @@
                 <qt:editorinfo endTargetFactors="28.21;44.25" startTargetFactors="30.56;12.96" movePoint="-1.67;4.99"/>
             </transition>
         </state>
-        <state id="ValidanteCancel1State">
+        <state id="ValidateCancel1State">
             <qt:editorinfo geometry="-122.05;101.61;-107.65;-50;208.01;100" scenegeometry="-151.90;948.30;-259.55;898.30;208.01;100"/>
             <transition type="external" event="no" target="RecordHomeState">
                 <qt:editorinfo movePoint="2.05;6.16"/>
