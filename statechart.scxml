@@ -2,15 +2,15 @@
 <scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" name="Statechart" qt:editorversion="4.9.1" initial="HomeState">
     <qt:editorinfo initialGeometry="399.47;24.58;-20;-20;40;40"/>
     <state id="HomeState">
-        <qt:editorinfo scenegeometry="399.47;117.80;333.19;67.80;132.56;100" geometry="399.47;117.80;-66.28;-50;132.56;100"/>
+        <qt:editorinfo geometry="399.47;117.80;-66.28;-50;132.56;100" scenegeometry="399.47;117.80;333.19;67.80;132.56;100"/>
         <transition type="external" event="toc" target="TocState">
-            <qt:editorinfo movePoint="7.17;0" startTargetFactors="72;90.57" endTargetFactors="74.10;12.91"/>
+            <qt:editorinfo startTargetFactors="72;90.57" movePoint="7.17;0" endTargetFactors="74.10;12.91"/>
         </transition>
     </state>
     <state id="TocState">
-        <qt:editorinfo scenegeometry="399.47;264.27;339.47;214.27;120;100" geometry="399.47;264.27;-60;-50;120;100"/>
+        <qt:editorinfo geometry="399.47;264.27;-60;-50;120;100" scenegeometry="399.47;264.27;339.47;214.27;120;100"/>
         <transition type="external" event="back" target="HomeState">
-            <qt:editorinfo movePoint="-2.05;3.07" startTargetFactors="34.95;11.17" endTargetFactors="28.60;90.55"/>
+            <qt:editorinfo startTargetFactors="34.95;11.17" movePoint="-2.05;3.07" endTargetFactors="28.60;90.55"/>
         </transition>
         <transition type="external" event="record" target="FormState">
             <qt:editorinfo movePoint="23.56;1.02" endTargetFactors="71.71;41.17"/>
@@ -20,7 +20,7 @@
         </transition>
     </state>
     <state id="FormState">
-        <qt:editorinfo scenegeometry="124.97;423.04;64.97;373.04;178.81;100" geometry="124.97;423.04;-60;-50;178.81;100"/>
+        <qt:editorinfo geometry="124.97;423.04;-60;-50;178.81;100" scenegeometry="124.97;423.04;64.97;373.04;178.81;100"/>
         <transition type="external" event="back" target="TocState">
             <qt:editorinfo movePoint="-11.27;6.14" endTargetFactors="10.09;59.71"/>
         </transition>
@@ -29,76 +29,70 @@
         </transition>
     </state>
     <state id="ListenHomeState">
-        <qt:editorinfo scenegeometry="573.61;423.04;513.61;373.04;181.89;100" geometry="573.61;423.04;-60;-50;181.89;100"/>
+        <qt:editorinfo geometry="573.61;423.04;-60;-50;181.89;100" scenegeometry="573.61;423.04;513.61;373.04;181.89;100"/>
         <transition type="external" event="back" target="TocState">
             <qt:editorinfo movePoint="6.14;6.14" endTargetFactors="49.25;81.78"/>
         </transition>
     </state>
     <state id="ValidateFormState">
-        <qt:editorinfo scenegeometry="127.01;616.36;67.01;566.36;174.72;100" geometry="127.01;616.36;-60;-50;174.72;100"/>
+        <qt:editorinfo geometry="127.01;616.36;-60;-50;174.72;100" scenegeometry="127.01;616.36;67.01;566.36;174.72;100"/>
         <transition type="external" event="notOk" target="FormState">
-            <qt:editorinfo localGeometry="-53.40;-100.12" movePoint="-21.94;-21.94" endTargetFactors="20.18;88.85"/>
+            <qt:editorinfo movePoint="-21.94;-21.94" endTargetFactors="20.18;88.85" localGeometry="-53.40;-100.12"/>
         </transition>
         <transition type="external" event="ok" target="RecordState">
             <qt:editorinfo movePoint="6.93;4.62"/>
         </transition>
     </state>
     <state id="RecordState">
-        <qt:editorinfo scenegeometry="-29.85;846.69;-354.38;718.78;709.55;802.20" geometry="-29.85;846.69;-324.53;-127.91;709.55;802.20"/>
+        <qt:editorinfo geometry="-31.55;846.69;-324.53;-127.91;709.55;802.20" scenegeometry="-31.55;846.69;-356.08;718.78;709.55;802.20"/>
         <transition type="external" event="back" target="FormState">
-            <qt:editorinfo localGeometry="39.30;-636.49" endTargetFactors="7.44;77.43"/>
+            <qt:editorinfo endTargetFactors="7.44;77.43" localGeometry="41;-636.49"/>
         </transition>
         <initial>
-            <qt:editorinfo scenegeometry="68.68;826.91;48.68;806.91;40;40" geometry="98.53;-19.78;-20;-20;40;40"/>
+            <qt:editorinfo geometry="98.53;-19.78;-20;-20;40;40" scenegeometry="66.98;826.91;46.98;806.91;40;40"/>
             <transition type="external" event="Transition_2" target="RecordHomeState"/>
         </initial>
         <state id="RecordHomeState">
-            <qt:editorinfo scenegeometry="140.33;950.88;80.33;900.88;179.89;100" geometry="170.18;104.19;-60;-50;179.89;100"/>
+            <qt:editorinfo geometry="170.18;104.19;-60;-50;179.89;100" scenegeometry="138.63;950.88;78.63;900.88;179.89;100"/>
             <transition type="external" event="record" target="RecordingState">
                 <qt:editorinfo movePoint="21.66;0"/>
             </transition>
-            <transition type="external" event="cancel" target="ValidateCancel1State">
-                <qt:editorinfo movePoint="4.11;8.21" startTargetFactors="4.79;68.31" endTargetFactors="55.27;78.59"/>
+            <transition type="external" event="cancel" target="ValidateCancelState">
+                <qt:editorinfo startTargetFactors="4.79;68.31" movePoint="246.77;-1.97" endTargetFactors="55.27;78.59"/>
             </transition>
         </state>
         <state id="RecordingState">
-            <qt:editorinfo scenegeometry="120.33;1116.20;60.33;1066.20;224.74;100" geometry="150.18;269.51;-60;-50;224.74;100"/>
+            <qt:editorinfo geometry="150.18;273.19;-60;-50;224.74;100" scenegeometry="118.63;1119.88;58.63;1069.88;224.74;100"/>
             <transition type="external" event="stop" target="RecordedMessageState">
                 <qt:editorinfo movePoint="16.66;1.67" endTargetFactors="49.85;16.96"/>
             </transition>
         </state>
         <state id="RecordedMessageState">
-            <qt:editorinfo scenegeometry="128.10;1266.14;68.10;1216.14;227.06;100" geometry="157.95;419.45;-60;-50;227.06;100"/>
+            <qt:editorinfo geometry="157.95;419.45;-60;-50;227.06;100" scenegeometry="126.40;1266.14;66.40;1216.14;227.06;100"/>
             <transition type="external" event="play" target="ListeningMessageState">
                 <qt:editorinfo movePoint="19.99;6.66"/>
             </transition>
-            <transition type="external" event="cancel" target="ValidateCancel2State">
-                <qt:editorinfo startTargetFactors="7.17;85.25" endTargetFactors="95.96;75.55"/>
+            <transition type="external" event="cancel" target="ValidateCancelState">
+                <qt:editorinfo movePoint="249.44;128.97" endTargetFactors="67.17;76.57"/>
             </transition>
         </state>
         <state id="ListeningMessageState">
-            <qt:editorinfo scenegeometry="135.33;1432.73;75.33;1382.73;205.63;100" geometry="165.18;586.04;-60;-50;205.63;100"/>
+            <qt:editorinfo geometry="165.18;586.04;-60;-50;205.63;100" scenegeometry="133.63;1432.73;73.63;1382.73;205.63;100"/>
             <transition type="external" event="stop" target="RecordedMessageState">
-                <qt:editorinfo movePoint="-14.74;6.86" startTargetFactors="30.56;12.96" endTargetFactors="28.21;44.25"/>
+                <qt:editorinfo startTargetFactors="30.56;12.96" movePoint="0.53;3.47" endTargetFactors="28.21;44.25"/>
             </transition>
         </state>
-        <state id="ValidateCancel1State">
-            <qt:editorinfo scenegeometry="-151.90;948.30;-259.55;898.30;208.01;100" geometry="-122.05;101.61;-107.65;-50;208.01;100"/>
-            <transition type="external" event="no" target="RecordHomeState">
-                <qt:editorinfo movePoint="2.05;6.16"/>
-            </transition>
-            <transition type="external" event="yes" target="HomeState">
-                <qt:editorinfo localGeometry="-2.05;-609.62" movePoint="0.33;240.16" endTargetFactors="13.23;65.23"/>
-            </transition>
-        </state>
-        <state id="ValidateCancel2State">
-            <qt:editorinfo scenegeometry="-215.53;1269.73;-275.53;1219.73;215.82;100" geometry="-185.68;423.04;-60;-50;215.82;100"/>
-            <transition type="external" event="no" target="RecordedMessageState">
-                <qt:editorinfo movePoint="6.91;5.19"/>
-            </transition>
-            <transition type="external" event="yes" target="HomeState">
-                <qt:editorinfo localGeometry="-139.83;-212.67;-139.83;-1033.10;207.35;-1159.31" movePoint="76;547.53" endTargetFactors="9.07;42.42"/>
-            </transition>
-        </state>
+        <history type="shallow" id="History_1">
+            <qt:editorinfo geometry="-250.14;540.30;-20;-20;101.32;86.13" scenegeometry="-281.69;1386.99;-301.69;1366.99;101.32;86.13"/>
+        </history>
+    </state>
+    <state id="ValidateCancelState">
+        <qt:editorinfo geometry="-548.98;905.88;-107.65;-50;208.01;100" scenegeometry="-548.98;905.88;-656.63;855.88;208.01;100"/>
+        <transition type="external" event="no" target="History_1">
+            <qt:editorinfo movePoint="2.05;6.16"/>
+        </transition>
+        <transition type="external" event="yes" target="HomeState">
+            <qt:editorinfo movePoint="0.33;240.16" endTargetFactors="13.23;65.23" localGeometry="395.03;-567.20"/>
+        </transition>
     </state>
 </scxml>

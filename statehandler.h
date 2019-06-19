@@ -21,11 +21,10 @@ public slots:
     void validateFormState(bool);
     void recordState(bool);
     void recordHomeState(bool);
-    void validateCancel1State(bool);
+    void validateCancelState(bool);
     void recordingState(bool);
     void recordedMessageState(bool);
     void listeningMessageState(bool);
-    void validateCancel2State(bool);
 
 private:
     Ui::MainWindow *ui;

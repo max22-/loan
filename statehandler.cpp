@@ -89,12 +89,12 @@ void StateHandler::recordHomeState(bool active) {
     }
 }
 
-void StateHandler::validateCancel1State(bool active) {
+void StateHandler::validateCancelState(bool active) {
     if(active) {
         qDebug("validateCancel1State");
         QMessageBox msgBox;
-        msgBox.setText("Vous avez complété le formulaire.");
-        msgBox.setInformativeText("Voulez-vous annuler et revenir à l'écran d'accueil ?");
+        msgBox.setText("Vous avez enregistré des informations.");
+        msgBox.setInformativeText("Voulez-vous vraiment tout supprimer et revenir à l'écran d'accueil ?");
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
         int ret = msgBox.exec();
@@ -127,28 +127,5 @@ void StateHandler::recordedMessageState(bool active) {
 void StateHandler::listeningMessageState(bool active) {
     if (active) {
         qDebug("listeningMessageState");
-    }
-}
-
-void StateHandler::validateCancel2State(bool active) {
-    if(active) {
-        qDebug("validateCancel1State");
-        QMessageBox msgBox;
-        msgBox.setText("Vous avez complété le formulaire et enregistré un message audio");
-        msgBox.setInformativeText("Voulez-vous tout annuler et revenir à l'écran d'accueil ?");
-        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox.setDefaultButton(QMessageBox::No);
-        int ret = msgBox.exec();
-        switch(ret) {
-            case QMessageBox::Yes:
-                stateMachine->submitEvent("yes");
-                break;
-            case QMessageBox::No:
-                stateMachine->submitEvent("no");
-                break;
-            default:
-                qDebug("msgBox.exec() returned something other than yes or no.");
-                break;
-        }
     }
 }
