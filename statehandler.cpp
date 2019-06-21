@@ -96,6 +96,8 @@ void StateHandler::validateCancelState(bool active) {
         msgBox.setText("Vous avez enregistré des informations.");
         msgBox.setInformativeText("Voulez-vous vraiment tout supprimer et revenir à l'écran d'accueil ?");
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setButtonText(QMessageBox::Yes, "Oui");
+        msgBox.setButtonText(QMessageBox::No, "Non");
         msgBox.setDefaultButton(QMessageBox::No);
         int ret = msgBox.exec();
         switch(ret) {
