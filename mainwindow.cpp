@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectState("RecordingState", &StateHandler::recordingState);
     connectState("RecordedMessageState", &StateHandler::recordedMessageState);
     connectState("ListeningMessageState", &StateHandler::listeningMessageState);
+    connectState("ReRecordState", &StateHandler::reRecordState);
 
     stateMachine.start();
 

@@ -25,6 +25,7 @@ public slots:
     void recordingState(bool);
     void recordedMessageState(bool);
     void listeningMessageState(bool);
+    void reRecordState(bool);
 
 private:
     Ui::MainWindow *ui;

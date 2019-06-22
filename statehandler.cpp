@@ -131,3 +131,28 @@ void StateHandler::listeningMessageState(bool active) {
         qDebug("listeningMessageState");
     }
 }
+
+void StateHandler::reRecordState(bool active) {
+    if(active) {
+        qDebug("reRecordState");
+        QMessageBox msgBox;
+        msgBox.setText("Vous avez enregistré un message.");
+        msgBox.setInformativeText("Voulez-vous vraiment l'effacer pour le réenregistrer à nouveau ?");
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setButtonText(QMessageBox::Yes, "Oui");
+        msgBox.setButtonText(QMessageBox::No, "Non");
+        msgBox.setDefaultButton(QMessageBox::No);
+        int ret = msgBox.exec();
+        switch(ret) {
+        case QMessageBox::Yes:
+            stateMachine->submitEvent("yes");
+            break;
+        case QMessageBox::No:
+            stateMachine->submitEvent("no");
+            break;
+        default:
+            qDebug("msgBox.exec() returned something other than yes or no.");
+            break;
+        }
+    }
+}
