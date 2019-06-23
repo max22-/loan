@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectButton(ui->stopButton, "stop");
     connectButton(ui->playButton, "play");
     connectButton(ui->cancelButton, "cancel");
+    connectButton(ui->validateButton2, "validate");
 
     connectState("HomeState", &StateHandler::homeState);
     connectState("TocState", &StateHandler::tocState);
