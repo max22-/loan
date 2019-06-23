@@ -26,6 +26,7 @@ public slots:
     void recordedMessageState(bool);
     void listeningMessageState(bool);
     void reRecordState(bool);
+    void MP3ConversionState(bool);
 
 private:
     Ui::MainWindow *ui;

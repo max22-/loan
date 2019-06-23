@@ -32,7 +32,7 @@ void StateHandler::formState(bool active) {
 
 void StateHandler::listenHomeState(bool active) {
     if(active) {
-        ui->stackedWidget->setCurrentIndex(5);
+        ui->stackedWidget->setCurrentIndex(6);
     }
 }
 
@@ -154,5 +154,11 @@ void StateHandler::reRecordState(bool active) {
             qDebug("msgBox.exec() returned something other than yes or no.");
             break;
         }
+    }
+}
+
+void StateHandler::MP3ConversionState(bool active) {
+    if(active) {
+        ui->stackedWidget->setCurrentIndex(4);
     }
 }
