@@ -162,3 +162,9 @@ void StateHandler::MP3ConversionState(bool active) {
         ui->stackedWidget->setCurrentIndex(4);
     }
 }
+
+void StateHandler::validateMessageState(bool active) {
+    if(active) {
+
+    }
+}
