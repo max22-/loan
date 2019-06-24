@@ -32,6 +32,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Statechart *stateMachine;
+    void confirmationMessageBox(QString, QString);
 };
 
 #endif // STATEHANDLER_H

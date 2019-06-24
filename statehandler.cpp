@@ -92,25 +92,7 @@ void StateHandler::recordHomeState(bool active) {
 void StateHandler::validateCancelState(bool active) {
     if(active) {
         qDebug("validateCancel1State");
-        QMessageBox msgBox;
-        msgBox.setText("Vous avez enregistré des informations.");
-        msgBox.setInformativeText("Voulez-vous vraiment tout supprimer et revenir à l'écran d'accueil ?");
-        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox.setButtonText(QMessageBox::Yes, "Oui");
-        msgBox.setButtonText(QMessageBox::No, "Non");
-        msgBox.setDefaultButton(QMessageBox::No);
-        int ret = msgBox.exec();
-        switch(ret) {
-            case QMessageBox::Yes:
-                stateMachine->submitEvent("yes");
-                break;
-            case QMessageBox::No:
-                stateMachine->submitEvent("no");
-                break;
-            default:
-                qDebug("msgBox.exec() returned something other than yes or no.");
-                break;
-        }
+        confirmationMessageBox("Vous avez enregistré des informations.", "Voulez-vous vraiment tout supprimer et revenir à l'écran d'accueil ?");
     }
 }
 
@@ -135,36 +117,42 @@ void StateHandler::listeningMessageState(bool active) {
 void StateHandler::reRecordState(bool active) {
     if(active) {
         qDebug("reRecordState");
-        QMessageBox msgBox;
-        msgBox.setText("Vous avez enregistré un message.");
-        msgBox.setInformativeText("Voulez-vous vraiment l'effacer pour le réenregistrer à nouveau ?");
-        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox.setButtonText(QMessageBox::Yes, "Oui");
-        msgBox.setButtonText(QMessageBox::No, "Non");
-        msgBox.setDefaultButton(QMessageBox::No);
-        int ret = msgBox.exec();
-        switch(ret) {
-        case QMessageBox::Yes:
-            stateMachine->submitEvent("yes");
-            break;
-        case QMessageBox::No:
-            stateMachine->submitEvent("no");
-            break;
-        default:
-            qDebug("msgBox.exec() returned something other than yes or no.");
-            break;
-        }
+        confirmationMessageBox("Vous avez enregistré un message.", "Voulez-vous vraiment l'effacer pour le réenregistrer à nouveau ?");
     }
 }
 
 void StateHandler::MP3ConversionState(bool active) {
     if(active) {
+        qDebug("MP3ConversionState");
         ui->stackedWidget->setCurrentIndex(4);
     }
 }
 
 void StateHandler::validateMessageState(bool active) {
     if(active) {
+        qDebug("validateMessageState");
+        confirmationMessageBox("Vous avez enregistré un message ainsi que des informations.", "Êtes-vous sûr de vouloir les valider ? (ceci est définitif)");
+    }
+}
 
+void StateHandler::confirmationMessageBox(QString text, QString informativeText) {
+    QMessageBox msgBox;
+    msgBox.setText(text);
+    msgBox.setInformativeText(informativeText);
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setButtonText(QMessageBox::Yes, "Oui");
+    msgBox.setButtonText(QMessageBox::No, "Non");
+    msgBox.setDefaultButton(QMessageBox::No);
+    int ret = msgBox.exec();
+    switch(ret) {
+    case QMessageBox::Yes:
+        stateMachine->submitEvent("yes");
+        break;
+    case QMessageBox::No:
+        stateMachine->submitEvent("no");
+        break;
+    default:
+        qDebug("msgBox.exec() returned something other than yes or no.");
+        break;
     }
 }
