@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui scxml
+QT       += core gui scxml multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

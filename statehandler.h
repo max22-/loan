@@ -2,6 +2,7 @@
 #define STATEHANDLER_H
 
 #include <QObject>
+#include <QAudioRecorder>
 #include "ui_mainwindow.h"
 #include "statechart.h"
 
@@ -32,6 +33,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Statechart *stateMachine;
+    QAudioRecorder *audioRecorder = nullptr;
     void confirmationMessageBox(QString, QString);
 };
 

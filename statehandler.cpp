@@ -98,7 +98,19 @@ void StateHandler::validateCancelState(bool active) {
 
 void StateHandler::recordingState(bool active) {
     if (active) {
-        qDebug("recordingState");
+        qDebug("entering recordingState");
+        audioRecorder = new QAudioRecorder;
+        QAudioEncoderSettings audioSettings;
+        audioSettings.setCodec("audio/wav");
+        audioSettings.setQuality(QMultimedia::HighQuality);
+        audioRecorder->setEncodingSettings(audioSettings);
+        audioRecorder->setOutputLocation(QUrl::fromLocalFile("message.wav"));
+        audioRecorder->record();
+    }
+    else {
+        audioRecorder->stop();
+        delete audioRecorder;
+        qDebug("quitting recordingState");
     }
 }
 
