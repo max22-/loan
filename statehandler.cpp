@@ -100,11 +100,14 @@ void StateHandler::recordingState(bool active) {
     if (active) {
         qDebug("entering recordingState");
         audioRecorder = new QAudioRecorder;
+        foreach(const QString &codecName, audioRecorder->supportedAudioCodecs()) {
+            qDebug(codecName.toStdString().c_str());
+        }
         QAudioEncoderSettings audioSettings;
-        audioSettings.setCodec("audio/wav");
+        audioSettings.setCodec("audio/mpeg, mpegversion=(int)1, layer=(int)3");
         audioSettings.setQuality(QMultimedia::HighQuality);
         audioRecorder->setEncodingSettings(audioSettings);
-        audioRecorder->setOutputLocation(QUrl::fromLocalFile("message.wav"));
+        audioRecorder->setOutputLocation(QUrl::fromLocalFile("message.mp3"));
         audioRecorder->record();
     }
     else {
