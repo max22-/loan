@@ -14,6 +14,7 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, QObject
     int sampleRate = 8000, channelCount = 1, sampleSize = 8;
     QAudioFormat::Endian byteOrder = QAudioFormat::LittleEndian;
     QAudioFormat::SampleType sampleType = QAudioFormat::UnSignedInt;
+    int maxRecordingTime = 30;
 
     // Audio Initialization *********************
     tempAudioFile.setFileName(tempAudioFileName);
@@ -29,11 +30,18 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, QObject
         qDebug("Default format not supported, trying to use the nearest.");
         format = info.nearestFormat(format);
     }
+    ui->recordingSlider->setMinimum(0);
+    ui->recordingSlider->setMaximum(maxRecordingTime*1000);
+
     // Audio Input *************************
     audioInput = new QAudioInput(format, this);
+    audioInput->setNotifyInterval(10);
+    connect(audioInput, &QAudioInput::notify, [=]() { ui->recordingSlider->setValue(static_cast<int>(audioInput->processedUSecs()/1000)); });
     // *************************************
     // Audio Output ************************
     audioOutput = new QAudioOutput(format, this);
+    audioOutput->setNotifyInterval(10);
+    connect(audioOutput, &QAudioOutput::notify, [=]() { ui->recordingSlider->setValue(static_cast<int>(audioOutput->processedUSecs()/1000)); });
     // *************************************
 
 }
