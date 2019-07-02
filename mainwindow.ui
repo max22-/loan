@@ -45,7 +45,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="home_page">
        <property name="styleSheet">
@@ -559,6 +559,12 @@ QPushButton:pressed {
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
+                  <property name="tickPosition">
+                   <enum>QSlider::TicksBelow</enum>
+                  </property>
+                  <property name="tickInterval">
+                   <number>1</number>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -790,7 +796,7 @@ QPushButton:pressed {
                </widget>
               </item>
               <item>
-               <widget class="QSlider" name="horizontalSlider_2">
+               <widget class="QSlider" name="recordingSlider">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
