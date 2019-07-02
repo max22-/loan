@@ -2,7 +2,9 @@
 #define STATEHANDLER_H
 
 #include <QObject>
-#include <QAudioRecorder>
+#include <QAudioInput>
+#include <QAudioOutput>
+#include <QFile>
 #include "ui_mainwindow.h"
 #include "statechart.h"
 
@@ -11,6 +13,7 @@ class StateHandler : public QObject
     Q_OBJECT
 public:
     explicit StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, QObject *parent = nullptr);
+    ~StateHandler();
 
 signals:
 
@@ -33,7 +36,9 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Statechart *stateMachine;
-    QAudioRecorder *audioRecorder = nullptr;
+    QAudioInput *audioInput = nullptr;
+    QAudioOutput *audioOutput = nullptr;
+    QFile tempAudioFile;
     void confirmationMessageBox(QString, QString);
 };
 

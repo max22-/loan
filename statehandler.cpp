@@ -1,11 +1,48 @@
 #include <QMessageBox>
+#include <QAudioDeviceInfo>
+#include <QFile>
+#include <QAudioOutput>
 #include "statehandler.h"
 
 StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, QObject *parent) : QObject(parent)
 {
     this->ui = ui;
     this->stateMachine = stateMachine;
+
+    // Audio ******************************
+    QString codec = "audio/pcm", tempAudioFileName = "message.raw";
+    int sampleRate = 8000, channelCount = 1, sampleSize = 8;
+    QAudioFormat::Endian byteOrder = QAudioFormat::LittleEndian;
+    QAudioFormat::SampleType sampleType = QAudioFormat::UnSignedInt;
+
+    // Audio Initialization *********************
+    tempAudioFile.setFileName(tempAudioFileName);
+    QAudioFormat format;
+    format.setSampleRate(sampleRate);
+    format.setChannelCount(channelCount);
+    format.setSampleSize(sampleSize);
+    format.setCodec(codec);
+    format.setByteOrder(byteOrder);
+    format.setSampleType(sampleType);
+    QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
+    if (!info.isFormatSupported(format)) {
+        qDebug("Default format not supported, trying to use the nearest.");
+        format = info.nearestFormat(format);
+    }
+    // Audio Input *************************
+    audioInput = new QAudioInput(format, this);
+    // *************************************
+    // Audio Output ************************
+    audioOutput = new QAudioOutput(format, this);
+    // *************************************
+
 }
+
+StateHandler::~StateHandler(void) {
+    delete audioInput;
+}
+
+
 
 void StateHandler::homeState(bool active) {
     if(active) {
@@ -99,20 +136,12 @@ void StateHandler::validateCancelState(bool active) {
 void StateHandler::recordingState(bool active) {
     if (active) {
         qDebug("entering recordingState");
-        audioRecorder = new QAudioRecorder;
-        foreach(const QString &codecName, audioRecorder->supportedAudioCodecs()) {
-            qDebug(codecName.toStdString().c_str());
-        }
-        QAudioEncoderSettings audioSettings;
-        audioSettings.setCodec("audio/mpeg, mpegversion=(int)1, layer=(int)3");
-        audioSettings.setQuality(QMultimedia::HighQuality);
-        audioRecorder->setEncodingSettings(audioSettings);
-        audioRecorder->setOutputLocation(QUrl::fromLocalFile("message.mp3"));
-        audioRecorder->record();
+        tempAudioFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
+        audioInput->start(&tempAudioFile);
     }
     else {
-        audioRecorder->stop();
-        delete audioRecorder;
+        audioInput->stop();
+        tempAudioFile.close();
         qDebug("quitting recordingState");
     }
 }
@@ -126,6 +155,12 @@ void StateHandler::recordedMessageState(bool active) {
 void StateHandler::listeningMessageState(bool active) {
     if (active) {
         qDebug("listeningMessageState");
+        tempAudioFile.open(QIODevice::ReadOnly);
+        audioOutput->start(&tempAudioFile);
+    }
+    else {
+        audioOutput->stop();
+        tempAudioFile.close();
     }
 }
 
