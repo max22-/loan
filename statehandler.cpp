@@ -36,12 +36,16 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, QObject
     // Audio Input *************************
     audioInput = new QAudioInput(format, this);
     audioInput->setNotifyInterval(10);
-    connect(audioInput, &QAudioInput::notify, [=]() { ui->recordingSlider->setValue(static_cast<int>(audioInput->processedUSecs()/1000)); });
+    connect(audioInput, &QAudioInput::notify, [ui, this]() {
+        ui->recordingSlider->setValue(static_cast<int>(audioInput->processedUSecs()/1000));
+    });
     // *************************************
     // Audio Output ************************
     audioOutput = new QAudioOutput(format, this);
     audioOutput->setNotifyInterval(10);
-    connect(audioOutput, &QAudioOutput::notify, [=]() { ui->recordingSlider->setValue(static_cast<int>(audioOutput->processedUSecs()/1000)); });
+    connect(audioOutput, &QAudioOutput::notify, [ui, this]() {
+        ui->recordingSlider->setValue(static_cast<int>(audioOutput->processedUSecs()/1000));
+    });
     // *************************************
 
 }
