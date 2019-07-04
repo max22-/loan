@@ -50,6 +50,19 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWin
         int ms = static_cast<int>(audioOutput->processedUSecs()/1000);
         mainWindow->setRecordingSliderPosition(ms);
     });
+    connect(audioOutput, &QAudioOutput::stateChanged, [stateMachine](QAudio::State newState) {
+        switch(newState) {
+            case QAudio::IdleState:
+                stateMachine->submitEvent("stop");
+                break;
+            case QAudio::StoppedState:
+                stateMachine->submitEvent("stop");
+                qDebug("Error during file paying.");
+                break;
+            default:
+                break;
+        }
+    });
     // *************************************
 
 }
@@ -177,6 +190,7 @@ void StateHandler::listeningMessageState(bool active) {
     else {
         audioOutput->stop();
         tempAudioFile.close();
+        qDebug("quitting listeningMessageState");
     }
 }
 
