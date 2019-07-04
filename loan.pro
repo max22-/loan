@@ -25,11 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        config.cpp \
         main.cpp \
         mainwindow.cpp \
         statehandler.cpp
 
 HEADERS += \
+        config.h \
         mainwindow.h \
         statehandler.h
 
