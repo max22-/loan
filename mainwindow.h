@@ -16,6 +16,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void setRecordingSliderPosition(int);   // parameter "ms" in milliseconds
 
 private:
     Ui::MainWindow *ui;

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QTime>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -7,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
-    stateHandler = new StateHandler(ui, &stateMachine);
+    stateHandler = new StateHandler(ui, &stateMachine, this);
 
     connect(ui->evaluationSlider, &QSlider::valueChanged, [this](int newValue) {ui->evaluationLabel->setText(QString::number(newValue)); } );
 
@@ -47,6 +48,12 @@ MainWindow::~MainWindow()
 {
     delete stateHandler;
     delete ui;
+}
+
+void MainWindow::setRecordingSliderPosition(int ms) {  // parameter "ms" in milliseconds
+    ui->recordingSlider->setValue(ms);
+    QTime time = QTime(0, 0, 0, 0).addMSecs(ms);
+    ui->recordingDurationLabel->setText(time.toString("mm:ss.zzz"));
 }
 
 void MainWindow::connectButton(const QPushButton *button, const char *eventName) {

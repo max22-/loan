@@ -8,11 +8,13 @@
 #include "ui_mainwindow.h"
 #include "statechart.h"
 
+class MainWindow;
+
 class StateHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, QObject *parent = nullptr);
+    explicit StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWindow *mainWindow, QObject *parent = nullptr);
     ~StateHandler();
 
 signals:
@@ -36,6 +38,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Statechart *stateMachine;
+    MainWindow *mainWindow;
     QAudioInput *audioInput = nullptr;
     QAudioOutput *audioOutput = nullptr;
     QFile tempAudioFile;

@@ -3,11 +3,13 @@
 #include <QFile>
 #include <QAudioOutput>
 #include "statehandler.h"
+#include "mainwindow.h"
 
-StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, QObject *parent) : QObject(parent)
+StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWindow *mainWindow, QObject *parent) : QObject(parent)
 {
     this->ui = ui;
     this->stateMachine = stateMachine;
+    this->mainWindow = mainWindow;
 
     // Audio ******************************
     QString codec = "audio/pcm", tempAudioFileName = "message.raw";
@@ -36,15 +38,17 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, QObject
     // Audio Input *************************
     audioInput = new QAudioInput(format, this);
     audioInput->setNotifyInterval(10);
-    connect(audioInput, &QAudioInput::notify, [ui, this]() {
-        ui->recordingSlider->setValue(static_cast<int>(audioInput->processedUSecs()/1000));
+    connect(audioInput, &QAudioInput::notify, [mainWindow, this]() {
+        int ms = static_cast<int>(audioInput->processedUSecs()/1000);
+        mainWindow->setRecordingSliderPosition(ms);
     });
     // *************************************
     // Audio Output ************************
     audioOutput = new QAudioOutput(format, this);
     audioOutput->setNotifyInterval(10);
-    connect(audioOutput, &QAudioOutput::notify, [ui, this]() {
-        ui->recordingSlider->setValue(static_cast<int>(audioOutput->processedUSecs()/1000));
+    connect(audioOutput, &QAudioOutput::notify, [mainWindow, this]() {
+        int ms = static_cast<int>(audioOutput->processedUSecs()/1000);
+        mainWindow->setRecordingSliderPosition(ms);
     });
     // *************************************
 

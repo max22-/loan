@@ -45,7 +45,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="home_page">
        <property name="styleSheet">
@@ -781,7 +781,7 @@ QPushButton:pressed {
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_6">
               <item>
-               <widget class="QLabel" name="label_7">
+               <widget class="QLabel" name="recordingDurationLabel">
                 <property name="font">
                  <font>
                   <pointsize>24</pointsize>
