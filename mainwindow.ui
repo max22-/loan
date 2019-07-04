@@ -45,7 +45,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="home_page">
        <property name="styleSheet">
@@ -1409,14 +1409,14 @@ QPushButton:pressed {
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_30">
             <item>
-             <widget class="QSlider" name="horizontalSlider">
+             <widget class="QSlider" name="playerSlider">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_17">
+             <widget class="QLabel" name="playerTimeLabel">
               <property name="text">
                <string>00:00</string>
               </property>

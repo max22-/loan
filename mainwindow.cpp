@@ -56,6 +56,12 @@ void MainWindow::setRecordingSliderPosition(int ms) {  // parameter "ms" in mill
     ui->recordingDurationLabel->setText(time.toString("mm:ss.zzz"));
 }
 
+void MainWindow::setPlayerSliderPosition(int ms) {  // parameter "ms" in milliseconds
+    ui->playerSlider->setValue(ms);
+    QTime time = QTime(0, 0, 0, 0).addMSecs(ms);
+    ui->playerTimeLabel->setText(time.toString("mm:ss.zzz"));
+}
+
 void MainWindow::connectButton(const QPushButton *button, const char *eventName) {
     connect(button, &QPushButton::clicked, [this, eventName]() { this->stateMachine.submitEvent(eventName); });
 }
