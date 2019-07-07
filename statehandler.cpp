@@ -4,6 +4,7 @@
 #include <QAudioOutput>
 #include "statehandler.h"
 #include "mainwindow.h"
+#include "config.h"
 
 StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWindow *mainWindow, QObject *parent) : QObject(parent)
 {
@@ -50,14 +51,15 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWin
         int ms = static_cast<int>(audioOutput->processedUSecs()/1000);
         mainWindow->setRecordingSliderPosition(ms);
     });
-    connect(audioOutput, &QAudioOutput::stateChanged, [stateMachine](QAudio::State newState) {
+    connect(audioOutput, &QAudioOutput::stateChanged, [stateMachine, this](QAudio::State newState) {
         switch(newState) {
             case QAudio::IdleState:
                 stateMachine->submitEvent("stop");
                 break;
             case QAudio::StoppedState:
                 stateMachine->submitEvent("stop");
-                qDebug("Error during file paying.");
+                if(audioOutput->error() != QAudio::NoError)
+                    qDebug("Error during file paying.");
                 break;
             default:
                 break;
@@ -165,6 +167,7 @@ void StateHandler::validateCancelState(bool active) {
 void StateHandler::recordingState(bool active) {
     if (active) {
         qDebug("entering recordingState");
+        ui->recordingSlider->setMaximum(Config::getInstance().maxRecordingTimeS()*1000);
         tempAudioFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
         audioInput->start(&tempAudioFile);
     }
@@ -178,6 +181,8 @@ void StateHandler::recordingState(bool active) {
 void StateHandler::recordedMessageState(bool active) {
     if (active) {
         qDebug("recordedMessageState");
+        int ms = static_cast<int>(audioInput->processedUSecs()/1000);
+        ui->recordingSlider->setMaximum(ms);
     }
 }
 
