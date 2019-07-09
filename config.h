@@ -1,6 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <QString>
+#include <QAudioFormat>
 
 class Config
 {
@@ -9,7 +11,14 @@ public:
     Config(Config&) = delete;
     Config& operator=(Config&) = delete;
 
-    int maxRecordingTimeS(void);
+    int maxRecordingTimeS();
+    QString audioCodec();
+    QString tempAudioFileName();
+    int sampleRate();
+    int channelCount();
+    int sampleSize();
+    QAudioFormat::Endian byteOrder();
+    QAudioFormat::SampleType sampleType();
 
 private:
     Config();

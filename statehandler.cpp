@@ -16,30 +16,25 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWin
     connect(&timer, &QTimer::timeout, [stateMachine]() {
         stateMachine->submitEvent("stop");
     });
+    Config& config = Config::getInstance();
 
     // Audio ******************************
-    QString codec = "audio/pcm", tempAudioFileName = "message.raw";
-    int sampleRate = 8000, channelCount = 1, sampleSize = 8;
-    QAudioFormat::Endian byteOrder = QAudioFormat::LittleEndian;
-    QAudioFormat::SampleType sampleType = QAudioFormat::UnSignedInt;
-    int maxRecordingTime = 30;
-
     // Audio Initialization *********************
-    tempAudioFile.setFileName(tempAudioFileName);
+    tempAudioFile.setFileName(config.tempAudioFileName());
     QAudioFormat format;
-    format.setSampleRate(sampleRate);
-    format.setChannelCount(channelCount);
-    format.setSampleSize(sampleSize);
-    format.setCodec(codec);
-    format.setByteOrder(byteOrder);
-    format.setSampleType(sampleType);
+    format.setSampleRate(config.sampleRate());
+    format.setChannelCount(config.channelCount());
+    format.setSampleSize(config.sampleSize());
+    format.setCodec(config.audioCodec());
+    format.setByteOrder(config.byteOrder());
+    format.setSampleType(config.sampleType());
     QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
     if (!info.isFormatSupported(format)) {
         qDebug("Default format not supported, trying to use the nearest.");
         format = info.nearestFormat(format);
     }
     ui->recordingSlider->setMinimum(0);
-    ui->recordingSlider->setMaximum(maxRecordingTime*1000);
+    ui->recordingSlider->setMaximum(config.maxRecordingTimeS()*1000);
 
     // Audio Input *************************
     audioInput = new QAudioInput(format, this);
