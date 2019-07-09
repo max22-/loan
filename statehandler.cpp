@@ -2,6 +2,7 @@
 #include <QAudioDeviceInfo>
 #include <QFile>
 #include <QAudioOutput>
+#include <QTimer>
 #include "statehandler.h"
 #include "mainwindow.h"
 #include "config.h"
@@ -11,6 +12,10 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWin
     this->ui = ui;
     this->stateMachine = stateMachine;
     this->mainWindow = mainWindow;
+    timer.setSingleShot(true);
+    connect(&timer, &QTimer::timeout, [stateMachine]() {
+        stateMachine->submitEvent("stop");
+    });
 
     // Audio ******************************
     QString codec = "audio/pcm", tempAudioFileName = "message.raw";
@@ -170,8 +175,10 @@ void StateHandler::recordingState(bool active) {
         ui->recordingSlider->setMaximum(Config::getInstance().maxRecordingTimeS()*1000);
         tempAudioFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
         audioInput->start(&tempAudioFile);
+        timer.start(Config::getInstance().maxRecordingTimeS()*1000);
     }
     else {
+        timer.stop();
         audioInput->stop();
         tempAudioFile.close();
         qDebug("quitting recordingState");

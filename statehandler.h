@@ -5,6 +5,7 @@
 #include <QAudioInput>
 #include <QAudioOutput>
 #include <QFile>
+#include <QTimer>
 #include "ui_mainwindow.h"
 #include "statechart.h"
 
@@ -42,6 +43,7 @@ private:
     QAudioInput *audioInput = nullptr;
     QAudioOutput *audioOutput = nullptr;
     QFile tempAudioFile;
+    QTimer timer;
     void confirmationMessageBox(QString, QString);
 };
 
