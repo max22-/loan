@@ -25,12 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        audiorecorder.cpp \
         config.cpp \
         main.cpp \
         mainwindow.cpp \
         statehandler.cpp
 
 HEADERS += \
+        audiorecorder.h \
         config.h \
         mainwindow.h \
         statehandler.h

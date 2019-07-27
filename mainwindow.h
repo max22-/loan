@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "statechart.h"
 #include "statehandler.h"
+#include "audiorecorder.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,6 +19,7 @@ public:
     ~MainWindow();
     void setRecordingSliderPosition(int);   // parameter "ms" in milliseconds
     void setPlayerSliderPosition(int);   // parameter "ms" in milliseconds
+    AudioRecorder audioRecorder;
 
 private:
     Ui::MainWindow *ui;

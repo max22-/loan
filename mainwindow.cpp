@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QTime>
+#include "config.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -8,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
+    ui->recordingSlider->setMinimum(0);
+    ui->recordingSlider->setMaximum(Config::getInstance().maxRecordingTimeS()*1000);
     stateHandler = new StateHandler(ui, &stateMachine, this);
 
     connect(ui->evaluationSlider, &QSlider::valueChanged, [this](int newValue) {ui->evaluationLabel->setText(QString::number(newValue)); } );
@@ -41,6 +44,19 @@ MainWindow::MainWindow(QWidget *parent) :
     connectState("MP3ConversionState", &StateHandler::MP3ConversionState);
 
     stateMachine.start();
+
+    connect(&audioRecorder, &AudioRecorder::positionChanged, [this](int newPosition) {
+        setRecordingSliderPosition(newPosition);
+    });
+
+    connect(&audioRecorder, &AudioRecorder::lengthChanged, [this](int newLength) {
+        ui->recordingSlider->setMaximum(newLength);
+    });
+
+    connect(&audioRecorder, &AudioRecorder::stateChanged, [this](AudioRecorderState newState) {
+        if(newState == AudioRecorderState::IDLE)
+            stateMachine.submitEvent("stop");
+    });
 
 }
 

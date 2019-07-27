@@ -1,7 +1,7 @@
 #include <QMessageBox>
-#include <QAudioDeviceInfo>
+
 #include <QFile>
-#include <QAudioOutput>
+
 #include <QTimer>
 #include "statehandler.h"
 #include "mainwindow.h"
@@ -12,68 +12,7 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWin
     this->ui = ui;
     this->stateMachine = stateMachine;
     this->mainWindow = mainWindow;
-    timer.setSingleShot(true);
-    connect(&timer, &QTimer::timeout, [stateMachine]() {
-        stateMachine->submitEvent("stop");
-    });
-    Config& config = Config::getInstance();
-
-    // Audio ******************************
-    // Audio Initialization *********************
-    tempAudioFile.setFileName(config.tempAudioFileName());
-    QAudioFormat format;
-    format.setSampleRate(config.sampleRate());
-    format.setChannelCount(config.channelCount());
-    format.setSampleSize(config.sampleSize());
-    format.setCodec(config.audioCodec());
-    format.setByteOrder(config.byteOrder());
-    format.setSampleType(config.sampleType());
-    QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
-    if (!info.isFormatSupported(format)) {
-        qDebug("Default format not supported, trying to use the nearest.");
-        format = info.nearestFormat(format);
-    }
-    ui->recordingSlider->setMinimum(0);
-    ui->recordingSlider->setMaximum(config.maxRecordingTimeS()*1000);
-
-    // Audio Input *************************
-    audioInput = new QAudioInput(format, this);
-    audioInput->setNotifyInterval(10);
-    connect(audioInput, &QAudioInput::notify, [mainWindow, this]() {
-        int ms = static_cast<int>(audioInput->processedUSecs()/1000);
-        mainWindow->setRecordingSliderPosition(ms);
-    });
-    // *************************************
-    // Audio Output ************************
-    audioOutput = new QAudioOutput(format, this);
-    audioOutput->setNotifyInterval(10);
-    connect(audioOutput, &QAudioOutput::notify, [mainWindow, this]() {
-        int ms = static_cast<int>(audioOutput->processedUSecs()/1000);
-        mainWindow->setRecordingSliderPosition(ms);
-    });
-    connect(audioOutput, &QAudioOutput::stateChanged, [stateMachine, this](QAudio::State newState) {
-        switch(newState) {
-            case QAudio::IdleState:
-                stateMachine->submitEvent("stop");
-                break;
-            case QAudio::StoppedState:
-                stateMachine->submitEvent("stop");
-                if(audioOutput->error() != QAudio::NoError)
-                    qDebug("Error during file paying.");
-                break;
-            default:
-                break;
-        }
-    });
-    // *************************************
-
 }
-
-StateHandler::~StateHandler(void) {
-    delete audioInput;
-}
-
-
 
 void StateHandler::homeState(bool active) {
     if(active) {
@@ -149,6 +88,7 @@ void StateHandler::validateFormState(bool active) {
 void StateHandler::recordState(bool active) {
     if(active) {
         ui->stackedWidget->setCurrentIndex(3);
+        mainWindow->audioRecorder.clear();
     }
 }
 
@@ -167,15 +107,11 @@ void StateHandler::validateCancelState(bool active) {
 void StateHandler::recordingState(bool active) {
     if (active) {
         qDebug("entering recordingState");
-        ui->recordingSlider->setMaximum(Config::getInstance().maxRecordingTimeS()*1000);
-        tempAudioFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
-        audioInput->start(&tempAudioFile);
-        timer.start(Config::getInstance().maxRecordingTimeS()*1000);
+        mainWindow->audioRecorder.clear();
+        mainWindow->audioRecorder.startRecording();
     }
     else {
-        timer.stop();
-        audioInput->stop();
-        tempAudioFile.close();
+        mainWindow->audioRecorder.stop();
         qDebug("quitting recordingState");
     }
 }
@@ -183,20 +119,16 @@ void StateHandler::recordingState(bool active) {
 void StateHandler::recordedMessageState(bool active) {
     if (active) {
         qDebug("recordedMessageState");
-        int ms = static_cast<int>(audioInput->processedUSecs()/1000);
-        ui->recordingSlider->setMaximum(ms);
     }
 }
 
 void StateHandler::listeningMessageState(bool active) {
     if (active) {
         qDebug("listeningMessageState");
-        tempAudioFile.open(QIODevice::ReadOnly);
-        audioOutput->start(&tempAudioFile);
+        mainWindow->audioRecorder.startPlaying();
     }
     else {
-        audioOutput->stop();
-        tempAudioFile.close();
+        mainWindow->audioRecorder.stop();
         qDebug("quitting listeningMessageState");
     }
 }
