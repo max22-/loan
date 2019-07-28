@@ -26,6 +26,7 @@ signals:
     void stateChanged(AudioRecorderState newState);
 
 private:
+    void changeState(AudioRecorderState newState);
     QAudioInput *audioInput = nullptr;
     QAudioOutput *audioOutput = nullptr;
     QFile tempAudioFile;

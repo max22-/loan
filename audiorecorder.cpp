@@ -70,6 +70,11 @@ AudioRecorder::~AudioRecorder() {
         delete audioOutput;
 }
 
+void AudioRecorder::changeState(AudioRecorderState newState) {
+    state = newState;
+    emit stateChanged(state);
+}
+
 void AudioRecorder::clear() {
     switch (state) {
         case AudioRecorderState::INITIAL:
@@ -82,8 +87,7 @@ void AudioRecorder::clear() {
             break;
         case AudioRecorderState::IDLE:
             tempAudioFile.remove();
-            state = AudioRecorderState::INITIAL;
-            emit stateChanged(state);
+            changeState(AudioRecorderState::INITIAL);
             emit lengthChanged(Config::getInstance().maxRecordingTimeS()*1000);
             emit positionChanged(0);
             break;
@@ -96,8 +100,7 @@ void AudioRecorder::startRecording() {
             tempAudioFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
             audioInput->start(&tempAudioFile);
             timer.start(Config::getInstance().maxRecordingTimeS()*1000);
-            state = AudioRecorderState::RECORDING;
-            emit stateChanged(state);
+            changeState(AudioRecorderState::RECORDING);
             emit lengthChanged(Config::getInstance().maxRecordingTimeS()*1000);
             break;
         case AudioRecorderState::RECORDING:
@@ -127,9 +130,7 @@ void AudioRecorder::startPlaying() {
         case AudioRecorderState::IDLE:
             tempAudioFile.open(QIODevice::ReadOnly);
             audioOutput->start(&tempAudioFile);
-            state = AudioRecorderState::PLAYING;
-            emit stateChanged(state);
-
+            changeState(AudioRecorderState::PLAYING);
             break;
     }
 }
@@ -145,14 +146,12 @@ void AudioRecorder::stop() {
             audioInput->stop();
             tempAudioFile.close();
             emit lengthChanged(static_cast<int>(audioInput->processedUSecs()/1000));
-            state=AudioRecorderState::IDLE;
-            emit stateChanged(state);
+            changeState(AudioRecorderState::IDLE);
             break;
         case AudioRecorderState::PLAYING:
             audioOutput->stop();
             tempAudioFile.close();
-            state=AudioRecorderState::IDLE;
-            emit stateChanged(state);
+            changeState(AudioRecorderState::IDLE);
             break;
         case AudioRecorderState::IDLE:
             break;
