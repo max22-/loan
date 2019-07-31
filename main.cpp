@@ -2,12 +2,14 @@
 #include <QApplication>
 #include <exception>
 #include <QDebug>
+#include "init.h"
 
 #include <iostream>
 
 int main(int argc, char *argv[])
 {
     try {
+        init();
         QApplication a(argc, argv);
         MainWindow w;
 

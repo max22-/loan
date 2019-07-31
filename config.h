@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QAudioFormat>
+#include <QDir>
 
 class Config
 {
@@ -13,12 +14,17 @@ public:
 
     int maxRecordingTimeS();
     QString audioCodec();
-    QString tempAudioFileName();
     int sampleRate();
     int channelCount();
     int sampleSize();
     QAudioFormat::Endian byteOrder();
     QAudioFormat::SampleType sampleType();
+
+    QDir tempDirectory();
+    QDir outboxDirectory();
+    QDir inboxDirectory();
+    QString tempAudioFileName();
+    QString tempMP3AudioFileName();
 
 private:
     Config();

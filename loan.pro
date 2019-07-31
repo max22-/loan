@@ -27,6 +27,7 @@ CONFIG += c++11
 SOURCES += \
         audiorecorder.cpp \
         config.cpp \
+        init.cpp \
         main.cpp \
         mainwindow.cpp \
         statehandler.cpp
@@ -34,6 +35,7 @@ SOURCES += \
 HEADERS += \
         audiorecorder.h \
         config.h \
+        init.h \
         mainwindow.h \
         statehandler.h
 
