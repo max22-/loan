@@ -1,6 +1,12 @@
 #include "init.h"
 #include <QDebug>
 #include "config.h"
+#include <QProcess>
+
+void checkAudioConverter() {
+    if(QProcess::execute(Config::getInstance().checkAudioConverterInstallationCommand()) != 0)
+        throw QString("Audio converter is not installed.");
+}
 
 void createDirectory(QDir dir) {
     if(dir.exists() == false) {
@@ -22,6 +28,7 @@ void init()
 {
     qDebug("Initialization...");
     initDirectories();
+    checkAudioConverter();
 }
 
 

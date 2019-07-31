@@ -61,3 +61,7 @@ QString Config::tempAudioFileName() {
 QString Config::tempMP3AudioFileName() {
     return tempDirectory().absoluteFilePath("message.mp3");
 }
+
+QString Config::checkAudioConverterInstallationCommand() {
+    return "ffmpeg -version";
+}
