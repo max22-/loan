@@ -28,6 +28,7 @@ SOURCES += \
         audiorecorder.cpp \
         config.cpp \
         init.cpp \
+        logger.cpp \
         main.cpp \
         mainwindow.cpp \
         statehandler.cpp
@@ -36,7 +37,9 @@ HEADERS += \
         audiorecorder.h \
         config.h \
         init.h \
+        logger.h \
         mainwindow.h \
+        startupdatetime.h \
         statehandler.h
 
 FORMS += \

@@ -23,6 +23,7 @@ public:
     QDir tempDirectory();
     QDir outboxDirectory();
     QDir inboxDirectory();
+    QDir logDirectory();
     QString tempAudioFileName();
     QString tempMP3AudioFileName();
 

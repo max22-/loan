@@ -9,12 +9,12 @@ Config& Config::getInstance() {
 
 Config::Config()
 {
-    qDebug("Config();");
+
 }
 
 Config::~Config()
 {
-    qDebug("~Config();");
+
 }
 
 int Config::maxRecordingTimeS() {
@@ -52,6 +52,10 @@ QDir Config::outboxDirectory() {
 
 QDir Config::inboxDirectory() {
     return QDir(QDir::current().absolutePath() + QDir::separator() + "box");
+}
+
+QDir Config::logDirectory() {
+    return QDir::current();
 }
 
 QString Config::tempAudioFileName() {
