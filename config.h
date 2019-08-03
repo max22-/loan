@@ -27,7 +27,7 @@ public:
     QString tempAudioFileName();
     QString tempMP3AudioFileName();
 
-    QString checkAudioConverterInstallationCommand();
+    QString checkMP3ConverterInstallationCommand();
 
 private:
     Config();

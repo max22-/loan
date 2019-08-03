@@ -4,7 +4,7 @@
 #include <QProcess>
 
 void checkAudioConverter() {
-    if(QProcess::execute(Config::getInstance().checkAudioConverterInstallationCommand()) != 0)
+    if(QProcess::execute(Config::getInstance().checkMP3ConverterInstallationCommand()) != 0)
         throw QString("Audio converter is not installed.");
 }
 
