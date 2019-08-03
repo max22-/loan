@@ -69,3 +69,34 @@ QString Config::tempMP3AudioFileName() {
 QString Config::checkMP3ConverterInstallationCommand() {
     return "ffmpeg -version";
 }
+
+QString Config::MP3ConversionCommand() {
+    QString command = "ffmpeg -f ";
+    switch(sampleType()) {
+        case QAudioFormat::Unknown:
+            throw "Invalid audio sample type.";
+        case QAudioFormat::SignedInt:
+            command += "s";
+            break;
+        case QAudioFormat::UnSignedInt:
+            command += "u";
+            break;
+        case QAudioFormat::Float:
+            command += "f";
+            break;
+    }
+    command += QString::number(sampleSize());
+    switch (byteOrder()) {
+        case QAudioFormat::BigEndian:
+            command += "be";
+            break;
+        case QAudioFormat::LittleEndian:
+            command += "le";
+            break;
+    }
+    command += " -ar " + QString::number(sampleRate()) + " -ac " + QString::number(channelCount());
+    command += " -i " + tempAudioFileName();
+    command += " " + tempMP3AudioFileName();
+
+    return command;
+}
