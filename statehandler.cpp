@@ -6,6 +6,8 @@
 #include "statehandler.h"
 #include "mainwindow.h"
 #include "config.h"
+#include <QProcess>
+#include <QDebug>
 
 StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWindow *mainWindow, QObject *parent) : QObject(parent)
 {
@@ -141,9 +143,28 @@ void StateHandler::reRecordState(bool active) {
 }
 
 void StateHandler::MP3ConversionState(bool active) {
+    QMessageBox msgBox;
     if(active) {
         qDebug("MP3ConversionState");
         ui->stackedWidget->setCurrentIndex(4);
+        int retCode = QProcess::execute(Config::getInstance().MP3ConversionCommand());
+        if( retCode != 0) {
+            qCritical() << "MP3 conversion failed. retCode = " << retCode;
+            msgBox.setText("La conversion au format MP3 a échoué, nous en sommes désolés.");
+            msgBox.exec();
+            stateMachine->submitEvent("error");
+            return;
+        }
+        if(QFile(Config::getInstance().tempMP3AudioFileName()).exists() == false) {
+            qCritical() << "No MP3 file has been produced.";
+            msgBox.setText("La conversion au format MP3 a échoué, nous en sommes désolés.");
+            msgBox.exec();
+            stateMachine->submitEvent("error");
+            return;
+        }
+        msgBox.setText("Ca marche !");
+        msgBox.exec();
+
     }
 }
 

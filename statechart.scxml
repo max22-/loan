@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" name="Statechart" qt:editorversion="4.9.1" initial="HomeState">
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" name="Statechart" qt:editorversion="4.9.2" initial="HomeState">
     <qt:editorinfo initialGeometry="399.47;24.58;-20;-20;40;40"/>
     <state id="HomeState">
         <qt:editorinfo scenegeometry="399.47;117.80;333.19;67.80;132.56;100" geometry="399.47;117.80;-66.28;-50;132.56;100"/>
         <transition type="external" event="toc" target="TocState">
-            <qt:editorinfo endTargetFactors="74.10;12.91" startTargetFactors="72;90.57" movePoint="7.17;0"/>
+            <qt:editorinfo startTargetFactors="72;90.57" movePoint="7.17;0" endTargetFactors="74.10;12.91"/>
         </transition>
     </state>
     <state id="TocState">
         <qt:editorinfo scenegeometry="399.47;264.27;339.47;214.27;120;100" geometry="399.47;264.27;-60;-50;120;100"/>
         <transition type="external" event="back" target="HomeState">
-            <qt:editorinfo endTargetFactors="28.60;90.55" startTargetFactors="34.95;11.17" movePoint="-2.05;3.07"/>
+            <qt:editorinfo startTargetFactors="34.95;11.17" movePoint="-2.05;3.07" endTargetFactors="28.60;90.55"/>
         </transition>
         <transition type="external" event="record" target="FormState">
-            <qt:editorinfo endTargetFactors="71.71;41.17" movePoint="23.56;1.02"/>
+            <qt:editorinfo movePoint="23.56;1.02" endTargetFactors="71.71;41.17"/>
         </transition>
         <transition type="external" event="listen" target="ListenHomeState">
             <qt:editorinfo movePoint="14.35;6.14"/>
@@ -22,7 +22,7 @@
     <state id="FormState">
         <qt:editorinfo scenegeometry="124.97;423.04;64.97;373.04;178.81;100" geometry="124.97;423.04;-60;-50;178.81;100"/>
         <transition type="external" event="back" target="TocState">
-            <qt:editorinfo endTargetFactors="10.09;59.71" movePoint="-11.27;6.14"/>
+            <qt:editorinfo movePoint="-11.27;6.14" endTargetFactors="10.09;59.71"/>
         </transition>
         <transition type="external" event="validate" target="ValidateFormState">
             <qt:editorinfo movePoint="30.73;2.15"/>
@@ -31,13 +31,13 @@
     <state id="ListenHomeState">
         <qt:editorinfo scenegeometry="573.61;423.04;513.61;373.04;181.89;100" geometry="573.61;423.04;-60;-50;181.89;100"/>
         <transition type="external" event="back" target="TocState">
-            <qt:editorinfo endTargetFactors="49.25;81.78" movePoint="6.14;6.14"/>
+            <qt:editorinfo movePoint="6.14;6.14" endTargetFactors="49.25;81.78"/>
         </transition>
     </state>
     <state id="ValidateFormState">
         <qt:editorinfo scenegeometry="127.01;616.36;67.01;566.36;174.72;100" geometry="127.01;616.36;-60;-50;174.72;100"/>
         <transition type="external" event="notOk" target="FormState">
-            <qt:editorinfo localGeometry="-53.40;-100.12" endTargetFactors="20.18;88.85" movePoint="-21.94;-21.94"/>
+            <qt:editorinfo movePoint="-21.94;-21.94" endTargetFactors="20.18;88.85" localGeometry="-53.40;-100.12"/>
         </transition>
         <transition type="external" event="ok" target="RecordState">
             <qt:editorinfo movePoint="6.93;4.62"/>
@@ -46,7 +46,7 @@
     <state id="RecordState">
         <qt:editorinfo scenegeometry="-28.46;845.15;-352.99;707.29;709.55;967.99" geometry="-28.46;845.15;-324.53;-137.86;709.55;967.99"/>
         <transition type="external" event="back" target="FormState">
-            <qt:editorinfo localGeometry="37.91;-707.82" endTargetFactors="7.44;77.43"/>
+            <qt:editorinfo endTargetFactors="7.44;77.43" localGeometry="37.91;-707.82"/>
         </transition>
         <initial>
             <qt:editorinfo scenegeometry="70.07;825.37;50.07;805.37;40;40" geometry="98.53;-19.78;-20;-20;40;40"/>
@@ -58,13 +58,13 @@
                 <qt:editorinfo movePoint="21.66;0"/>
             </transition>
             <transition type="external" event="cancel" target="ValidateCancelState">
-                <qt:editorinfo endTargetFactors="55.27;78.59" startTargetFactors="4.79;68.31" movePoint="246.77;-1.97"/>
+                <qt:editorinfo startTargetFactors="4.79;68.31" movePoint="246.77;-1.97" endTargetFactors="55.27;78.59"/>
             </transition>
         </state>
         <state id="RecordingState">
             <qt:editorinfo scenegeometry="121.72;1118.34;61.72;1068.34;224.74;100" geometry="150.18;273.19;-60;-50;224.74;100"/>
             <transition type="external" event="stop" target="RecordedMessageState">
-                <qt:editorinfo endTargetFactors="49.85;16.96" movePoint="16.66;1.67"/>
+                <qt:editorinfo movePoint="16.66;1.67" endTargetFactors="49.85;16.96"/>
             </transition>
         </state>
         <state id="RecordedMessageState">
@@ -73,7 +73,7 @@
                 <qt:editorinfo movePoint="19.99;6.66"/>
             </transition>
             <transition type="external" event="cancel" target="ValidateCancelState">
-                <qt:editorinfo endTargetFactors="67.17;76.57" movePoint="259.02;96.11"/>
+                <qt:editorinfo movePoint="259.02;96.11" endTargetFactors="67.17;76.57"/>
             </transition>
             <transition type="external" event="record" target="ReRecordState">
                 <qt:editorinfo startTargetFactors="6.50;77.43" movePoint="0;10.80"/>
@@ -85,7 +85,7 @@
         <state id="ListeningMessageState">
             <qt:editorinfo scenegeometry="136.72;1431.19;76.72;1381.19;205.63;100" geometry="165.18;586.04;-60;-50;205.63;100"/>
             <transition type="external" event="stop" target="RecordedMessageState">
-                <qt:editorinfo endTargetFactors="28.21;44.25" startTargetFactors="30.56;12.96" movePoint="0.53;3.47"/>
+                <qt:editorinfo startTargetFactors="30.56;12.96" movePoint="0.53;3.47" endTargetFactors="28.21;44.25"/>
             </transition>
         </state>
         <history type="shallow" id="History_1">
@@ -103,7 +103,7 @@
         <state id="ValidateMessageState">
             <qt:editorinfo scenegeometry="-61.41;1562.32;-121.41;1512.32;214.68;100" geometry="-32.95;717.17;-60;-50;214.68;100"/>
             <transition type="external" event="no" target="RecordedMessageState">
-                <qt:editorinfo endTargetFactors="13.11;58.18" startTargetFactors="16.48;15.09" movePoint="-1.64;22.93"/>
+                <qt:editorinfo startTargetFactors="16.48;15.09" movePoint="-1.64;22.93" endTargetFactors="13.11;58.18"/>
             </transition>
             <transition type="external" event="yes" target="MP3ConversionState">
                 <qt:editorinfo movePoint="16.37;-37.67"/>
@@ -116,10 +116,13 @@
             <qt:editorinfo movePoint="2.05;6.16"/>
         </transition>
         <transition type="external" event="yes" target="HomeState">
-            <qt:editorinfo localGeometry="395.03;-567.20" endTargetFactors="13.23;65.23" movePoint="0.33;240.16"/>
+            <qt:editorinfo movePoint="0.33;240.16" endTargetFactors="13.23;65.23" localGeometry="395.03;-567.20"/>
         </transition>
     </state>
     <state id="MP3ConversionState">
         <qt:editorinfo scenegeometry="-111.56;1790.41;-171.56;1740.41;314.98;174.97" geometry="-111.56;1790.41;-60;-50;314.98;174.97"/>
+        <transition type="external" event="error" target="HomeState">
+            <qt:editorinfo movePoint="609.96;683.78" endTargetFactors="6;51.08" localGeometry="-802.96;0;-852.08;-1401.28;-141.06;-1708.97"/>
+        </transition>
     </state>
 </scxml>
