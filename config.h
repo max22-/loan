@@ -25,7 +25,7 @@ public:
     QDir inboxDirectory();
     QDir logDirectory();
     QString tempAudioFileName();
-    QString tempMP3AudioFileName();
+    QString tempMP3FileName();
 
     QString checkMP3ConverterInstallationCommand();
     QString MP3ConversionCommand(const QAudioFormat& format);

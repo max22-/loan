@@ -165,7 +165,7 @@ void StateHandler::MP3ConversionState(bool active) {
             stateMachine->submitEvent("error");
             return;
         }
-        if(!QFile(Config::getInstance().tempMP3AudioFileName()).exists()) {
+        if(!QFile(Config::getInstance().tempMP3FileName()).exists()) {
             qCritical() << "No MP3 file has been produced.";
             msgBox.setText("La conversion au format MP3 a échoué, nous en sommes désolés.");
             msgBox.exec();
@@ -193,7 +193,7 @@ void StateHandler::saveMessageSate(bool active) {
         qDebug() << jsonDocument.toJson();
 
         Config& config = Config::getInstance();
-        bool moved = QFile(Config::getInstance().tempMP3AudioFileName()).rename(config.outboxDirectory().absoluteFilePath(timeStamp + ".mp3"));
+        bool moved = QFile(Config::getInstance().tempMP3FileName()).rename(config.outboxDirectory().absoluteFilePath(timeStamp + ".mp3"));
         if(!moved) {
             qCritical() << "Couldn't move MP3 file to outbox directory : " + config.outboxDirectory().absolutePath();
             QMessageBox msgBox;

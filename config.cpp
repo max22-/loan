@@ -56,7 +56,7 @@ QString Config::tempAudioFileName() {
     return tempDirectory().absoluteFilePath("message.raw");
 }
 
-QString Config::tempMP3AudioFileName() {
+QString Config::tempMP3FileName() {
     return tempDirectory().absoluteFilePath("message.mp3");
 }
 
@@ -92,7 +92,7 @@ QString Config::MP3ConversionCommand(const QAudioFormat& format) {
     }
     command += " -ar " + QString::number(format.sampleRate()) + " -ac " + QString::number(format.channelCount());
     command += " -i " + tempAudioFileName();
-    command += " " + tempMP3AudioFileName();
+    command += " " + tempMP3FileName();
 
     return command;
 }
