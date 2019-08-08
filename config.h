@@ -13,12 +13,12 @@ public:
     Config& operator=(Config&) = delete;
 
     int maxRecordingTimeS();
-    QString audioCodec();
-    int sampleRate();
-    int channelCount();
-    int sampleSize();
-    QAudioFormat::Endian byteOrder();
-    QAudioFormat::SampleType sampleType();
+    QString desiredAudioCodec();
+    int desiredSampleRate();
+    int desiredChannelCount();
+    int desiredSampleSize();
+    QAudioFormat::Endian desiredByteOrder();
+    QAudioFormat::SampleType desiredSampleType();
 
     QDir tempDirectory();
     QDir outboxDirectory();
@@ -28,7 +28,7 @@ public:
     QString tempMP3AudioFileName();
 
     QString checkMP3ConverterInstallationCommand();
-    QString MP3ConversionCommand();
+    QString MP3ConversionCommand(QAudioFormat format);
 
 private:
     Config();

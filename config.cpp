@@ -21,24 +21,24 @@ int Config::maxRecordingTimeS() {
     return 30;
 }
 
-QString Config::audioCodec() {
+QString Config::desiredAudioCodec() {
     return "audio/pcm";
 }
 
-int Config::sampleRate() {
-    return 8000;
+int Config::desiredSampleRate() {
+    return 44100;
 }
-int Config::channelCount() {
+int Config::desiredChannelCount() {
     return 1;
 }
-int Config::sampleSize() {
-    return 8;
+int Config::desiredSampleSize() {
+    return 16;
 }
-QAudioFormat::Endian Config::byteOrder() {
+QAudioFormat::Endian Config::desiredByteOrder() {
     return QAudioFormat::LittleEndian;
 }
 
-QAudioFormat::SampleType Config::sampleType() {
+QAudioFormat::SampleType Config::desiredSampleType() {
     return QAudioFormat::UnSignedInt;
 }
 
@@ -70,9 +70,9 @@ QString Config::checkMP3ConverterInstallationCommand() {
     return "ffmpeg -version";
 }
 
-QString Config::MP3ConversionCommand() {
+QString Config::MP3ConversionCommand(QAudioFormat format) {
     QString command = "ffmpeg -f ";
-    switch(sampleType()) {
+    switch(format.sampleType()) {
         case QAudioFormat::Unknown:
             throw "Invalid audio sample type.";
         case QAudioFormat::SignedInt:
@@ -85,16 +85,18 @@ QString Config::MP3ConversionCommand() {
             command += "f";
             break;
     }
-    command += QString::number(sampleSize());
-    switch (byteOrder()) {
-        case QAudioFormat::BigEndian:
-            command += "be";
-            break;
-        case QAudioFormat::LittleEndian:
-            command += "le";
-            break;
+    command += QString::number(format.sampleSize());
+    if(format.sampleSize() != 8) {
+        switch (format.byteOrder()) {
+            case QAudioFormat::BigEndian:
+                command += "be";
+                break;
+            case QAudioFormat::LittleEndian:
+                command += "le";
+                break;
+        }
     }
-    command += " -ar " + QString::number(sampleRate()) + " -ac " + QString::number(channelCount());
+    command += " -ar " + QString::number(format.sampleRate()) + " -ac " + QString::number(format.channelCount());
     command += " -i " + tempAudioFileName();
     command += " " + tempMP3AudioFileName();
 

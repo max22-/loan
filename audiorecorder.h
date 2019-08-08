@@ -19,6 +19,7 @@ public:
     void startRecording();
     void startPlaying();
     void stop();
+    QAudioFormat getFormat();
 
 signals:
     void lengthChanged(int newLength);      // length of the recorded message in ms
@@ -32,6 +33,7 @@ private:
     QFile tempAudioFile;
     AudioRecorderState state = AudioRecorderState::IDLE;
     QTimer timer;
+    QAudioFormat format;
 };
 
 

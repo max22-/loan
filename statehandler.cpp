@@ -8,6 +8,9 @@
 #include "config.h"
 #include <QProcess>
 #include <QDebug>
+#include <QDateTime>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWindow *mainWindow, QObject *parent) : QObject(parent)
 {
@@ -142,12 +145,19 @@ void StateHandler::reRecordState(bool active) {
     }
 }
 
+void StateHandler::validateMessageState(bool active) {
+    if(active) {
+        qDebug("validateMessageState");
+        confirmationMessageBox("Vous avez enregistré un message ainsi que des informations.", "Êtes-vous sûr de vouloir les valider ? (ceci est définitif)");
+    }
+}
+
 void StateHandler::MP3ConversionState(bool active) {
     QMessageBox msgBox;
     if(active) {
         qDebug("MP3ConversionState");
         ui->stackedWidget->setCurrentIndex(4);
-        int retCode = QProcess::execute(Config::getInstance().MP3ConversionCommand());
+        int retCode = QProcess::execute(Config::getInstance().MP3ConversionCommand(mainWindow->audioRecorder.getFormat()));
         if( retCode != 0) {
             qCritical() << "MP3 conversion failed. retCode = " << retCode;
             msgBox.setText("La conversion au format MP3 a échoué, nous en sommes désolés.");
@@ -164,16 +174,52 @@ void StateHandler::MP3ConversionState(bool active) {
         }
         msgBox.setText("Ca marche !");
         msgBox.exec();
-
+        stateMachine->submitEvent("save");
     }
 }
 
-void StateHandler::validateMessageState(bool active) {
+void StateHandler::saveMessageSate(bool active) {
     if(active) {
-        qDebug("validateMessageState");
-        confirmationMessageBox("Vous avez enregistré un message ainsi que des informations.", "Êtes-vous sûr de vouloir les valider ? (ceci est définitif)");
+        qDebug() << "entering saveMessageState";
+        QString timeStamp = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+        QJsonObject jsonObject;
+        jsonObject.insert("timeStamp", timeStamp);
+        jsonObject.insert("nickname", ui->nicknameLineEdit->text());
+        jsonObject.insert("filename", timeStamp + ".mp3");
+        jsonObject.insert("age", ui->ageLineEdit->text().toInt());
+        jsonObject.insert("city", ui->cityLineEdit->text());
+        jsonObject.insert("evaluation", ui->evaluationSlider->value());
+        QJsonDocument jsonDocument(jsonObject);
+        qDebug() << jsonDocument.toJson();
+
+        Config& config = Config::getInstance();
+        bool moved = QFile(Config::getInstance().tempMP3AudioFileName()).rename(config.outboxDirectory().absoluteFilePath(timeStamp + ".mp3"));
+        if(!moved) {
+            qCritical() << "Couldn't move MP3 file to outbox directory : " + config.outboxDirectory().absolutePath();
+            QMessageBox msgBox;
+            msgBox.setText("L'enregistrement du message dans la base de données a échoué, nous en sommes désolés.");
+            msgBox.exec();
+            stateMachine->submitEvent("error");
+            return;
+        }
+
+        QFile jsonFile(config.outboxDirectory().absoluteFilePath(timeStamp + ".json"));
+        if(jsonFile.open(QFile::WriteOnly) == true) {
+            jsonFile.write(jsonDocument.toJson());
+            jsonFile.close();
+        }
+        else {
+            qCritical() << "Could'nt create json file in outbox directory.";
+            QMessageBox msgBox;
+            msgBox.setText("L'enregistrement du message dans la base de données a échoué, nous en sommes désolés.");
+            msgBox.exec();
+            stateMachine->submitEvent("error");
+        }
+
     }
 }
+
+
 
 void StateHandler::confirmationMessageBox(QString text, QString informativeText) {
     QMessageBox msgBox;

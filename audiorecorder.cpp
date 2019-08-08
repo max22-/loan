@@ -2,6 +2,7 @@
 #include "config.h"
 #include <QAudioOutput>
 #include <QAudioDeviceInfo>
+#include <QDebug>
 
 AudioRecorder::AudioRecorder()
 {
@@ -10,17 +11,22 @@ AudioRecorder::AudioRecorder()
     tempAudioFile.setFileName(config.tempAudioFileName());
     clear();
 
-    QAudioFormat format;
-    format.setSampleRate(config.sampleRate());
-    format.setChannelCount(config.channelCount());
-    format.setSampleSize(config.sampleSize());
-    format.setCodec(config.audioCodec());
-    format.setByteOrder(config.byteOrder());
-    format.setSampleType(config.sampleType());
+    format.setSampleRate(config.desiredSampleRate());
+    format.setChannelCount(config.desiredChannelCount());
+    format.setSampleSize(config.desiredSampleSize());
+    format.setCodec(config.desiredAudioCodec());
+    format.setByteOrder(config.desiredByteOrder());
+    format.setSampleType(config.desiredSampleType());
     QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
     if (!info.isFormatSupported(format)) {
-        qDebug("Default format not supported, trying to use the nearest.");
+        qDebug("Desired format not supported, trying to use the nearest.");
         format = info.nearestFormat(format);
+        qDebug() << "Using sampleRate =" << format.sampleRate();
+        qDebug() << "Using channelCount =" << format.channelCount();
+        qDebug() << "Using sampleSize =" << format.sampleSize();
+        qDebug() << "Using codec =" << format.codec();
+        qDebug() << "Using byteOrder =" << format.byteOrder();
+        qDebug() << "Using sampleType =" << format.sampleType();
     }
 
     // Audio Input *************************
@@ -156,4 +162,8 @@ void AudioRecorder::stop() {
         case AudioRecorderState::IDLE:
             break;
     }
+}
+
+QAudioFormat AudioRecorder::getFormat() {
+    return format;
 }
