@@ -19,7 +19,7 @@ AudioRecorder::AudioRecorder()
     format.setSampleType(config.desiredSampleType());
     QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
     if (!info.isFormatSupported(format)) {
-        qDebug("Desired format not supported, trying to use the nearest.");
+        qDebug() << "Desired format not supported, trying to use the nearest.";
         format = info.nearestFormat(format);
         qDebug() << "Using sampleRate =" << format.sampleRate();
         qDebug() << "Using channelCount =" << format.channelCount();
@@ -70,10 +70,8 @@ AudioRecorder::AudioRecorder()
 }
 
 AudioRecorder::~AudioRecorder() {
-    if(audioInput != nullptr)
-        delete audioInput;
-    if(audioOutput != nullptr)
-        delete audioOutput;
+    delete audioInput;
+    delete audioOutput;
 }
 
 void AudioRecorder::changeState(AudioRecorderState newState) {
@@ -87,10 +85,8 @@ void AudioRecorder::clear() {
             break;
         case AudioRecorderState::RECORDING:
             throw QString("Cannot clear while AudioRecorder is recording.");
-            break;
         case AudioRecorderState::PLAYING:
             throw  QString("Cannot clear while AudioRecorder is playing.");
-            break;
         case AudioRecorderState::IDLE:
             tempAudioFile.remove();
             changeState(AudioRecorderState::INITIAL);
@@ -111,13 +107,10 @@ void AudioRecorder::startRecording() {
             break;
         case AudioRecorderState::RECORDING:
             throw QString("Cannot record : AudioRecorder is already recording.");
-            break;
         case AudioRecorderState::PLAYING:
             throw QString("Cannot record : AudioRecorder is currently playing.");
-            break;
         case AudioRecorderState::IDLE:
             throw QString("You have to call AudioRecorder::clear() before recording again.");
-            break;
 
     }
 }
@@ -126,13 +119,10 @@ void AudioRecorder::startPlaying() {
     switch (state) {
         case AudioRecorderState::INITIAL:
             throw QString("Cannot play : no message has been recorded yet.");
-            break;
         case AudioRecorderState::RECORDING:
             throw QString("Cannot play : AudioRecorder is currently recording.");
-            break;
         case AudioRecorderState::PLAYING:
             throw QString("Cannot play : AudioRecorder is already playing.");
-            break;
         case AudioRecorderState::IDLE:
             tempAudioFile.open(QIODevice::ReadOnly);
             audioOutput->start(&tempAudioFile);
@@ -146,7 +136,6 @@ void AudioRecorder::stop() {
     switch (state) {
         case AudioRecorderState::INITIAL:
             throw QString("Cannot stop : no recording or playing is being run.");
-            break;
         case AudioRecorderState::RECORDING:
             timer.stop();
             audioInput->stop();

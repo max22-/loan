@@ -28,7 +28,7 @@ public:
     QString tempMP3AudioFileName();
 
     QString checkMP3ConverterInstallationCommand();
-    QString MP3ConversionCommand(QAudioFormat format);
+    QString MP3ConversionCommand(const QAudioFormat& format);
 
 private:
     Config();

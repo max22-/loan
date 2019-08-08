@@ -7,15 +7,9 @@ Config& Config::getInstance() {
     return instance;
 }
 
-Config::Config()
-{
+Config::Config() = default;
 
-}
-
-Config::~Config()
-{
-
-}
+Config::~Config() = default;
 
 int Config::maxRecordingTimeS() {
     return 30;
@@ -70,7 +64,7 @@ QString Config::checkMP3ConverterInstallationCommand() {
     return "ffmpeg -version";
 }
 
-QString Config::MP3ConversionCommand(QAudioFormat format) {
+QString Config::MP3ConversionCommand(const QAudioFormat& format) {
     QString command = "ffmpeg -f ";
     switch(format.sampleType()) {
         case QAudioFormat::Unknown:

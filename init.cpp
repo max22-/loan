@@ -24,8 +24,8 @@ void checkAudioConverter() {
         throw QString("Audio converter is not installed.");
 }
 
-void createDirectory(QDir dir) {
-    if(dir.exists() == false) {
+void createDirectory(const QDir& dir) {
+    if(!dir.exists()) {
         qDebug() << "Creating " << dir.absolutePath() << "directory";
         if(dir.mkpath(".") == false) {
             throw QString("Could'nt create") + dir.absolutePath() + QString(" directory.");
@@ -42,7 +42,7 @@ void initDirectories() {
 
 void init()
 {
-    qDebug("Initialization...");
+    qDebug() << "Initialization...";
     initDirectories();
     checkAudioConverter();
     showAudioDeviceInfo();

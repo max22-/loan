@@ -54,13 +54,13 @@ void StateHandler::validateFormState(bool active) {
         QString age = ui->ageLineEdit->text();
         QString city = ui->cityLineEdit->text();
         int pos = 0;
-        QRegExpValidator *nicknameValidator = new QRegExpValidator(QRegExp("^(?!\s*$).+"), nullptr);  // regex found on stackoverflow https://stackoverflow.com/questions/3085539/regular-expression-for-anything-but-an-empty-string
-        QIntValidator *ageValidator = new QIntValidator(0, 200);
-        QRegExpValidator *cityValidator = new QRegExpValidator(QRegExp("^(?!\s*$).+$"), nullptr);
+        auto *nicknameValidator = new QRegExpValidator(QRegExp("^(?!\s*$).+"), nullptr);  // regex found on stackoverflow https://stackoverflow.com/questions/3085539/regular-expression-for-anything-but-an-empty-string
+        auto *ageValidator = new QIntValidator(0, 200);
+        auto *cityValidator = new QRegExpValidator(QRegExp("^(?!\s*$).+$"), nullptr);
         QMessageBox msgBox;
         bool errorFlag = false;
         msgBox.setWindowTitle("Erreur de saisie");
-        std::string errorMessage = "";
+        std::string errorMessage;
         if(nicknameValidator->validate(nickname, pos) != QValidator::Acceptable) {
             errorFlag = true;
             errorMessage += "Veuillez entrer un pseudonyme.\n";
@@ -77,7 +77,7 @@ void StateHandler::validateFormState(bool active) {
             errorFlag = true;
             errorMessage += "Veuillez entrer une note entre 1 et 5 inclus.";
         }
-        if(errorFlag == true) {
+        if(errorFlag) {
             msgBox.setText(errorMessage.c_str());
             msgBox.exec();
             stateMachine->submitEvent("notOk");
@@ -104,50 +104,50 @@ void StateHandler::recordHomeState(bool active) {
 
 void StateHandler::validateCancelState(bool active) {
     if(active) {
-        qDebug("validateCancel1State");
+        qDebug() << "validateCancel1State";
         confirmationMessageBox("Vous avez enregistré des informations.", "Voulez-vous vraiment tout supprimer et revenir à l'écran d'accueil ?");
     }
 }
 
 void StateHandler::recordingState(bool active) {
     if (active) {
-        qDebug("entering recordingState");
+        qDebug() << "entering recordingState";
         mainWindow->audioRecorder.clear();
         mainWindow->audioRecorder.startRecording();
     }
     else {
         mainWindow->audioRecorder.stop();
-        qDebug("quitting recordingState");
+        qDebug() << "quitting recordingState";
     }
 }
 
 void StateHandler::recordedMessageState(bool active) {
     if (active) {
-        qDebug("recordedMessageState");
+        qDebug() << "recordedMessageState";
     }
 }
 
 void StateHandler::listeningMessageState(bool active) {
     if (active) {
-        qDebug("listeningMessageState");
+        qDebug() << "listeningMessageState";
         mainWindow->audioRecorder.startPlaying();
     }
     else {
         mainWindow->audioRecorder.stop();
-        qDebug("quitting listeningMessageState");
+        qDebug() << "quitting listeningMessageState";
     }
 }
 
 void StateHandler::reRecordState(bool active) {
     if(active) {
-        qDebug("reRecordState");
+        qDebug() <<"reRecordState";
         confirmationMessageBox("Vous avez enregistré un message.", "Voulez-vous vraiment l'effacer pour le réenregistrer à nouveau ?");
     }
 }
 
 void StateHandler::validateMessageState(bool active) {
     if(active) {
-        qDebug("validateMessageState");
+        qDebug() << "validateMessageState";
         confirmationMessageBox("Vous avez enregistré un message ainsi que des informations.", "Êtes-vous sûr de vouloir les valider ? (ceci est définitif)");
     }
 }
@@ -155,7 +155,7 @@ void StateHandler::validateMessageState(bool active) {
 void StateHandler::MP3ConversionState(bool active) {
     QMessageBox msgBox;
     if(active) {
-        qDebug("MP3ConversionState");
+        qDebug() << "MP3ConversionState";
         ui->stackedWidget->setCurrentIndex(4);
         int retCode = QProcess::execute(Config::getInstance().MP3ConversionCommand(mainWindow->audioRecorder.getFormat()));
         if( retCode != 0) {
@@ -165,7 +165,7 @@ void StateHandler::MP3ConversionState(bool active) {
             stateMachine->submitEvent("error");
             return;
         }
-        if(QFile(Config::getInstance().tempMP3AudioFileName()).exists() == false) {
+        if(!QFile(Config::getInstance().tempMP3AudioFileName()).exists()) {
             qCritical() << "No MP3 file has been produced.";
             msgBox.setText("La conversion au format MP3 a échoué, nous en sommes désolés.");
             msgBox.exec();
@@ -204,7 +204,7 @@ void StateHandler::saveMessageSate(bool active) {
         }
 
         QFile jsonFile(config.outboxDirectory().absoluteFilePath(timeStamp + ".json"));
-        if(jsonFile.open(QFile::WriteOnly) == true) {
+        if(jsonFile.open(QFile::WriteOnly)) {
             jsonFile.write(jsonDocument.toJson());
             jsonFile.close();
         }
@@ -221,7 +221,7 @@ void StateHandler::saveMessageSate(bool active) {
 
 
 
-void StateHandler::confirmationMessageBox(QString text, QString informativeText) {
+void StateHandler::confirmationMessageBox(const QString& text, const QString& informativeText) {
     QMessageBox msgBox;
     msgBox.setText(text);
     msgBox.setInformativeText(informativeText);
@@ -238,7 +238,7 @@ void StateHandler::confirmationMessageBox(QString text, QString informativeText)
         stateMachine->submitEvent("no");
         break;
     default:
-        qDebug("msgBox.exec() returned something other than yes or no.");
+        qDebug() << "msgBox.exec() returned something other than yes or no.";
         break;
     }
 }

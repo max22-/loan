@@ -36,7 +36,7 @@ private:
     Ui::MainWindow *ui;
     Statechart *stateMachine;
     MainWindow *mainWindow;
-    void confirmationMessageBox(QString, QString);
+    void confirmationMessageBox(const QString&, const QString&);
 };
 
 #endif // STATEHANDLER_H
