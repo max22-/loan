@@ -88,6 +88,14 @@ void StateHandler::validateFormState(bool active) {
         delete ageValidator;
         delete cityValidator;
     }
+    else {
+        qDebug() << "*** Quitting validateFormState ***";
+        qDebug() << "nickname = " << ui->nicknameLineEdit->text();
+        qDebug() << "age = " << ui->ageLineEdit->text();
+        qDebug() << "city = " << ui->cityLineEdit->text();
+        qDebug() << "evaluation = " << ui->evaluationSlider->value();
+        qDebug() << "**********************************";
+    }
 }
 
 void StateHandler::recordState(bool active) {
