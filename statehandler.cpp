@@ -211,6 +211,7 @@ void StateHandler::saveMessageSate(bool active) {
             msgBox.setText("Votre message a été enregistré.");
             msgBox.exec();
             mainWindow->audioRecorder.clear();
+            stateMachine->submitEvent("saved");
         }
         else {
             qCritical() << "Could'nt create json file in outbox directory.";
