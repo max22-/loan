@@ -6,7 +6,6 @@
 #include "statehandler.h"
 #include "mainwindow.h"
 #include "config.h"
-#include <QProcess>
 #include <QDebug>
 #include <QDateTime>
 #include <QJsonObject>
@@ -165,24 +164,17 @@ void StateHandler::MP3ConversionState(bool active) {
     if(active) {
         qDebug() << "MP3ConversionState";
         ui->stackedWidget->setCurrentIndex(4);
-        int retCode = QProcess::execute(Config::getInstance().MP3ConversionCommand(mainWindow->audioRecorder.getFormat()));
-        if( retCode != 0) {
-            qCritical() << "MP3 conversion failed. retCode = " << retCode;
+        try {
+            mainWindow->audioRecorder.convertToMP3();
+            msgBox.setText("Ca marche !");
+            msgBox.exec();
+            stateMachine->submitEvent("save");
+        } catch(QString msg) {
+            qCritical() << msg;
             msgBox.setText("La conversion au format MP3 a échoué, nous en sommes désolés.");
             msgBox.exec();
             stateMachine->submitEvent("error");
-            return;
         }
-        if(!QFile(Config::getInstance().tempMP3FileName()).exists()) {
-            qCritical() << "No MP3 file has been produced.";
-            msgBox.setText("La conversion au format MP3 a échoué, nous en sommes désolés.");
-            msgBox.exec();
-            stateMachine->submitEvent("error");
-            return;
-        }
-        msgBox.setText("Ca marche !");
-        msgBox.exec();
-        stateMachine->submitEvent("save");
     }
 }
 
@@ -215,6 +207,10 @@ void StateHandler::saveMessageSate(bool active) {
         if(jsonFile.open(QFile::WriteOnly)) {
             jsonFile.write(jsonDocument.toJson());
             jsonFile.close();
+            QMessageBox msgBox;
+            msgBox.setText("Votre message a été enregistré.");
+            msgBox.exec();
+            mainWindow->audioRecorder.clear();
         }
         else {
             qCritical() << "Could'nt create json file in outbox directory.";

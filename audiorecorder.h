@@ -7,7 +7,7 @@
 #include <QFile>
 #include <QTimer>
 
-enum class AudioRecorderState { INITIAL, RECORDING, PLAYING, IDLE };
+enum class AudioRecorderState { INITIAL, RECORDING, PLAYING, IDLE, MP3STATE };
 
 class AudioRecorder : public QObject
 {
@@ -19,7 +19,7 @@ public:
     void startRecording();
     void startPlaying();
     void stop();
-    QAudioFormat getFormat();
+    void convertToMP3();
 
 signals:
     void lengthChanged(int newLength);      // length of the recorded message in ms
@@ -30,7 +30,7 @@ private:
     void changeState(AudioRecorderState newState);
     QAudioInput *audioInput = nullptr;
     QAudioOutput *audioOutput = nullptr;
-    QFile tempAudioFile;
+    QFile tempAudioFile, tempMP3File;
     AudioRecorderState state = AudioRecorderState::IDLE;
     QTimer timer;
     QAudioFormat format;

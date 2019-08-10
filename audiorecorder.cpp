@@ -3,12 +3,14 @@
 #include <QAudioOutput>
 #include <QAudioDeviceInfo>
 #include <QDebug>
+#include <QProcess>
 
 AudioRecorder::AudioRecorder()
 {
     Config& config = Config::getInstance();
 
     tempAudioFile.setFileName(config.tempAudioFileName());
+    tempMP3File.setFileName(config.tempMP3FileName());
     clear();
 
     format.setSampleRate(config.desiredSampleRate());
@@ -80,6 +82,7 @@ void AudioRecorder::changeState(AudioRecorderState newState) {
 }
 
 void AudioRecorder::clear() {
+    qDebug() << "AudioRecorder::clear()";
     switch (state) {
         case AudioRecorderState::INITIAL:
             break;
@@ -88,15 +91,23 @@ void AudioRecorder::clear() {
         case AudioRecorderState::PLAYING:
             throw  QString("Cannot clear while AudioRecorder is playing.");
         case AudioRecorderState::IDLE:
+        case AudioRecorderState::MP3STATE:
             tempAudioFile.remove();
+            tempMP3File.remove();
             changeState(AudioRecorderState::INITIAL);
             emit lengthChanged(Config::getInstance().maxRecordingTimeS()*1000);
             emit positionChanged(0);
             break;
+
+
+
+
+
     }
 }
 
 void AudioRecorder::startRecording() {
+    qDebug() << "AudioRecorder::startRecording()";
     switch (state) {
         case AudioRecorderState::INITIAL:
             tempAudioFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
@@ -111,11 +122,13 @@ void AudioRecorder::startRecording() {
             throw QString("Cannot record : AudioRecorder is currently playing.");
         case AudioRecorderState::IDLE:
             throw QString("You have to call AudioRecorder::clear() before recording again.");
-
+        case AudioRecorderState::MP3STATE:
+            throw QString("Cannot record when a file has been converted to MP3. Call AudioRecorder::clear() first.");
     }
 }
 
 void AudioRecorder::startPlaying() {
+    qDebug() << "AudioRecorder::startPlaying()";
     switch (state) {
         case AudioRecorderState::INITIAL:
             throw QString("Cannot play : no message has been recorded yet.");
@@ -128,11 +141,14 @@ void AudioRecorder::startPlaying() {
             audioOutput->start(&tempAudioFile);
             changeState(AudioRecorderState::PLAYING);
             break;
+        case AudioRecorderState::MP3STATE:
+            throw QString("Cannot play a file converted to MP3.");
     }
 }
 
 
 void AudioRecorder::stop() {
+    qDebug() << "AudioRecorder::stop()";
     switch (state) {
         case AudioRecorderState::INITIAL:
             throw QString("Cannot stop : no recording or playing is being run.");
@@ -150,9 +166,29 @@ void AudioRecorder::stop() {
             break;
         case AudioRecorderState::IDLE:
             break;
+        case AudioRecorderState::MP3STATE:
+            break;
     }
 }
 
-QAudioFormat AudioRecorder::getFormat() {
-    return format;
+void AudioRecorder::convertToMP3() {
+    qDebug() << "AudioRecorder::convertToMP3()";
+    switch(state) {
+        case AudioRecorderState::INITIAL:
+            throw QString("Cannot convert to MP3 : no recording has been made.");
+        case AudioRecorderState::RECORDING:
+            throw QString("Cannot convert to MP3 while recording.");
+        case AudioRecorderState::PLAYING:
+            throw QString("Cannot convert to MP3 while playing.");
+        case AudioRecorderState::IDLE: {
+            int retCode = QProcess::execute(Config::getInstance().MP3ConversionCommand(format));
+            if(retCode != 0)
+                throw("MP3 conversion failed. retCode = " + QString::number(retCode));
+            if(!QFile(Config::getInstance().tempMP3FileName()).exists())
+                throw("MP3 conversion failed : no MP3 file has been produced.");
+            changeState(AudioRecorderState::MP3STATE);
+            break; }
+        case AudioRecorderState::MP3STATE:
+            throw QString("File already converted to MP3.");
+    }
 }
