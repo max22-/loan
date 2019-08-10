@@ -100,12 +100,12 @@ void StateHandler::validateFormState(bool active) {
 void StateHandler::recordState(bool active) {
     if(active) {
         ui->stackedWidget->setCurrentIndex(3);
-        mainWindow->audioRecorder.clear();
     }
 }
 
 void StateHandler::recordHomeState(bool active) {
     if (active) {
+        mainWindow->audioRecorder.clear();
     }
 }
 
