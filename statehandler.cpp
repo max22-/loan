@@ -20,6 +20,7 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWin
 
 void StateHandler::homeState(bool active) {
     if(active) {
+        qDebug() << "entering homeState";
         ui->stackedWidget->setCurrentIndex(0);
         ui->nicknameLineEdit->setText("");
         ui->ageLineEdit->setText("");
@@ -31,12 +32,14 @@ void StateHandler::homeState(bool active) {
 
 void StateHandler::tocState(bool active) {
     if(active) {
+        qDebug() << "entering tocState";
         ui->stackedWidget->setCurrentIndex(1);
     }
 }
 
 void StateHandler::formState(bool active) {
     if(active) {
+        qDebug() << "entering formState";
         ui->stackedWidget->setCurrentIndex(2);
     }
 }
@@ -162,7 +165,7 @@ void StateHandler::validateMessageState(bool active) {
 void StateHandler::MP3ConversionState(bool active) {
     QMessageBox msgBox;
     if(active) {
-        qDebug() << "MP3ConversionState";
+        qDebug() << "entering MP3ConversionState";
         ui->stackedWidget->setCurrentIndex(4);
         try {
             mainWindow->audioRecorder.convertToMP3();
@@ -222,9 +225,18 @@ void StateHandler::saveMessageSate(bool active) {
         }
 
     }
+    else {
+        qDebug() << "quitting saveMessageState";
+    }
 }
 
-
+void StateHandler::savedMessageSate(bool active) {
+    if(active) {
+        qDebug() << "savedMessageState";
+        ui->stackedWidget->setCurrentIndex(5);
+        QTimer::singleShot(10000, [this]() { stateMachine->submitEvent("home"); });
+    }
+}
 
 void StateHandler::confirmationMessageBox(const QString& text, const QString& informativeText) {
     QMessageBox msgBox;

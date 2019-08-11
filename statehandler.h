@@ -31,6 +31,7 @@ public slots:
     void validateMessageState(bool);
     void MP3ConversionState(bool);
     void saveMessageSate(bool);
+    void savedMessageSate(bool);
 
 private:
     Ui::MainWindow *ui;

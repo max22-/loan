@@ -43,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectState("ValidateMessageState", &StateHandler::validateMessageState);
     connectState("MP3ConversionState", &StateHandler::MP3ConversionState);
     connectState("SaveMessageState", &StateHandler::saveMessageSate);
+    connectState("SavedMessageState", &StateHandler::savedMessageSate);
 
     stateMachine.start();
 
