@@ -45,7 +45,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="home_page">
        <property name="styleSheet">
@@ -1314,63 +1314,7 @@ QPushButton:pressed {
            </layout>
           </item>
           <item>
-           <widget class="QTableWidget" name="tableWidget">
-            <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
-            </property>
-            <property name="showGrid">
-             <bool>true</bool>
-            </property>
-            <property name="rowCount">
-             <number>3</number>
-            </property>
-            <property name="columnCount">
-             <number>5</number>
-            </property>
-            <attribute name="horizontalHeaderCascadingSectionResizes">
-             <bool>false</bool>
-            </attribute>
-            <attribute name="horizontalHeaderDefaultSectionSize">
-             <number>100</number>
-            </attribute>
-            <attribute name="horizontalHeaderStretchLastSection">
-             <bool>true</bool>
-            </attribute>
-            <attribute name="verticalHeaderCascadingSectionResizes">
-             <bool>false</bool>
-            </attribute>
-            <attribute name="verticalHeaderStretchLastSection">
-             <bool>false</bool>
-            </attribute>
-            <row/>
-            <row/>
-            <row/>
-            <column>
-             <property name="text">
-              <string>Pseudonyme</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Âge</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Ville</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Date</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Evaluation</string>
-             </property>
-            </column>
-           </widget>
+           <widget class="QTableView" name="tableView"/>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_31">

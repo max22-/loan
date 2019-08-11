@@ -31,6 +31,7 @@ SOURCES += \
         logger.cpp \
         main.cpp \
         mainwindow.cpp \
+        recordingsmodel.cpp \
         statehandler.cpp
 
 HEADERS += \
@@ -39,6 +40,7 @@ HEADERS += \
         init.h \
         logger.h \
         mainwindow.h \
+        recordingsmodel.h \
         startupdatetime.h \
         statehandler.h
 

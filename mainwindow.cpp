@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QTime>
 #include "config.h"
+#include "recordingsmodel.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -60,12 +61,16 @@ MainWindow::MainWindow(QWidget *parent) :
             stateMachine.submitEvent("stop");
     });
 
+    model = new recordingsModel(nullptr);
+    ui->tableView->setModel(model);
+    ui->tableView->show();
 }
 
 MainWindow::~MainWindow()
 {
     delete stateHandler;
     delete ui;
+    delete model;
 }
 
 void MainWindow::setRecordingSliderPosition(int ms) {  // parameter "ms" in milliseconds
