@@ -1,19 +1,19 @@
 #include "recordingsmodel.h"
 
-recordingsModel::recordingsModel(QObject *parent) : QAbstractTableModel (parent)
+RecordingsModel::RecordingsModel(QObject *parent) : QAbstractTableModel (parent)
 {
 
 }
 
-int recordingsModel::rowCount(const QModelIndex &parent) const {
+int RecordingsModel::rowCount(const QModelIndex &parent) const {
     return 3;
 }
 
-int recordingsModel::columnCount(const QModelIndex &parent) const {
+int RecordingsModel::columnCount(const QModelIndex &parent) const {
     return 5;
 }
 
-QVariant recordingsModel::data(const QModelIndex &index, int role) const {
+QVariant RecordingsModel::data(const QModelIndex &index, int role) const {
     if(role == Qt::DisplayRole) {
         return QString::number(5);
     }

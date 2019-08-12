@@ -61,8 +61,8 @@ MainWindow::MainWindow(QWidget *parent) :
             stateMachine.submitEvent("stop");
     });
 
-    model = new recordingsModel(nullptr);
-    ui->tableView->setModel(model);
+    recordingsModel = new RecordingsModel(nullptr);
+    ui->tableView->setModel(recordingsModel);
     ui->tableView->show();
 }
 
@@ -70,7 +70,7 @@ MainWindow::~MainWindow()
 {
     delete stateHandler;
     delete ui;
-    delete model;
+    delete recordingsModel;
 }
 
 void MainWindow::setRecordingSliderPosition(int ms) {  // parameter "ms" in milliseconds

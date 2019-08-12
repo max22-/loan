@@ -5,7 +5,7 @@
 #include "statechart.h"
 #include "statehandler.h"
 #include "audiorecorder.h"
-#include "recordingsmodel.h";
+#include "recordingsmodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,7 +26,7 @@ private:
     Ui::MainWindow *ui;
     Statechart stateMachine;
     StateHandler *stateHandler;
-    recordingsModel *model;
+    RecordingsModel *recordingsModel;
 
     void connectButton(const QPushButton *, const char *);
     void connectState(const char *, void (StateHandler::*)(bool));
