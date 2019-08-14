@@ -1,6 +1,6 @@
 #include <QtTest>
 
-// add necessary includes here
+#include "jsonfile.h"
 
 class testJsonFile : public QObject
 {
