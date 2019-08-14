@@ -28,6 +28,7 @@ SOURCES += \
         audiorecorder.cpp \
         config.cpp \
         init.cpp \
+        jsonfile.cpp \
         logger.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -38,6 +39,7 @@ HEADERS += \
         audiorecorder.h \
         config.h \
         init.h \
+        jsonfile.h \
         logger.h \
         mainwindow.h \
         recordingsmodel.h \
