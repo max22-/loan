@@ -39,7 +39,7 @@ void testJsonFile::cleanupTestCase()
 
 void testJsonFile::test_case1()
 {
-
+    JsonFile jsonFile("/tmp/test.json");
 }
 
 QTEST_APPLESS_MAIN(testJsonFile)

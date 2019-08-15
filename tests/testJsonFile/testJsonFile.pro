@@ -8,4 +8,5 @@ TEMPLATE = app
 
 INCLUDEPATH += ../../src
 
-SOURCES +=  tst_testjsonfile.cpp
+SOURCES +=  tst_testjsonfile.cpp \
+    ../../src/jsonfile.cpp
