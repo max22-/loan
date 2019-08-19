@@ -136,17 +136,17 @@ void testJsonFile::testSimpleLoad()
 
     JsonFile jsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
     jsonFile.load();
-    QCOMPARE(jsonFile.getNickname(), nickname);
-    QCOMPARE(jsonFile.getAge(), age);
-    QCOMPARE(jsonFile.getCity(), city);
-    QCOMPARE(jsonFile.getEvaluation(), evaluation);
-    QCOMPARE(jsonFile.getMP3FileName(), MP3FileName);
-    QCOMPARE(jsonFile.getTimeStamp().date().year(), year);
-    QCOMPARE(jsonFile.getTimeStamp().date().month(), month);
-    QCOMPARE(jsonFile.getTimeStamp().date().day(), day);
-    QCOMPARE(jsonFile.getTimeStamp().time().hour(), hour);
-    QCOMPARE(jsonFile.getTimeStamp().time().minute(), minute);
-    QCOMPARE(jsonFile.getTimeStamp().time().second(), second);
+    QVERIFY2(jsonFile.getNickname().compare(nickname) == 0, "Nicknames don't match.");
+    QVERIFY2(jsonFile.getAge() == age, "Ages don't match");
+    QVERIFY2(jsonFile.getCity().compare(city) == 0, "Cities don't match.");
+    QVERIFY2(jsonFile.getEvaluation() == evaluation, "Evaluations don't match.");
+    QVERIFY2(jsonFile.getMP3FileName().compare(MP3FileName) == 0, "MP3 file names don't match.");
+    QVERIFY2(jsonFile.getTimeStamp().date().year() == year, "Years don't match.");
+    QVERIFY2(jsonFile.getTimeStamp().date().month() == month, "Months don't match.");
+    QVERIFY2(jsonFile.getTimeStamp().date().day() == day, "Days don't match.");
+    QVERIFY2(jsonFile.getTimeStamp().time().hour() == hour, "Hours don't match.");
+    QVERIFY2(jsonFile.getTimeStamp().time().minute() == minute, "Minutes don't match.");
+    QVERIFY2(jsonFile.getTimeStamp().time().second()== second, "Secondes don't match.");
 }
 
 void testJsonFile::testSimpleSave()
