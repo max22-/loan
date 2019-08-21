@@ -20,6 +20,7 @@ private slots:
     void testSimpleLoad();
     void testSimpleSave_data();
     void testSimpleSave();
+    void testFileDoesntExist();
 
 private:
     QDir databaseDirectory;
@@ -195,6 +196,11 @@ void testJsonFile::testSimpleSave()
     file.close();
 
     QVERIFY2(jsonData.compare(text) == 0, "Content of json document doesn't match the expected result.");
+}
+
+void testJsonFile::testFileDoesntExist() {
+    JsonFile jsonFile(databaseDirectory.absoluteFilePath("inexistentFile.json"));
+    QVERIFY_EXCEPTION_THROWN(jsonFile.load(), QString);
 }
 
 QTEST_APPLESS_MAIN(testJsonFile)
