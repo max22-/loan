@@ -18,10 +18,12 @@ private slots:
     void cleanup();
     void testSimpleLoad_data();
     void testSimpleLoad();
+    void testSimpleSave_data();
     void testSimpleSave();
 
 private:
     QDir databaseDirectory;
+    void commonData();
 
 };
 
@@ -55,7 +57,7 @@ void testJsonFile::cleanup() {
         QFAIL("Couldn't remove database directory.");
 }
 
-void testJsonFile::testSimpleLoad_data() {
+void testJsonFile::commonData() {
     QTest::addColumn<QString>("jsonFileName");
     QTest::addColumn<QString>("jsonData");
     QTest::addColumn<QString>("nickname");
@@ -108,7 +110,10 @@ void testJsonFile::testSimpleLoad_data() {
     );
 
     QTest::newRow("Stéphane") << timeStamp3 + QString(".json") << jsonData3 << "Stéphane" << 21 << "Plérin" << 5 << timeStamp3 + QString(".mp3") << 2021 << 3 << 27 << 9 << 32 << 27;
+}
 
+void testJsonFile::testSimpleLoad_data() {
+    commonData();
 }
 
 void testJsonFile::testSimpleLoad()
@@ -134,8 +139,7 @@ void testJsonFile::testSimpleLoad()
     out << jsonData;
     file.close();
 
-    JsonFile jsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
-    jsonFile.load();
+    JsonFile jsonFile = JsonFile(databaseDirectory.absoluteFilePath(jsonFileName)).load();
     QVERIFY2(jsonFile.getNickname().compare(nickname) == 0, "Nicknames don't match.");
     QVERIFY2(jsonFile.getAge() == age, "Ages don't match");
     QVERIFY2(jsonFile.getCity().compare(city) == 0, "Cities don't match.");
@@ -149,9 +153,48 @@ void testJsonFile::testSimpleLoad()
     QVERIFY2(jsonFile.getTimeStamp().time().second()== second, "Secondes don't match.");
 }
 
+void testJsonFile::testSimpleSave_data() {
+    commonData();
+}
+
 void testJsonFile::testSimpleSave()
 {
+    QFETCH(QString, jsonFileName);
+    QFETCH(QString, jsonData);
+    QFETCH(QString, nickname);
+    QFETCH(int, age);
+    QFETCH(QString, city);
+    QFETCH(int, evaluation);
+    QFETCH(QString, MP3FileName);
+    QFETCH(int, year);
+    QFETCH(int, month);
+    QFETCH(int, day);
+    QFETCH(int, hour);
+    QFETCH(int, minute);
+    QFETCH(int, second);
 
+    QDate date(year, month, day);
+    QTime time(hour, minute, second);
+    QDateTime timeStamp(date, time);
+
+    JsonFile jsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+    jsonFile.setNickName(nickname);
+    jsonFile.setAge(age);
+    jsonFile.setCity(city);
+    jsonFile.setEvaluation(evaluation);
+    jsonFile.setMP3FileName(MP3FileName);
+    jsonFile.setTimeStamp(timeStamp);
+
+    jsonFile.save();
+
+    QFile file(databaseDirectory.absoluteFilePath(jsonFileName));
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        QFAIL("Couldn't open json file.");
+    QTextStream in(&file);
+    auto text = in.readAll();
+    file.close();
+
+    QVERIFY2(jsonData.compare(text) == 0, "Content of json document doesn't match the expected result.");
 }
 
 QTEST_APPLESS_MAIN(testJsonFile)
