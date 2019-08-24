@@ -21,6 +21,8 @@ private slots:
     void testSimpleSave_data();
     void testSimpleSave();
     void testFileDoesntExist();
+    void testGettersSetters_data();
+    void testGettersSetters();
 
 private:
     QDir databaseDirectory;
@@ -202,6 +204,55 @@ void testJsonFile::testFileDoesntExist() {
     JsonFile jsonFile(databaseDirectory.absoluteFilePath("inexistentFile.json"));
     QVERIFY_EXCEPTION_THROWN(jsonFile.load(), QString);
 }
+
+
+void testJsonFile::testGettersSetters_data() {
+    commonData();
+}
+
+template <typename T>
+void testGettersSettersHelperFunction(JsonFile& jsonFile, const QString methodName, T (JsonFile::*getter)(void), void (JsonFile::*setter)(T), const T value) {
+    QVERIFY_EXCEPTION_THROWN((jsonFile.*getter)(), QString);
+    (jsonFile.*setter)(value);
+    try {
+        T returnValue = (jsonFile.*getter)();
+        QVERIFY2(returnValue == value, (methodName + "getter didn't return the correct nickname.").toStdString().c_str());
+    } catch (QString s) {
+        QFAIL(("Getting " + methodName + " after setting threw an exception.").toStdString().c_str());
+    }
+}
+
+void testJsonFile::testGettersSetters() {
+    QFETCH(QString, jsonFileName);
+    QFETCH(QString, jsonData);
+    QFETCH(QString, nickname);
+    QFETCH(int, age);
+    QFETCH(QString, city);
+    QFETCH(int, evaluation);
+    QFETCH(QString, MP3FileName);
+    QFETCH(int, year);
+    QFETCH(int, month);
+    QFETCH(int, day);
+    QFETCH(int, hour);
+    QFETCH(int, minute);
+    QFETCH(int, second);
+
+    QDate date(year, month, day);
+    QTime time(hour, minute, second);
+    QDateTime timeStamp(date, time);
+
+    JsonFile jsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+
+    testGettersSettersHelperFunction<QString>(jsonFile, "nickname", &JsonFile::getNickname, &JsonFile::setNickName, nickname);
+    testGettersSettersHelperFunction<int>(jsonFile, "age", &JsonFile::getAge, &JsonFile::setAge, age);
+    testGettersSettersHelperFunction<QString>(jsonFile, "city", &JsonFile::getCity, &JsonFile::setCity, city);
+    testGettersSettersHelperFunction<int>(jsonFile, "evaluation", &JsonFile::getEvaluation, &JsonFile::setEvaluation, evaluation);
+    testGettersSettersHelperFunction<QString>(jsonFile, "MP3FileName", &JsonFile::getMP3FileName, &JsonFile::setMP3FileName, MP3FileName);
+    testGettersSettersHelperFunction<QString>(jsonFile, "city", &JsonFile::getCity, &JsonFile::setCity, city);
+    testGettersSettersHelperFunction<QDateTime>(jsonFile, "timeStamp", &JsonFile::getTimeStamp, &JsonFile::setTimeStamp, timeStamp);
+
+}
+
 
 QTEST_APPLESS_MAIN(testJsonFile)
 
