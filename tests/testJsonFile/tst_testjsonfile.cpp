@@ -23,6 +23,8 @@ private slots:
     void testFileDoesntExist();
     void testGettersSetters_data();
     void testGettersSetters();
+    void testIncompleteSave_data();
+    void testIncompleteSave();
 
 private:
     QDir databaseDirectory;
@@ -252,6 +254,52 @@ void testJsonFile::testGettersSetters() {
     testGettersSettersHelperFunction<QDateTime>(jsonFile, "timeStamp", &JsonFile::getTimeStamp, &JsonFile::setTimeStamp, timeStamp);
 
 }
+
+void testJsonFile::testIncompleteSave_data() {
+    commonData();
+}
+
+void testJsonFile::testIncompleteSave() {
+    QFETCH(QString, jsonFileName);
+    QFETCH(QString, jsonData);
+    QFETCH(QString, nickname);
+    QFETCH(int, age);
+    QFETCH(QString, city);
+    QFETCH(int, evaluation);
+    QFETCH(QString, MP3FileName);
+    QFETCH(int, year);
+    QFETCH(int, month);
+    QFETCH(int, day);
+    QFETCH(int, hour);
+    QFETCH(int, minute);
+    QFETCH(int, second);
+
+    QDate date(year, month, day);
+    QTime time(hour, minute, second);
+    QDateTime timeStamp(date, time);
+
+    JsonFile jsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
+    jsonFile.setNickName(nickname);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
+    jsonFile.setAge(age);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
+    jsonFile.setCity(city);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
+    jsonFile.setEvaluation(evaluation);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
+    jsonFile.setMP3FileName(MP3FileName);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
+    jsonFile.setTimeStamp(timeStamp);
+
+    try {
+        jsonFile.save();
+    } catch (QString s) {
+        QFAIL("When every parameter is set, no exception should be thrown when saving.");
+    }
+
+}
+
 
 
 QTEST_APPLESS_MAIN(testJsonFile)
