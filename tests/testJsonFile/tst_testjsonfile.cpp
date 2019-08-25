@@ -25,6 +25,8 @@ private slots:
     void testGettersSetters();
     void testIncompleteSave_data();
     void testIncompleteSave();
+    void testInvalidFile_data();
+    void testInvalidFile();
 
 private:
     QDir databaseDirectory;
@@ -300,7 +302,58 @@ void testJsonFile::testIncompleteSave() {
 
 }
 
+void testJsonFile::testInvalidFile_data() {
+    QTest::addColumn<QString>("jsonData");
 
+    auto jsonData1 = QString(
+        "{\"nickname\": \"Maxime\","
+        "\"city\": \"Plérin\","
+        "\"evaluation\": 3,"
+        "\"filename\": \"2019-08-17 16:33:00.mp3\""
+        "\"timestamp\": \"2019-08-17 16:33:00\""
+        "}"
+    );
+
+    QTest::newRow("Maxime") << jsonData1;  // age is missing
+
+    auto jsonData2 = QString(
+        "{\"nickname\": \"J.J. Brun's\","
+        "\"age\": 20,"
+        "\"filename\": \"2020-01-15 14:45:04.mp3\""
+        "\"timestamp\": \"2020-01-15 14:45:04\""
+        "}"
+    );
+
+    QTest::newRow("J.J. Brun's") << jsonData2;  // city and evaluation are missing
+
+    auto jsonData3 = QString(
+        "{\"nickname\": \"Stéphane\","
+        "\"age\": 21,"
+        "\"city\": \"Plérin\","
+        "\"evaluation\": 5,"
+        "\"timestamp\": \"2021-03-27 09:32:27\""
+        "}"
+    );
+
+    QTest::newRow("Stéphane") << jsonData3;  // filename missing
+
+}
+
+void testJsonFile::testInvalidFile() {
+    QFETCH(QString, jsonData);
+
+    auto jsonFileName = "test.json";
+
+    QFile file(databaseDirectory.absoluteFilePath(jsonFileName));
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        QFAIL("Couldn't write to json file.");
+    QTextStream out(&file);
+    out << jsonData;
+    file.close();
+
+    QVERIFY_EXCEPTION_THROWN(JsonFile jsonFile = JsonFile(databaseDirectory.absoluteFilePath(jsonFileName)).load(), QString);
+
+}
 
 QTEST_APPLESS_MAIN(testJsonFile)
 
