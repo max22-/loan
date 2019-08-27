@@ -337,6 +337,54 @@ void testJsonFile::testInvalidFile_data() {
 
     QTest::newRow("Stéphane") << jsonData3;  // filename missing
 
+
+
+    // ******* ****************************************Invalid types
+
+    auto jsonData4 = QString(
+        "{\"nickname\": \"Maxime\","
+        "\"age\": \"33\","
+        "\"city\": \"Plérin\","
+        "\"evaluation\": 3,"
+        "\"filename\": \"2019-08-17 16:33:00.mp3\""
+        "\"timestamp\": \"2019-08-17 16:33:00\""
+        "}"
+    );
+    QTest::newRow("Maxime 2") << jsonData4; // age is a string instead of an int
+
+    auto jsonData5 = QString(
+        "{\"nickname\": \"J.J. Brun's\","
+        "\"age\": 20,"
+        "\"city\": 22190,"
+        "\"evaluation\": 4,"
+        "\"filename\": \"2020-01-15 14:45:04.mp3\""
+        "\"timestamp\": \"2020-01-15 14:45:04\""
+        "}"
+    );
+    QTest::newRow("J.J. Brun's 2") << jsonData5; // city is an int instead of a string
+
+    auto jsonData6 = QString(
+        "{\"nickname\": \"Stéphane\","
+        "\"age\": 21,"
+        "\"city\": \"Plérin\","
+        "\"evaluation\": 4.5,"
+        "\"filename\": \"2021-03-27 09:32:27.mp3\""
+        "\"timestamp\": \"2021-03-27 09:32:27\""
+        "}"
+    );
+    QTest::newRow("Stéphane 2") << jsonData6; // evaluation is a float instead of an int
+
+    auto jsonData7 = QString(
+        "{\"nickname\": \"Maxime\","
+        "\"age\": \"33\","
+        "\"city\": \"Plérin\","
+        "\"evaluation\": 3,"
+        "\"filename\": \"2019-08-17 16:33:00.mp3\""
+        "\"timestamp\": \"1234\""
+        "}"
+    );
+    QTest::newRow("Maxime 3") << jsonData7; // invalid timestamp
+
 }
 
 void testJsonFile::testInvalidFile() {
