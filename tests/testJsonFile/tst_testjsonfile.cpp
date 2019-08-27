@@ -27,6 +27,7 @@ private slots:
     void testIncompleteSave();
     void testInvalidFile_data();
     void testInvalidFile();
+    void testTestGetterAfterFailedLoad();
 
 private:
     QDir databaseDirectory;
@@ -401,6 +402,27 @@ void testJsonFile::testInvalidFile() {
 
     QVERIFY_EXCEPTION_THROWN(JsonFile jsonFile = JsonFile(databaseDirectory.absoluteFilePath(jsonFileName)).load(), QString);
 
+}
+
+void testJsonFile::testTestGetterAfterFailedLoad() {
+    auto jsonFile = JsonFile(databaseDirectory.absoluteFilePath("inexistantFile.json"));
+    jsonFile.setNickName("Maxime");
+    jsonFile.setAge(33);
+    jsonFile.setCity("Plérin");
+    jsonFile.setEvaluation(3);
+    jsonFile.setMP3FileName("2019-08-17 16:33:00.mp3");
+    jsonFile.setTimeStamp(QDateTime(QDate(2019, 8, 17), QTime(16, 33, 0)));
+    try {
+        jsonFile.load();
+    } catch (QString s) {
+        // do nothing, an exception should be thrown and it's normal
+    }
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getNickname(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getAge(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getCity(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getEvaluation(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getMP3FileName(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getTimeStamp(), QString);
 }
 
 QTEST_APPLESS_MAIN(testJsonFile)
