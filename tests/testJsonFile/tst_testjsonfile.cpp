@@ -207,12 +207,24 @@ void testJsonFile::testAssignmentOperator() {
     QFETCH(int, minute);
     QFETCH(int, second);
 
-    JsonFile* o1 = new JsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
-    JsonFile o2(databaseDirectory.absoluteFilePath("inexistentFile.json"));
-    o2 = *o1;
-    delete o1;
+    try {
+        JsonFile* o1 = new JsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+        o1->setNickName(nickname)
+                .setAge(age)
+                .setCity(city)
+                .setEvaluation(evaluation)
+                .setMP3FileName(MP3FileName)
+                .setTimeStamp(QDateTime(QDate(year, month, day), QTime(hour, minute, second)));
+        JsonFile o2(databaseDirectory.absoluteFilePath("inexistentFile.json"));
+        o2 = *o1;
+        delete o1;
 
-    VERIFY_JSONFILE_PROPERTIES(o2, nickname, age, city, evaluation, MP3FileName, year, month, day, hour, minute, second);
+        VERIFY_JSONFILE_PROPERTIES(o2, nickname, age, city, evaluation, MP3FileName, year, month, day, hour, minute, second);
+    }
+    catch (const QString s) {
+        QFAIL(QString("Caught exception : " + s).toStdString().c_str());
+    }
+
 }
 
 void testJsonFile::testSimpleLoad_data() {
