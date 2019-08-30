@@ -7,7 +7,9 @@ class JsonFile
 {
 public:
     JsonFile(QString path);
+    JsonFile(const JsonFile& jf2);
     ~JsonFile();
+
     JsonFile& load();
     JsonFile& save();
 
