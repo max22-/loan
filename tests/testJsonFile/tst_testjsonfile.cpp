@@ -16,10 +16,16 @@ private slots:
     void cleanupTestCase();
     void init();
     void cleanup();
+    void testCopyConstructor_data();
+    void testCopyConstructor();
+    void testAssignmentOperator_data();
+    void testAssignmentOperator();
     void testSimpleLoad_data();
     void testSimpleLoad();
     void testSimpleSave_data();
     void testSimpleSave();
+    void testChaining_data();
+    void testChaining();
     void testFileDoesntExist();
     void testGettersSetters_data();
     void testGettersSetters();
@@ -65,6 +71,31 @@ void testJsonFile::cleanup() {
         QFAIL("Couldn't remove database directory.");
 }
 
+void VERIFY_JSONFILE_PROPERTIES(JsonFile& jsonFile,
+                                QString nickname,
+                                int age,
+                                QString city,
+                                int evaluation,
+                                QString MP3FileName,
+                                int year,
+                                int month,
+                                int day,
+                                int hour,
+                                int minute,
+                                int second) {
+    QVERIFY2(jsonFile.getNickname() == nickname, QString("Nicknames don't match : expected \"" + nickname + ", got \"" + jsonFile.getNickname() + "\"").toStdString().c_str());
+    QVERIFY2(jsonFile.getAge() == age, "Ages don't match");
+    QVERIFY2(jsonFile.getCity() == city, QString("Cities don't match : expected \"" + city + ", got \"" + jsonFile.getCity() + "\"").toStdString().c_str());
+    QVERIFY2(jsonFile.getEvaluation() == evaluation, "Evaluations don't match.");
+    QVERIFY2(jsonFile.getMP3FileName() == MP3FileName, "MP3 file names don't match.");
+    QVERIFY2(jsonFile.getTimeStamp().date().year() == year, QString("Years don't match : expected \"" + QString::number(year) + ", got \"" + QString::number(jsonFile.getTimeStamp().date().year()) + "\"").toStdString().c_str());
+    QVERIFY2(jsonFile.getTimeStamp().date().month() == month, "Months don't match.");
+    QVERIFY2(jsonFile.getTimeStamp().date().day() == day, "Days don't match.");
+    QVERIFY2(jsonFile.getTimeStamp().time().hour() == hour, "Hours don't match.");
+    QVERIFY2(jsonFile.getTimeStamp().time().minute() == minute, "Minutes don't match.");
+    QVERIFY2(jsonFile.getTimeStamp().time().second()== second, "Seconds don't match.");
+}
+
 void testJsonFile::commonData() {
     QTest::addColumn<QString>("jsonFileName");
     QTest::addColumn<QString>("jsonData");
@@ -86,7 +117,7 @@ void testJsonFile::commonData() {
         "\"age\": 33,"
         "\"city\": \"Plérin\","
         "\"evaluation\": 3,"
-        "\"filename\": \"2019-08-17 16:33:00.mp3\""
+        "\"filename\": \"2019-08-17 16:33:00.mp3\","
         "\"timestamp\": \"2019-08-17 16:33:00\""
         "}"
     );
@@ -99,7 +130,7 @@ void testJsonFile::commonData() {
         "\"age\": 20,"
         "\"city\": \"Plérin\","
         "\"evaluation\": 4,"
-        "\"filename\": \"2020-01-15 14:45:04.mp3\""
+        "\"filename\": \"2020-01-15 14:45:04.mp3\","
         "\"timestamp\": \"2020-01-15 14:45:04\""
         "}"
     );
@@ -112,12 +143,65 @@ void testJsonFile::commonData() {
         "\"age\": 21,"
         "\"city\": \"Plérin\","
         "\"evaluation\": 5,"
-        "\"filename\": \"2021-03-27 09:32:27.mp3\""
+        "\"filename\": \"2021-03-27 09:32:27.mp3\","
         "\"timestamp\": \"2021-03-27 09:32:27\""
         "}"
     );
 
     QTest::newRow("Stéphane") << timeStamp3 + QString(".json") << jsonData3 << "Stéphane" << 21 << "Plérin" << 5 << timeStamp3 + QString(".mp3") << 2021 << 3 << 27 << 9 << 32 << 27;
+}
+
+void testJsonFile::testCopyConstructor_data() {
+    commonData();
+}
+
+void testJsonFile::testCopyConstructor() {
+    QFETCH(QString, jsonFileName);
+    QFETCH(QString, jsonData);
+    QFETCH(QString, nickname);
+    QFETCH(int, age);
+    QFETCH(QString, city);
+    QFETCH(int, evaluation);
+    QFETCH(QString, MP3FileName);
+    QFETCH(int, year);
+    QFETCH(int, month);
+    QFETCH(int, day);
+    QFETCH(int, hour);
+    QFETCH(int, minute);
+    QFETCH(int, second);
+
+    JsonFile* o1 = new JsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+    JsonFile o2 = *o1;
+    delete o1;
+
+    VERIFY_JSONFILE_PROPERTIES(o2, nickname, age, city, evaluation, MP3FileName, year, month, day, hour, minute, second);
+}
+
+void testJsonFile::testAssignmentOperator_data() {
+    commonData();
+}
+
+void testJsonFile::testAssignmentOperator() {
+    QFETCH(QString, jsonFileName);
+    QFETCH(QString, jsonData);
+    QFETCH(QString, nickname);
+    QFETCH(int, age);
+    QFETCH(QString, city);
+    QFETCH(int, evaluation);
+    QFETCH(QString, MP3FileName);
+    QFETCH(int, year);
+    QFETCH(int, month);
+    QFETCH(int, day);
+    QFETCH(int, hour);
+    QFETCH(int, minute);
+    QFETCH(int, second);
+
+    JsonFile* o1 = new JsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+    JsonFile o2(databaseDirectory.absoluteFilePath("inexistentFile.json"));
+    o2 = *o1;
+    delete o1;
+
+    VERIFY_JSONFILE_PROPERTIES(o2, nickname, age, city, evaluation, MP3FileName, year, month, day, hour, minute, second);
 }
 
 void testJsonFile::testSimpleLoad_data() {
@@ -140,25 +224,20 @@ void testJsonFile::testSimpleLoad()
     QFETCH(int, minute);
     QFETCH(int, second);
 
-    QFile file(databaseDirectory.absoluteFilePath(jsonFileName));
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        QFAIL("Couldn't write to json file.");
-    QTextStream out(&file);
-    out << jsonData;
-    file.close();
+    try {
+        QFile file(databaseDirectory.absoluteFilePath(jsonFileName));
+        if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+            QFAIL("Couldn't write to json file.");
+        QTextStream out(&file);
+        out << jsonData;
+        file.close();
 
-    JsonFile jsonFile = JsonFile(databaseDirectory.absoluteFilePath(jsonFileName)).load();
-    QVERIFY2(jsonFile.getNickname().compare(nickname) == 0, "Nicknames don't match.");
-    QVERIFY2(jsonFile.getAge() == age, "Ages don't match");
-    QVERIFY2(jsonFile.getCity().compare(city) == 0, "Cities don't match.");
-    QVERIFY2(jsonFile.getEvaluation() == evaluation, "Evaluations don't match.");
-    QVERIFY2(jsonFile.getMP3FileName().compare(MP3FileName) == 0, "MP3 file names don't match.");
-    QVERIFY2(jsonFile.getTimeStamp().date().year() == year, "Years don't match.");
-    QVERIFY2(jsonFile.getTimeStamp().date().month() == month, "Months don't match.");
-    QVERIFY2(jsonFile.getTimeStamp().date().day() == day, "Days don't match.");
-    QVERIFY2(jsonFile.getTimeStamp().time().hour() == hour, "Hours don't match.");
-    QVERIFY2(jsonFile.getTimeStamp().time().minute() == minute, "Minutes don't match.");
-    QVERIFY2(jsonFile.getTimeStamp().time().second()== second, "Secondes don't match.");
+        JsonFile jsonFile = JsonFile(databaseDirectory.absoluteFilePath(jsonFileName)).load();
+        qDebug() << &jsonFile;
+        VERIFY_JSONFILE_PROPERTIES(jsonFile, nickname, age, city, evaluation, MP3FileName, year, month, day, hour, minute, second);
+    } catch (QString s) {
+        QFAIL(s.toStdString().c_str());
+    }
 }
 
 void testJsonFile::testSimpleSave_data() {
@@ -202,7 +281,37 @@ void testJsonFile::testSimpleSave()
     auto text = in.readAll();
     file.close();
 
-    QVERIFY2(jsonData.compare(text) == 0, "Content of json document doesn't match the expected result.");
+    QVERIFY2(jsonData == text, "Content of json document doesn't match the expected result.");
+}
+
+void testJsonFile::testChaining_data() {
+    commonData();
+}
+
+void testJsonFile::testChaining() {
+    QFETCH(QString, jsonFileName);
+    QFETCH(QString, jsonData);
+    QFETCH(QString, nickname);
+    QFETCH(int, age);
+    QFETCH(QString, city);
+    QFETCH(int, evaluation);
+    QFETCH(QString, MP3FileName);
+    QFETCH(int, year);
+    QFETCH(int, month);
+    QFETCH(int, day);
+    QFETCH(int, hour);
+    QFETCH(int, minute);
+    QFETCH(int, second);
+
+    JsonFile o1 = JsonFile(databaseDirectory.absoluteFilePath(jsonFileName))
+            .setNickName(nickname)
+            .setAge(age)
+            .setCity(city)
+            .setEvaluation(evaluation)
+            .setMP3FileName(MP3FileName)
+            .setTimeStamp(QDateTime(QDate(year, month, day), QTime(hour, minute, second)));
+
+    VERIFY_JSONFILE_PROPERTIES(o1, nickname, age, city, evaluation, MP3FileName, year, month, day, hour, minute, second);
 }
 
 void testJsonFile::testFileDoesntExist() {
@@ -216,7 +325,7 @@ void testJsonFile::testGettersSetters_data() {
 }
 
 template <typename T>
-void testGettersSettersHelperFunction(JsonFile& jsonFile, const QString methodName, T (JsonFile::*getter)(void), void (JsonFile::*setter)(T), const T value) {
+void testGettersSettersHelperFunction(JsonFile& jsonFile, const QString methodName, T (JsonFile::*getter)(void), JsonFile& (JsonFile::*setter)(const T&), const T value) {
     QVERIFY_EXCEPTION_THROWN((jsonFile.*getter)(), QString);
     (jsonFile.*setter)(value);
     try {
@@ -310,7 +419,7 @@ void testJsonFile::testInvalidFile_data() {
         "{\"nickname\": \"Maxime\","
         "\"city\": \"Plérin\","
         "\"evaluation\": 3,"
-        "\"filename\": \"2019-08-17 16:33:00.mp3\""
+        "\"filename\": \"2019-08-17 16:33:00.mp3\","
         "\"timestamp\": \"2019-08-17 16:33:00\""
         "}"
     );
@@ -320,7 +429,7 @@ void testJsonFile::testInvalidFile_data() {
     auto jsonData2 = QString(
         "{\"nickname\": \"J.J. Brun's\","
         "\"age\": 20,"
-        "\"filename\": \"2020-01-15 14:45:04.mp3\""
+        "\"filename\": \"2020-01-15 14:45:04.mp3\","
         "\"timestamp\": \"2020-01-15 14:45:04\""
         "}"
     );
@@ -347,7 +456,7 @@ void testJsonFile::testInvalidFile_data() {
         "\"age\": \"33\","
         "\"city\": \"Plérin\","
         "\"evaluation\": 3,"
-        "\"filename\": \"2019-08-17 16:33:00.mp3\""
+        "\"filename\": \"2019-08-17 16:33:00.mp3\","
         "\"timestamp\": \"2019-08-17 16:33:00\""
         "}"
     );
@@ -358,7 +467,7 @@ void testJsonFile::testInvalidFile_data() {
         "\"age\": 20,"
         "\"city\": 22190,"
         "\"evaluation\": 4,"
-        "\"filename\": \"2020-01-15 14:45:04.mp3\""
+        "\"filename\": \"2020-01-15 14:45:04.mp3\","
         "\"timestamp\": \"2020-01-15 14:45:04\""
         "}"
     );
@@ -369,7 +478,7 @@ void testJsonFile::testInvalidFile_data() {
         "\"age\": 21,"
         "\"city\": \"Plérin\","
         "\"evaluation\": 4.5,"
-        "\"filename\": \"2021-03-27 09:32:27.mp3\""
+        "\"filename\": \"2021-03-27 09:32:27.mp3\","
         "\"timestamp\": \"2021-03-27 09:32:27\""
         "}"
     );
@@ -380,7 +489,7 @@ void testJsonFile::testInvalidFile_data() {
         "\"age\": \"33\","
         "\"city\": \"Plérin\","
         "\"evaluation\": 3,"
-        "\"filename\": \"2019-08-17 16:33:00.mp3\""
+        "\"filename\": \"2019-08-17 16:33:00.mp3\","
         "\"timestamp\": \"1234\""
         "}"
     );

@@ -9,14 +9,14 @@ public:
     JsonFile(QString path);
     ~JsonFile();
     JsonFile& load();
-    void save();
+    JsonFile& save();
 
-    void setTimeStamp(QDateTime timeStamp);
-    void setNickName(QString nickname);
-    void setAge(int age);
-    void setCity(QString city);
-    void setEvaluation(int evaluation);
-    void setMP3FileName(QString MP3fileName);
+    JsonFile& setTimeStamp(const QDateTime& timeStamp);
+    JsonFile& setNickName(const QString& nickname);
+    JsonFile& setAge(const int& age);
+    JsonFile& setCity(const QString& city);
+    JsonFile& setEvaluation(const int& evaluation);
+    JsonFile& setMP3FileName(const QString& MP3fileName);
 
     QDateTime getTimeStamp();
     QString getNickname();
