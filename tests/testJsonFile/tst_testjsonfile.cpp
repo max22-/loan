@@ -16,6 +16,7 @@ private slots:
     void cleanupTestCase();
     void init();
     void cleanup();
+    void testEmptyJsonFile();
     void testCopyConstructor_data();
     void testCopyConstructor();
     void testAssignmentOperator_data();
@@ -70,6 +71,17 @@ void testJsonFile::init() {
 void testJsonFile::cleanup() {
     if(!databaseDirectory.removeRecursively())
         QFAIL("Couldn't remove database directory.");
+}
+
+void testJsonFile::testEmptyJsonFile() {
+    JsonFile jsonFile(databaseDirectory.absoluteFilePath("inexistentFile.json"));
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getNickname(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getAge(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getCity(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getEvaluation(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getMP3FileName(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getTimeStamp(), QString);
+
 }
 
 void VERIFY_JSONFILE_PROPERTIES(JsonFile& jsonFile,
