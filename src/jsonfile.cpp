@@ -8,23 +8,47 @@
 JsonFile::JsonFile(QString path)
 {
     this->path=path;
+    nickname = nullptr;
+    age = nullptr;
+    city = nullptr;
+    evaluation = nullptr;
+    MP3FileName = nullptr;
+    timeStamp = nullptr;
 }
 
 JsonFile::JsonFile(const JsonFile& other) {
     qDebug() << "Copy constructor";
     path = other.path;
+
     if(other.nickname != nullptr)
         nickname = new QString(*other.nickname);
+    else
+        nickname = nullptr;
+
     if(other.age != nullptr)
         age = new int(*other.age);
+    else
+        age = nullptr;
+
     if(other.city != nullptr)
         city = new QString(*other.city);
+    else
+        city = nullptr;
+
     if(other.evaluation != nullptr)
         evaluation = new int(*other.evaluation);
+    else
+        evaluation = nullptr;
+
     if(other.MP3FileName != nullptr)
         MP3FileName = new QString(*other.MP3FileName);
+    else
+        MP3FileName = nullptr;
+
     if(other.timeStamp != nullptr)
         timeStamp = new QDateTime(*other.timeStamp);
+    else
+        timeStamp = nullptr;
 }
 
 JsonFile::~JsonFile() {
