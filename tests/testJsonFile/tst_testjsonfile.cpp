@@ -20,6 +20,7 @@ private slots:
     void testCopyConstructor();
     void testAssignmentOperator_data();
     void testAssignmentOperator();
+    void testAssignmentOperator2();
     void testSimpleLoad_data();
     void testSimpleLoad();
     void testSimpleSave_data();
@@ -225,6 +226,28 @@ void testJsonFile::testAssignmentOperator() {
         QFAIL(QString("Caught exception : " + s).toStdString().c_str());
     }
 
+}
+
+void testJsonFile::testAssignmentOperator2() {
+
+    // We test if the destination object if cleared if we assign it a blank JsonFile.
+
+    JsonFile o1(databaseDirectory.absoluteFilePath("inexistentFile.json"));
+    o1.setNickName("Maxime")
+            .setAge(33)
+            .setCity("Plérin")
+            .setEvaluation(5)
+            .setMP3FileName("2019-08-31 12:13:00.mp3")
+            .setTimeStamp(QDateTime(QDate(2019, 8, 31), QTime(12, 13, 0)));
+    JsonFile o2(databaseDirectory.absoluteFilePath("inexistentFile2.json"));
+    o1 = o2;
+
+    QVERIFY_EXCEPTION_THROWN(o2.getNickname(), QString);
+    QVERIFY_EXCEPTION_THROWN(o2.getAge(), QString);
+    QVERIFY_EXCEPTION_THROWN(o2.getCity(), QString);
+    QVERIFY_EXCEPTION_THROWN(o2.getEvaluation(), QString);
+    QVERIFY_EXCEPTION_THROWN(o2.getMP3FileName(), QString);
+    QVERIFY_EXCEPTION_THROWN(o2.getTimeStamp(), QString);
 }
 
 void testJsonFile::testSimpleLoad_data() {
