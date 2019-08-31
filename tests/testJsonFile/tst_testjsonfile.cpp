@@ -84,17 +84,17 @@ void VERIFY_JSONFILE_PROPERTIES(JsonFile& jsonFile,
                                 int hour,
                                 int minute,
                                 int second) {
-    QVERIFY2(jsonFile.getNickname() == nickname, QString("Nicknames don't match : expected \"" + nickname + ", got \"" + jsonFile.getNickname() + "\"").toStdString().c_str());
-    QVERIFY2(jsonFile.getAge() == age, "Ages don't match");
-    QVERIFY2(jsonFile.getCity() == city, QString("Cities don't match : expected \"" + city + ", got \"" + jsonFile.getCity() + "\"").toStdString().c_str());
-    QVERIFY2(jsonFile.getEvaluation() == evaluation, "Evaluations don't match.");
-    QVERIFY2(jsonFile.getMP3FileName() == MP3FileName, "MP3 file names don't match.");
-    QVERIFY2(jsonFile.getTimeStamp().date().year() == year, QString("Years don't match : expected \"" + QString::number(year) + ", got \"" + QString::number(jsonFile.getTimeStamp().date().year()) + "\"").toStdString().c_str());
-    QVERIFY2(jsonFile.getTimeStamp().date().month() == month, "Months don't match.");
-    QVERIFY2(jsonFile.getTimeStamp().date().day() == day, "Days don't match.");
-    QVERIFY2(jsonFile.getTimeStamp().time().hour() == hour, "Hours don't match.");
-    QVERIFY2(jsonFile.getTimeStamp().time().minute() == minute, "Minutes don't match.");
-    QVERIFY2(jsonFile.getTimeStamp().time().second()== second, "Seconds don't match.");
+    QVERIFY2(jsonFile.getNickname() == nickname, QString("Nicknames don't match : expected \"" + nickname + "\", got \"" + jsonFile.getNickname() + "\".").toStdString().c_str());
+    QVERIFY2(jsonFile.getAge() == age, QString("Ages don't match : expected " + QString::number(age) + ", got " + QString::number(jsonFile.getAge()) + ".").toStdString().c_str());
+    QVERIFY2(jsonFile.getCity() == city, QString("Cities don't match : expected \"" + city + "\", got \"" + jsonFile.getCity() + "\".").toStdString().c_str());
+    QVERIFY2(jsonFile.getEvaluation() == evaluation, QString("Evaluations don't match : expected " + QString::number(evaluation) + ", got " + QString::number(jsonFile.getEvaluation()) + ".").toStdString().c_str());
+    QVERIFY2(jsonFile.getMP3FileName() == MP3FileName, QString("MP3 file names don't match : expected \"" + MP3FileName + "\", got \"" + jsonFile.getMP3FileName() + "\".").toStdString().c_str());
+    QVERIFY2(jsonFile.getTimeStamp().date().year() == year, QString("Years don't match : expected " + QString::number(year) + ", got " + QString::number(jsonFile.getTimeStamp().date().year()) + ".").toStdString().c_str());
+    QVERIFY2(jsonFile.getTimeStamp().date().month() == month, QString("Months don't match : expected " + QString::number(month) + ", got " + QString::number(jsonFile.getTimeStamp().date().month()) + ".").toStdString().c_str());
+    QVERIFY2(jsonFile.getTimeStamp().date().day() == day, QString("Days don't match : expected " + QString::number(day) + ", got " + QString::number(jsonFile.getTimeStamp().date().day()) + ".").toStdString().c_str());
+    QVERIFY2(jsonFile.getTimeStamp().time().hour() == hour, QString("Hours don't match : expected " + QString::number(hour) + ", got " + QString::number(jsonFile.getTimeStamp().time().hour()) + ".").toStdString().c_str());
+    QVERIFY2(jsonFile.getTimeStamp().time().minute() == minute, QString("Minutes don't match : expected " + QString::number(minute) + ", got " + QString::number(jsonFile.getTimeStamp().time().minute()) + ".").toStdString().c_str());
+    QVERIFY2(jsonFile.getTimeStamp().time().second()== second, QString("Seconds don't match : expected " + QString::number(second) + ", got " + QString::number(jsonFile.getTimeStamp().time().second()) + ".").toStdString().c_str());
 }
 
 void testJsonFile::commonData() {
