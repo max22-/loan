@@ -51,6 +51,34 @@ JsonFile::JsonFile(const JsonFile& other) {
         timeStamp = nullptr;
 }
 
+template <typename T>
+T* assign(T* v1, const T* v2) {
+    if(v2 == nullptr) {
+        if(v1 != nullptr)
+            delete v1;
+        return nullptr;
+    }
+    if(v1 != nullptr)
+        delete v1;
+    v1 = new T(*v2);
+    return v1;
+}
+
+JsonFile& JsonFile::operator=(const JsonFile &other) {
+    qDebug() << "Assignment operator";
+
+    if(this == &other) // auto assignment
+        return *this;
+
+    nickname = assign(nickname, other.nickname);
+    age = assign(age, other.age);
+    city = assign(city, other.city);
+    evaluation = assign(evaluation, other.evaluation);
+    MP3FileName = assign(MP3FileName, other.MP3FileName);
+    timeStamp = assign(timeStamp, other.timeStamp);
+    return *this;
+}
+
 JsonFile::~JsonFile() {
     delete timeStamp;
     delete nickname;

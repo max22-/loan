@@ -7,7 +7,8 @@ class JsonFile
 {
 public:
     JsonFile(QString path);
-    JsonFile(const JsonFile& jf2);
+    JsonFile(const JsonFile& other);
+    JsonFile& operator=(const JsonFile& other);
     ~JsonFile();
 
     JsonFile& load();
