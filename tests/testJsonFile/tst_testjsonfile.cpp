@@ -22,6 +22,7 @@ private slots:
     void testAssignmentOperator_data();
     void testAssignmentOperator();
     void testAssignmentOperator2();
+    void testAutoAssignment();
     void testSimpleLoad_data();
     void testSimpleLoad();
     void testSimpleSave_data();
@@ -260,6 +261,26 @@ void testJsonFile::testAssignmentOperator2() {
     QVERIFY_EXCEPTION_THROWN(o2.getEvaluation(), QString);
     QVERIFY_EXCEPTION_THROWN(o2.getMP3FileName(), QString);
     QVERIFY_EXCEPTION_THROWN(o2.getTimeStamp(), QString);
+}
+
+void testJsonFile::testAutoAssignment() {
+    JsonFile o1(databaseDirectory.absoluteFilePath("inexistentFile.json"));
+    o1.setNickName("Maxime")
+            .setAge(33)
+            .setEvaluation(5)
+            .setMP3FileName("2019-09-01 15:58:00")
+            .setTimeStamp(QDateTime(QDate(2019, 9, 1), QTime(15, 58, 0)));
+    o1 = o1; // auto assignment
+    auto nickname = o1.getNickname();
+    auto age = o1.getAge();
+    auto evaluation = o1.getEvaluation();
+    auto MP3FileName = o1.getMP3FileName();
+    auto year = o1.getTimeStamp().date().year();
+    auto month = o1.getTimeStamp().date().month();
+    auto day = o1.getTimeStamp().date().day();
+    auto hour = o1.getTimeStamp().time().hour();
+    auto minute = o1.getTimeStamp().time().minute();
+    auto second = o1.getTimeStamp().time().second();
 }
 
 void testJsonFile::testSimpleLoad_data() {
