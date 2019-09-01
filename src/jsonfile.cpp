@@ -123,6 +123,8 @@ QDateTime* extractQDateTimeValue(QJsonObject o, const QString& key) {
 
 JsonFile& JsonFile::load() {
     QFile file(path);
+    if(!file.exists())
+        throw QString("Cannot load " + path + " : file doesn't exist.");
     file.open(QFile::ReadOnly);
     auto jsonData = QString::fromUtf8(file.readAll());
     file.close();
