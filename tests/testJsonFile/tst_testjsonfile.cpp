@@ -440,9 +440,7 @@ void testJsonFile::testGettersSetters() {
     testGettersSettersHelperFunction<QString>(jsonFile, "city", &JsonFile::getCity, &JsonFile::setCity, city);
     testGettersSettersHelperFunction<int>(jsonFile, "evaluation", &JsonFile::getEvaluation, &JsonFile::setEvaluation, evaluation);
     testGettersSettersHelperFunction<QString>(jsonFile, "MP3FileName", &JsonFile::getMP3FileName, &JsonFile::setMP3FileName, MP3FileName);
-    testGettersSettersHelperFunction<QString>(jsonFile, "city", &JsonFile::getCity, &JsonFile::setCity, city);
     testGettersSettersHelperFunction<QDateTime>(jsonFile, "timeStamp", &JsonFile::getTimeStamp, &JsonFile::setTimeStamp, timeStamp);
-
 }
 
 void testJsonFile::testIncompleteSave_data() {
