@@ -117,7 +117,7 @@ QDateTime* extractQDateTimeValue(QJsonObject o, const QString& key) {
     if(val.type() != QJsonValue::String)
         throw QString("Json file : expected QDateTime, got " + QString(val.type()));
     auto datetimeString = val.toString();
-    auto dateTime = QDateTime::fromString(datetimeString, "YYYY-MM-dd hh:mm:ss");
+    auto dateTime = QDateTime::fromString(datetimeString, "yyyy-MM-dd hh:mm:ss");
     return new QDateTime(dateTime);
 }
 
