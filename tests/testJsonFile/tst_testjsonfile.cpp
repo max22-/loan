@@ -312,7 +312,6 @@ void testJsonFile::testSimpleLoad()
         file.close();
 
         JsonFile jsonFile = JsonFile(databaseDirectory.absoluteFilePath(jsonFileName)).load();
-        qDebug() << &jsonFile;
         VERIFY_JSONFILE_PROPERTIES(jsonFile, nickname, age, city, evaluation, MP3FileName, year, month, day, hour, minute, second);
     } catch (QString s) {
         QFAIL(s.toStdString().c_str());
