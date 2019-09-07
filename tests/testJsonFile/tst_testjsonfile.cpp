@@ -36,7 +36,7 @@ private slots:
     void testIncompleteSave();
     void testInvalidFile_data();
     void testInvalidFile();
-    void testTestGetterAfterFailedLoad();
+    void testGetterAfterFailedLoad();
 
 private:
     QDir databaseDirectory;
@@ -589,7 +589,7 @@ void testJsonFile::testInvalidFile() {
 
 }
 
-void testJsonFile::testTestGetterAfterFailedLoad() {
+void testJsonFile::testGetterAfterFailedLoad() {
     auto jsonFile = JsonFile(databaseDirectory.absoluteFilePath("inexistantFile.json"));
     jsonFile.setNickName("Maxime");
     jsonFile.setAge(33);
