@@ -36,11 +36,14 @@ private slots:
     void testIncompleteSave();
     void testInvalidFile_data();
     void testInvalidFile();
-    void testGetterAfterFailedLoad();
+    void testGetterAfterFailedLoad();       // inexistent file
+    void testGetterAfterFailedLoad2_data();
+    void testGetterAfterFailedLoad2();      // invalid file
 
 private:
     QDir databaseDirectory;
     void commonData();
+    void invalidCommonData();
 
 };
 
@@ -488,7 +491,7 @@ void testJsonFile::testIncompleteSave() {
 
 }
 
-void testJsonFile::testInvalidFile_data() {
+void testJsonFile::invalidCommonData() {
     QTest::addColumn<QString>("jsonData");
 
     auto jsonData1 = QString(
@@ -570,7 +573,10 @@ void testJsonFile::testInvalidFile_data() {
         "}"
     );
     QTest::newRow("Maxime 3") << jsonData7; // invalid timestamp
+}
 
+void testJsonFile::testInvalidFile_data() {
+    invalidCommonData();
 }
 
 void testJsonFile::testInvalidFile() {
@@ -603,6 +609,42 @@ void testJsonFile::testGetterAfterFailedLoad() {
         // do nothing, an exception should be thrown and it's normal
     }
     QVERIFY_EXCEPTION_THROWN(jsonFile.getNickname(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getAge(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getCity(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getEvaluation(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getMP3FileName(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getTimeStamp(), QString);
+}
+
+void testJsonFile::testGetterAfterFailedLoad2_data() {
+    invalidCommonData();
+}
+
+void testJsonFile::testGetterAfterFailedLoad2() {
+    QFETCH(QString, jsonData);
+
+    auto jsonFileName = "test.json";
+
+    QFile file(databaseDirectory.absoluteFilePath(jsonFileName));
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        QFAIL("Couldn't write to json file.");
+    QTextStream out(&file);
+    out << jsonData;
+    file.close();
+
+    JsonFile jsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+    jsonFile.setNickName("Monique");
+    jsonFile.setAge(62);
+    jsonFile.setCity("Plérin");
+    jsonFile.setEvaluation(5);
+    jsonFile.setMP3FileName("2019-09-07 16:42:35.mp3");
+    jsonFile.setTimeStamp(QDateTime(QDate(2019, 9, 7), QTime(16, 42, 35)));
+    try {
+        jsonFile.load();
+    } catch (QString s) {
+        // do nothing, an exception should be thrown and it's normal
+    }
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getNickname(), QString);          // A failed load should clear every field previously set
     QVERIFY_EXCEPTION_THROWN(jsonFile.getAge(), QString);
     QVERIFY_EXCEPTION_THROWN(jsonFile.getCity(), QString);
     QVERIFY_EXCEPTION_THROWN(jsonFile.getEvaluation(), QString);
