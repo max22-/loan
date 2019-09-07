@@ -141,6 +141,23 @@ JsonFile& JsonFile::load() {
 }
 
 JsonFile& JsonFile::save() {
+    QJsonObject jsonObject;
+    jsonObject.insert("nickname", *nickname);
+    jsonObject.insert("age", *age);
+    jsonObject.insert("city", *city);
+    jsonObject.insert("evaluation", *evaluation);
+    jsonObject.insert("filename", *MP3FileName);
+    jsonObject.insert("timeStamp", timeStamp->toString("yyyy-MM-dd hh:mm:ss"));
+
+    QJsonDocument jsonDocument(jsonObject);
+
+    QFile jsonFile(path);
+    if(jsonFile.open(QFile::WriteOnly)) {
+        jsonFile.write(jsonDocument.toJson());
+        jsonFile.close();
+    }
+    else
+        throw QString("Couldn't write json data to file " + path);
 
     return *this;
 }
