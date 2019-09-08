@@ -31,12 +31,12 @@ public:
 private:
     QString path;
 
-    QDateTime *timeStamp = nullptr;
     QString *nickname = nullptr;
     int *age = nullptr;
     QString *city = nullptr;
     int *evaluation = nullptr;
     QString *MP3FileName = nullptr;
+    QDateTime *timeStamp = nullptr;
 };
 
 #endif // JSONFILE_H
