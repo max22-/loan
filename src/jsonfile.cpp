@@ -126,12 +126,17 @@ JsonFile& JsonFile::load() {
     QJsonDocument d = QJsonDocument::fromJson(jsonData.toUtf8());
     QJsonObject o = d.object();
 
-    nickname = extractStringValue(o, "nickname");
-    age = extractIntValue(o, "age");
-    city = extractStringValue(o, "city");
-    evaluation = extractIntValue(o, "evaluation");
-    MP3FileName = extractStringValue(o, "filename");
-    timeStamp = extractQDateTimeValue(o, "timestamp");
+    try {
+        nickname = extractStringValue(o, "nickname");
+        age = extractIntValue(o, "age");
+        city = extractStringValue(o, "city");
+        evaluation = extractIntValue(o, "evaluation");
+        MP3FileName = extractStringValue(o, "filename");
+        timeStamp = extractQDateTimeValue(o, "timestamp");
+    } catch (QString s) {
+        clear();
+        throw;
+    }
     return *this;
 }
 
@@ -241,16 +246,28 @@ QString JsonFile::getMP3FileName() {
 }
 
 void JsonFile::clear() {
-    if(nickname != nullptr)
+    if(nickname != nullptr) {
         delete nickname;
-    if(age != nullptr)
+        nickname = nullptr;
+    }
+    if(age != nullptr) {
         delete age;
-    if(city != nullptr)
+        age = nullptr;
+    }
+    if(city != nullptr) {
         delete city;
-    if(evaluation != nullptr)
+        city = nullptr;
+    }
+    if(evaluation != nullptr) {
         delete evaluation;
-    if(MP3FileName != nullptr)
+        evaluation = nullptr;
+    }
+    if(MP3FileName != nullptr) {
         delete MP3FileName;
-    if(timeStamp != nullptr)
+        MP3FileName = nullptr;
+    }
+    if(timeStamp != nullptr) {
         delete timeStamp;
+        timeStamp = nullptr;
+    }
 }
