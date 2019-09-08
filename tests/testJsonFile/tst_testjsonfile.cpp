@@ -130,39 +130,42 @@ void testJsonFile::commonData() {
 
     auto timeStamp1 = "2019-08-17 16:33:00";
     auto jsonData1 = QString(
-        "{\"nickname\": \"Maxime\","
-        "\"age\": 33,"
-        "\"city\": \"Plérin\","
-        "\"evaluation\": 3,"
-        "\"filename\": \"2019-08-17 16:33:00.mp3\","
-        "\"timestamp\": \"2019-08-17 16:33:00\""
-        "}"
+        "{\n"
+        "    \"age\": 33,\n"
+        "    \"city\": \"Plérin\",\n"
+        "    \"evaluation\": 3,\n"
+        "    \"filename\": \"2019-08-17 16:33:00.mp3\",\n"
+        "    \"nickname\": \"Maxime\",\n"
+        "    \"timestamp\": \"2019-08-17 16:33:00\"\n"
+        "}\n"
     );
 
     QTest::newRow("Maxime") << timeStamp1 + QString(".json") << jsonData1 << "Maxime" << 33 << "Plérin" << 3 << timeStamp1 + QString(".mp3") << 2019 << 8 << 17 << 16 << 33 << 0;
 
     auto timeStamp2 = "2020-01-15 14:45:04";
     auto jsonData2 = QString(
-        "{\"nickname\": \"J.J. Brun's\","
-        "\"age\": 20,"
-        "\"city\": \"Plérin\","
-        "\"evaluation\": 4,"
-        "\"filename\": \"2020-01-15 14:45:04.mp3\","
-        "\"timestamp\": \"2020-01-15 14:45:04\""
-        "}"
+        "{\n"
+        "    \"age\": 20,\n"
+        "    \"city\": \"Plérin\",\n"
+        "    \"evaluation\": 4,\n"
+        "    \"filename\": \"2020-01-15 14:45:04.mp3\",\n"
+        "    \"nickname\": \"J.J. Brun's\",\n"
+        "    \"timestamp\": \"2020-01-15 14:45:04\"\n"
+        "}\n"
     );
 
     QTest::newRow("J.J. Brun's") << timeStamp2 + QString(".json") << jsonData2 << "J.J. Brun's" << 20 << "Plérin" << 4 << timeStamp2 + QString(".mp3") << 2020 << 1 << 15 << 14 << 45 << 4;
 
     auto timeStamp3 = "2021-03-27 09:32:27";
     auto jsonData3 = QString(
-        "{\"nickname\": \"Stéphane\","
-        "\"age\": 21,"
-        "\"city\": \"Plérin\","
-        "\"evaluation\": 5,"
-        "\"filename\": \"2021-03-27 09:32:27.mp3\","
-        "\"timestamp\": \"2021-03-27 09:32:27\""
-        "}"
+        "{\n"
+        "    \"age\": 21,\n"
+        "    \"city\": \"Plérin\",\n"
+        "    \"evaluation\": 5,\n"
+        "    \"filename\": \"2021-03-27 09:32:27.mp3\",\n"
+        "    \"nickname\": \"Stéphane\",\n"
+        "    \"timestamp\": \"2021-03-27 09:32:27\"\n"
+        "}\n"
     );
 
     QTest::newRow("Stéphane") << timeStamp3 + QString(".json") << jsonData3 << "Stéphane" << 21 << "Plérin" << 5 << timeStamp3 + QString(".mp3") << 2021 << 3 << 27 << 9 << 32 << 27;
