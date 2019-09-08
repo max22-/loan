@@ -141,6 +141,19 @@ JsonFile& JsonFile::load() {
 }
 
 JsonFile& JsonFile::save() {
+    if(nickname == nullptr)
+        throw QString("JsonFile::save : nickname is not set");
+    if(age == nullptr)
+        throw QString("JsonFile::save : age is not set");
+    if(city == nullptr)
+        throw QString("JsonFile::save : city is not set");
+    if(evaluation == nullptr)
+        throw QString("JsonFile::save : evaluation is not set");
+    if(MP3FileName == nullptr)
+        throw QString("JsonFile::save : MP3FileName is not set");
+    if(timeStamp == nullptr)
+        throw QString("JsonFile::save : timeStamp is not set");
+
     QJsonObject jsonObject;
     jsonObject.insert("nickname", *nickname);
     jsonObject.insert("age", *age);
