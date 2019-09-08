@@ -147,7 +147,7 @@ JsonFile& JsonFile::save() {
     jsonObject.insert("city", *city);
     jsonObject.insert("evaluation", *evaluation);
     jsonObject.insert("filename", *MP3FileName);
-    jsonObject.insert("timeStamp", timeStamp->toString("yyyy-MM-dd hh:mm:ss"));
+    jsonObject.insert("timestamp", timeStamp->toString("yyyy-MM-dd hh:mm:ss"));
 
     QJsonDocument jsonDocument(jsonObject);
 
