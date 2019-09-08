@@ -117,16 +117,16 @@ QDateTime* extractQDateTimeValue(QJsonObject o, const QString& key) {
 }
 
 JsonFile& JsonFile::load() {
-    QFile file(path);
-    if(!file.exists())
-        throw QString("Cannot load " + path + " : file doesn't exist.");
-    file.open(QFile::ReadOnly);
-    auto jsonData = QString::fromUtf8(file.readAll());
-    file.close();
-    QJsonDocument d = QJsonDocument::fromJson(jsonData.toUtf8());
-    QJsonObject o = d.object();
-
     try {
+        QFile file(path);
+        if(!file.exists())
+            throw QString("Cannot load " + path + " : file doesn't exist.");
+        file.open(QFile::ReadOnly);
+        auto jsonData = QString::fromUtf8(file.readAll());
+        file.close();
+        QJsonDocument d = QJsonDocument::fromJson(jsonData.toUtf8());
+        QJsonObject o = d.object();
+
         nickname = extractStringValue(o, "nickname");
         age = extractIntValue(o, "age");
         city = extractStringValue(o, "city");
