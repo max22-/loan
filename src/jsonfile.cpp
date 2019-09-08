@@ -80,12 +80,7 @@ JsonFile& JsonFile::operator=(const JsonFile &other) {
 }
 
 JsonFile::~JsonFile() {
-    delete timeStamp;
-    delete nickname;
-    delete age;
-    delete city;
-    delete evaluation;
-    delete MP3FileName;
+    clear();
 }
 
 QJsonValue unwrapObject(QJsonObject o, const QString& key) {
@@ -243,4 +238,19 @@ QString JsonFile::getMP3FileName() {
     if(MP3FileName == nullptr)
         throw QString("MP3FileName is not set.");
     return *MP3FileName;
+}
+
+void JsonFile::clear() {
+    if(nickname != nullptr)
+        delete nickname;
+    if(age != nullptr)
+        delete age;
+    if(city != nullptr)
+        delete city;
+    if(evaluation != nullptr)
+        delete evaluation;
+    if(MP3FileName != nullptr)
+        delete MP3FileName;
+    if(timeStamp != nullptr)
+        delete timeStamp;
 }

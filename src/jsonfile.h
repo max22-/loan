@@ -37,6 +37,8 @@ private:
     int *evaluation = nullptr;
     QString *MP3FileName = nullptr;
     QDateTime *timeStamp = nullptr;
+
+    void clear();
 };
 
 #endif // JSONFILE_H
