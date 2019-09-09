@@ -8,8 +8,8 @@
 #include "config.h"
 #include <QDebug>
 #include <QDateTime>
-#include <QJsonObject>
-#include <QJsonDocument>
+#include "jsonfile.h"
+#include <QFileInfo>
 
 StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWindow *mainWindow, QObject *parent) : QObject(parent)
 {
@@ -184,19 +184,20 @@ void StateHandler::MP3ConversionState(bool active) {
 void StateHandler::saveMessageSate(bool active) {
     if(active) {
         qDebug() << "entering saveMessageState";
-        QString timeStamp = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-        QJsonObject jsonObject;
-        jsonObject.insert("timeStamp", timeStamp);
-        jsonObject.insert("nickname", ui->nicknameLineEdit->text());
-        jsonObject.insert("filename", timeStamp + ".mp3");
-        jsonObject.insert("age", ui->ageLineEdit->text().toInt());
-        jsonObject.insert("city", ui->cityLineEdit->text());
-        jsonObject.insert("evaluation", ui->evaluationSlider->value());
-        QJsonDocument jsonDocument(jsonObject);
-        qDebug() << jsonDocument.toJson();
+        QDateTime timeStamp = QDateTime::currentDateTime();
+        QString timeStampString = timeStamp.toString("yyyy-MM-dd hh:mm:ss");
 
         Config& config = Config::getInstance();
-        bool moved = QFile(Config::getInstance().tempMP3FileName()).rename(config.outboxDirectory().absoluteFilePath(timeStamp + ".mp3"));
+        JsonFile jsonFile(config.outboxDirectory().absoluteFilePath(timeStampString + ".json"));
+        jsonFile.setNickName(ui->nicknameLineEdit->text())
+            .setAge(ui->ageLineEdit->text().toInt())
+            .setCity(ui->cityLineEdit->text())
+            .setEvaluation(ui->evaluationSlider->value())
+            .setMP3FileName(timeStampString + ".mp3")
+            .setTimeStamp(timeStamp);
+
+        QFile MP3File(Config::getInstance().tempMP3FileName());
+        bool moved = MP3File.rename(config.outboxDirectory().absoluteFilePath(timeStampString + ".mp3"));
         if(!moved) {
             qCritical() << "Couldn't move MP3 file to outbox directory : " + config.outboxDirectory().absolutePath();
             QMessageBox msgBox;
@@ -206,24 +207,27 @@ void StateHandler::saveMessageSate(bool active) {
             return;
         }
 
-        QFile jsonFile(config.outboxDirectory().absoluteFilePath(timeStamp + ".json"));
-        if(jsonFile.open(QFile::WriteOnly)) {
-            jsonFile.write(jsonDocument.toJson());
-            jsonFile.close();
+        try {
+            jsonFile.save();
+            qDebug() << "Json file has been saved correctly.";
             QMessageBox msgBox;
             msgBox.setText("Votre message a été enregistré.");
             msgBox.exec();
             mainWindow->audioRecorder.clear();
             stateMachine->submitEvent("saved");
-        }
-        else {
-            qCritical() << "Could'nt create json file in outbox directory.";
+        } catch (QString s) {
+            qCritical() << "Could'nt create json file in outbox directory :";
+            qCritical() << "Caught exception ! " + s;
+            qDebug() << "Trying to delete MP3 file in outbox directory (" + QFileInfo(MP3File).absoluteFilePath() + ")";
+            if(MP3File.remove() == true)
+                qDebug() << "MP3 file remove with success.";
+            else
+                qDebug() << "Failed to delete MP3 file.";
             QMessageBox msgBox;
             msgBox.setText("L'enregistrement du message dans la base de données a échoué, nous en sommes désolés.");
             msgBox.exec();
             stateMachine->submitEvent("error");
         }
-
     }
     else {
         qDebug() << "quitting saveMessageState";
