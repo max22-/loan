@@ -19,4 +19,10 @@ private:
     QDir inbox;
 };
 
+#define DATE_COLUMN 0
+#define NICKNAME_COLUMN 1
+#define AGE_COLUMN 2
+#define CITY_COLUMN 3
+#define EVALUATION_COLUMN 4
+
 #endif // RECORDINGSMODEL_H
