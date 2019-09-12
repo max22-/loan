@@ -21,12 +21,12 @@ public:
     JsonFile& setEvaluation(const int& evaluation);
     JsonFile& setMP3FileName(const QString& MP3fileName);
 
-    QDateTime getTimeStamp();
-    QString getNickname();
-    int getAge();
-    QString getCity();
-    int getEvaluation();
-    QString getMP3FileName();
+    QDateTime getTimeStamp() const;
+    QString getNickname() const;
+    int getAge() const;
+    QString getCity() const;
+    int getEvaluation() const;
+    QString getMP3FileName() const;
 
 private:
     QString path;

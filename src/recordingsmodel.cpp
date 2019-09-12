@@ -7,11 +7,11 @@
 RecordingsModel::RecordingsModel(QObject *parent) : QAbstractTableModel (parent)
 {
     inbox = Config::getInstance().inboxDirectory();
-    jsonFilesList = inbox.entryList(QStringList() << "*.json", QDir::Files, QDir::Name);
+    update();
 }
 
 int RecordingsModel::rowCount(const QModelIndex &parent) const {
-    return jsonFilesList.length();
+    return jsonFiles.length();
 }
 
 int RecordingsModel::columnCount(const QModelIndex &parent) const {
@@ -21,56 +21,22 @@ int RecordingsModel::columnCount(const QModelIndex &parent) const {
 QVariant RecordingsModel::data(const QModelIndex &index, int role) const {
     if(role == Qt::DisplayRole) {
 
-        JsonFile jsonFile(inbox.absoluteFilePath(jsonFilesList.at(index.row())));
         try {
-            jsonFile.load();
+            switch(index.column()) {
+                case DATE_COLUMN:
+                    return jsonFiles.at(index.row()).getTimeStamp().toString("dddd d MMMM yyyy à h:mm:ss");
+                case NICKNAME_COLUMN:
+                    return jsonFiles.at(index.row()).getNickname();
+                case AGE_COLUMN:
+                    return jsonFiles.at(index.row()).getAge();
+                case CITY_COLUMN:
+                    return jsonFiles.at(index.row()).getCity();
+                case EVALUATION_COLUMN:
+                    return jsonFiles.at(index.row()).getEvaluation();
+            }
         } catch (QString s) {
-            qCritical() << "Caught an exception : " + s;
+            qCritical() << "Caught exception : " + s;
             return "Erreur";
-        }
-
-        switch(index.column()) {
-            case DATE_COLUMN: {
-                try {
-                    return jsonFile.getTimeStamp().toString("dddd d MMMM yyyy à h:mm:ss");
-                } catch (QString s) {
-                    qCritical() << "Caught an exception : " + s;
-                    return "Erreur";
-                }
-
-            }
-            case NICKNAME_COLUMN: {
-                try {
-                    return jsonFile.getNickname();
-                } catch (QString s) {
-                    qCritical() << "Caught an exception : " + s;
-                    return "Erreur";
-                }
-            }
-            case AGE_COLUMN: {
-                try {
-                    return jsonFile.getAge();
-                } catch (QString s) {
-                    qCritical() << "Caught an exception : " + s;
-                    return "Erreur";
-                }
-            }
-            case CITY_COLUMN: {
-                try {
-                    return jsonFile.getCity();
-                } catch (QString s) {
-                    qCritical() << "Caught an exception : " + s;
-                    return "Erreur";
-                }
-            }
-            case EVALUATION_COLUMN: {
-                try {
-                    return jsonFile.getEvaluation();
-                } catch (QString s) {
-                    qCritical() << "Caught an exception : " + s;
-                    return "Erreur";
-                }
-            }
         }
 
     }
@@ -96,4 +62,21 @@ QVariant RecordingsModel::headerData(int section, Qt::Orientation orientation, i
         }
     }
     return QVariant();
+}
+
+void RecordingsModel::update() {
+    QStringList jsonFileNames = inbox.entryList(QStringList() << "*.json", QDir::Files, QDir::Name);
+    jsonFiles = QList<JsonFile>();
+
+    QListIterator<QString> i(jsonFileNames);
+    while (i.hasNext()) {
+        JsonFile j(inbox.absoluteFilePath(i.next()));
+        try {
+            j.load();
+            jsonFiles << j;
+        } catch (QString s) {
+            qCritical() << "Caught exception : " + s;
+        }
+    }
+    emit dataChanged(this->index(0,0), this->index(jsonFiles.length(), LAST_COLUMN));
 }

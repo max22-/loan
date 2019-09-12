@@ -210,37 +210,37 @@ JsonFile& JsonFile::setMP3FileName(const QString& MP3fileName) {
 
 
 
-QDateTime JsonFile::getTimeStamp() {
+QDateTime JsonFile::getTimeStamp() const {
     if(timeStamp == nullptr)
         throw QString("timeStamp is not set.");
     return *timeStamp;
 }
 
-QString JsonFile::getNickname() {
+QString JsonFile::getNickname() const {
     if(nickname == nullptr)
         throw QString("nickname is not set.");
     return *nickname;
 }
 
-int JsonFile::getAge() {
+int JsonFile::getAge() const {
     if(age == nullptr)
         throw QString("age is not set.");
     return *age;
 }
 
-QString JsonFile::getCity() {
+QString JsonFile::getCity() const {
     if(city == nullptr)
         throw QString("city is not set");
     return *city;
 }
 
-int JsonFile::getEvaluation() {
+int JsonFile::getEvaluation() const {
     if(evaluation == nullptr)
         throw QString("evaluation is not set.");
     return *evaluation;
 }
 
-QString JsonFile::getMP3FileName() {
+QString JsonFile::getMP3FileName() const {
     if(MP3FileName == nullptr)
         throw QString("MP3FileName is not set.");
     return *MP3FileName;

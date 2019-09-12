@@ -3,6 +3,7 @@
 
 #include <QAbstractTableModel>
 #include <QDir>
+#include "jsonfile.h"
 
 class RecordingsModel : public QAbstractTableModel
 {
@@ -15,7 +16,8 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
 private:
-    QStringList jsonFilesList;
+    void update();
+    QList<JsonFile> jsonFiles;
     QDir inbox;
 };
 
@@ -24,5 +26,7 @@ private:
 #define AGE_COLUMN 2
 #define CITY_COLUMN 3
 #define EVALUATION_COLUMN 4
+
+#define LAST_COLUMN 4
 
 #endif // RECORDINGSMODEL_H
