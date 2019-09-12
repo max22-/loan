@@ -117,6 +117,7 @@ QDateTime* extractQDateTimeValue(QJsonObject o, const QString& key) {
 }
 
 JsonFile& JsonFile::load() {
+    qDebug() << "Loading Json file " + path;
     try {
         QFile file(path);
         if(!file.exists())
