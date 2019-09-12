@@ -8,6 +8,9 @@ RecordingsModel::RecordingsModel(QObject *parent) : QAbstractTableModel (parent)
 {
     inbox = Config::getInstance().inboxDirectory();
     update();
+    qDebug() << "Adding " + inbox.absolutePath() + " to the file watcher.";
+    filesWatcher.addPath(inbox.absolutePath());
+    connect(&filesWatcher, &QFileSystemWatcher::directoryChanged, this, &RecordingsModel::update);
 }
 
 int RecordingsModel::rowCount(const QModelIndex &parent) const {

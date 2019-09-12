@@ -4,6 +4,7 @@
 #include <QAbstractTableModel>
 #include <QDir>
 #include "jsonfile.h"
+#include <QFileSystemWatcher>
 
 class RecordingsModel : public QAbstractTableModel
 {
@@ -15,8 +16,11 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
-private:
+public slots:
     void update();
+
+private:
+    QFileSystemWatcher filesWatcher;
     QList<JsonFile> jsonFiles;
     QDir inbox;
 };
