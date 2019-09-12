@@ -68,6 +68,8 @@ QVariant RecordingsModel::headerData(int section, Qt::Orientation orientation, i
 }
 
 void RecordingsModel::update() {
+    beginResetModel();
+
     QStringList jsonFileNames = inbox.entryList(QStringList() << "*.json", QDir::Files, QDir::Name);
     jsonFiles = QList<JsonFile>();
 
@@ -81,5 +83,5 @@ void RecordingsModel::update() {
             qCritical() << "Caught exception : " + s;
         }
     }
-    emit dataChanged(this->index(0,0), this->index(jsonFiles.length(), LAST_COLUMN));
+    endResetModel();
 }
