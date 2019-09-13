@@ -27,7 +27,7 @@ QVariant RecordingsModel::data(const QModelIndex &index, int role) const {
         try {
             switch(index.column()) {
                 case DATE_COLUMN:
-                    return jsonFiles.at(index.row()).getTimeStamp().toString("dddd d MMMM yyyy à h:mm:ss");
+                    return jsonFiles.at(index.row()).getTimeStamp();
                 case NICKNAME_COLUMN:
                     return jsonFiles.at(index.row()).getNickname();
                 case AGE_COLUMN:
