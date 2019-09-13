@@ -3,6 +3,7 @@
 #include <QTime>
 #include "config.h"
 #include "recordingsmodel.h"
+#include <QSortFilterProxyModel>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -62,8 +63,13 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     recordingsModel = new RecordingsModel(nullptr);
-    ui->tableView->setModel(recordingsModel);
+    proxyModel.setSourceModel(recordingsModel);
+    ui->tableView->setModel(&proxyModel);
+    ui->tableView->setSortingEnabled(true);
     ui->tableView->show();
+
+    proxyModel.setFilterKeyColumn(NICKNAME_COLUMN);
+    connect(ui->nicknameFilterEdit, &QLineEdit::textChanged, &proxyModel, &QSortFilterProxyModel::setFilterFixedString);
 }
 
 MainWindow::~MainWindow()

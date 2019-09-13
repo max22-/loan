@@ -6,6 +6,7 @@
 #include "statehandler.h"
 #include "audiorecorder.h"
 #include "recordingsmodel.h"
+#include <QSortFilterProxyModel>
 
 namespace Ui {
 class MainWindow;
@@ -27,6 +28,7 @@ private:
     Statechart stateMachine;
     StateHandler *stateHandler;
     RecordingsModel *recordingsModel;
+    QSortFilterProxyModel proxyModel;
 
     void connectButton(const QPushButton *, const char *);
     void connectState(const char *, void (StateHandler::*)(bool));

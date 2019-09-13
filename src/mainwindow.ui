@@ -1326,7 +1326,7 @@ QPushButton:pressed {
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="nicknacmeFilterEdit"/>
+             <widget class="QLineEdit" name="nicknameFilterEdit"/>
             </item>
             <item>
              <widget class="QPushButton" name="pushButton">
