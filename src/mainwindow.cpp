@@ -4,6 +4,7 @@
 #include "config.h"
 #include "recordingsmodel.h"
 #include <QSortFilterProxyModel>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -71,6 +72,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
     proxyModel.setFilterKeyColumn(NICKNAME_COLUMN);
     connect(ui->nicknameFilterEdit, &QLineEdit::textChanged, &proxyModel, &QSortFilterProxyModel::setFilterFixedString);
+
+    connect(ui->playButtonPlayer, &QPushButton::clicked, [this] () {
+        if(!ui->tableView->selectionModel()->hasSelection()) {
+            qDebug() << "Please select a message to play.";
+        }
+        auto p = ui->tableView->selectionModel()->selectedRows();
+        QListIterator<QModelIndex> i(p);
+        while(i.hasNext()) {
+            QModelIndex index = i.next();
+            qDebug() << proxyModel.data(index.siblingAtColumn(MP3FILENAME_COLUMN)).toString();
+        }
+    });
 }
 
 MainWindow::~MainWindow()
