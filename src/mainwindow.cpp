@@ -66,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     proxyModel.setSourceModel(recordingsModel);
     ui->tableView->setModel(&proxyModel);
     ui->tableView->setSortingEnabled(true);
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->show();
 
     proxyModel.setFilterKeyColumn(NICKNAME_COLUMN);
