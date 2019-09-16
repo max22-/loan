@@ -30,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connectButton(ui->playButton, "play");
     connectButton(ui->cancelButton, "cancel");
     connectButton(ui->validateButton2, "validate");
+    connectButton(ui->playButtonPlayer, "play");
+    connectButton(ui->stopButtonPlayer, "stop");
 
     connectState("HomeState", &StateHandler::homeState);
     connectState("TocState", &StateHandler::tocState);
@@ -47,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectState("MP3ConversionState", &StateHandler::MP3ConversionState);
     connectState("SaveMessageState", &StateHandler::saveMessageSate);
     connectState("SavedMessageState", &StateHandler::savedMessageSate);
+    connectState("ListeningMessageState2", &StateHandler::listeningMessageState2);
 
     stateMachine.start();
 
@@ -72,18 +75,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     proxyModel.setFilterKeyColumn(NICKNAME_COLUMN);
     connect(ui->nicknameFilterEdit, &QLineEdit::textChanged, &proxyModel, &QSortFilterProxyModel::setFilterFixedString);
-
-    connect(ui->playButtonPlayer, &QPushButton::clicked, [this] () {
-        if(!ui->tableView->selectionModel()->hasSelection()) {
-            qDebug() << "Please select a message to play.";
-        }
-        auto p = ui->tableView->selectionModel()->selectedRows();
-        QListIterator<QModelIndex> i(p);
-        while(i.hasNext()) {
-            QModelIndex index = i.next();
-            qDebug() << proxyModel.data(index.siblingAtColumn(MP3FILENAME_COLUMN)).toString();
-        }
-    });
 }
 
 MainWindow::~MainWindow()

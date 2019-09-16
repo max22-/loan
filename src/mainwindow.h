@@ -7,6 +7,8 @@
 #include "audiorecorder.h"
 #include "recordingsmodel.h"
 #include <QSortFilterProxyModel>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
 
 namespace Ui {
 class MainWindow;
@@ -29,9 +31,13 @@ private:
     StateHandler *stateHandler;
     RecordingsModel *recordingsModel;
     QSortFilterProxyModel proxyModel;
+    QMediaPlayer mediaPlayer;
+    QMediaPlaylist mediaPlayList;
 
     void connectButton(const QPushButton *, const char *);
     void connectState(const char *, void (StateHandler::*)(bool));
+
+friend class StateHandler;
 };
 
 #endif // MAINWINDOW_H

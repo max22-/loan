@@ -10,6 +10,7 @@
 #include <QDateTime>
 #include "jsonfile.h"
 #include <QFileInfo>
+#include <QMediaPlayer>
 
 StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWindow *mainWindow, QObject *parent) : QObject(parent)
 {
@@ -240,6 +241,29 @@ void StateHandler::savedMessageSate(bool active) {
         ui->stackedWidget->setCurrentIndex(5);
         QTimer::singleShot(10000, [this]() { stateMachine->submitEvent("home"); });
     }
+}
+
+void StateHandler::listeningMessageState2(bool active) {
+    if (active) {
+        qDebug("listeningMessageState2");
+        if(!ui->tableView->selectionModel()->hasSelection()) {
+            qDebug() << "Please select a message to play.";
+            return;
+        }
+        auto p = ui->tableView->selectionModel()->selectedRows();
+        QListIterator<QModelIndex> i(p);
+        mainWindow->mediaPlayList.clear();
+        while(i.hasNext()) {
+            QModelIndex index = i.next();
+            QString fileName = mainWindow->proxyModel.data(index.siblingAtColumn(MP3FILENAME_COLUMN)).toString();
+            qDebug() << mainWindow->proxyModel.data(index.siblingAtColumn(MP3FILENAME_COLUMN)).toString();
+            mainWindow->mediaPlayList.addMedia(QUrl::fromLocalFile(Config::getInstance().inboxDirectory().absoluteFilePath(fileName)));
+        }
+        mainWindow->mediaPlayer.setPlaylist(&mainWindow->mediaPlayList);
+        mainWindow->mediaPlayer.setVolume(50);
+        mainWindow->mediaPlayer.play();
+    }
+
 }
 
 void StateHandler::confirmationMessageBox(const QString& text, const QString& informativeText) {
