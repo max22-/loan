@@ -23,12 +23,12 @@ public:
     ~MainWindow();
     void setRecordingSliderPosition(int);   // parameter "ms" in milliseconds
     void setPlayerSliderPosition(int);   // parameter "ms" in milliseconds
-    AudioRecorder audioRecorder;
 
 private:
     Ui::MainWindow *ui;
     Statechart stateMachine;
     StateHandler *stateHandler;
+    AudioRecorder audioRecorder;
     RecordingsModel *recordingsModel;
     QSortFilterProxyModel proxyModel;
     QMediaPlayer mediaPlayer;
