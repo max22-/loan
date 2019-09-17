@@ -75,6 +75,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     proxyModel.setFilterKeyColumn(NICKNAME_COLUMN);
     connect(ui->nicknameFilterEdit, &QLineEdit::textChanged, &proxyModel, &QSortFilterProxyModel::setFilterFixedString);
+
+    mediaPlayer.setNotifyInterval(10);
+    connect(&mediaPlayer, &QMediaPlayer::positionChanged, [this] (qint64 pos) {
+        int iPos = static_cast<int>(pos);
+        int iDuration = static_cast<int>(mediaPlayer.duration());
+        if(iDuration != 0)
+            ui->playerSlider->setValue(iPos*100/iDuration);
+        else
+            ui->playerSlider->setValue(0);
+    });
 }
 
 MainWindow::~MainWindow()

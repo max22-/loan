@@ -1354,6 +1354,9 @@ QPushButton:pressed {
            <layout class="QHBoxLayout" name="horizontalLayout_30">
             <item>
              <widget class="QSlider" name="playerSlider">
+              <property name="maximum">
+               <number>100</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
