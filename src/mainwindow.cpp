@@ -12,8 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
-    ui->recordingSlider->setMinimum(0);
-    ui->recordingSlider->setMaximum(Config::getInstance().maxRecordingTimeS()*1000);
+    ui->recordingSlider->setMaxTime(Config::getInstance().maxRecordingTimeS()*1000);
     stateHandler = new StateHandler(ui, &stateMachine, this);
 
     connect(ui->evaluationSlider, &QSlider::valueChanged, [this](int newValue) {ui->evaluationLabel->setText(QString::number(newValue)); } );
@@ -53,13 +52,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     stateMachine.start();
 
-    connect(&audioRecorder, &AudioRecorder::positionChanged, [this](int newPosition) {
-        setRecordingSliderPosition(newPosition);
-    });
-
-    connect(&audioRecorder, &AudioRecorder::lengthChanged, [this](int newLength) {
-        ui->recordingSlider->setMaximum(newLength);
-    });
+    connect(&audioRecorder, &AudioRecorder::lengthChanged, ui->recordingSlider, &TimeSlider::setMaxTime);
+    connect(&audioRecorder, &AudioRecorder::positionChanged, ui->recordingSlider, &TimeSlider::setTime);
 
     connect(&audioRecorder, &AudioRecorder::stateChanged, [this](AudioRecorderState newState) {
         if(newState == AudioRecorderState::IDLE)
@@ -86,12 +80,6 @@ MainWindow::~MainWindow()
     delete stateHandler;
     delete ui;
     delete recordingsModel;
-}
-
-void MainWindow::setRecordingSliderPosition(int ms) {  // parameter "ms" in milliseconds
-    ui->recordingSlider->setValue(ms);
-    QTime time = QTime(0, 0, 0, 0).addMSecs(ms);
-    ui->recordingDurationLabel->setText(time.toString("mm:ss.zzz"));
 }
 
 void MainWindow::connectButton(const QPushButton *button, const char *eventName) {
