@@ -15,6 +15,7 @@ public:
 public slots:
     void setMaxTime(int);
     void setTime(int);
+    void setOrientation(Qt::Orientation);
 
 private:
     void updateLabel(int);

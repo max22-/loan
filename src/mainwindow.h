@@ -22,7 +22,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void setRecordingSliderPosition(int);   // parameter "ms" in milliseconds
-    void setPlayerSliderPosition(int);   // parameter "ms" in milliseconds
 
 private:
     Ui::MainWindow *ui;

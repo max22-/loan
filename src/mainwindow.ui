@@ -1353,19 +1353,9 @@ QPushButton:pressed {
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_30">
             <item>
-             <widget class="QSlider" name="playerSlider">
-              <property name="maximum">
-               <number>100</number>
-              </property>
+             <widget class="TimeSlider" name="playerSlider">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="playerTimeLabel">
-              <property name="text">
-               <string>00:00.000</string>
               </property>
              </widget>
             </item>
@@ -1486,6 +1476,13 @@ QPushButton:pressed {
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TimeSlider</class>
+   <extends>QSlider</extends>
+   <header>timeslider.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

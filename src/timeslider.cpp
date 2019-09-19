@@ -19,9 +19,15 @@ void TimeSlider::setMaxTime(int ms) {
 }
 
 void TimeSlider::setTime(int ms) {
-    int percent = ms * 100 / maxTime;
+    int percent = 0;
+    if(maxTime != 0)
+        percent = ms * 100 / maxTime;
     slider.setValue(percent);
     updateLabel(ms);
+}
+
+void TimeSlider::setOrientation(Qt::Orientation orientation) {
+    slider.setOrientation(orientation);
 }
 
 void TimeSlider::updateLabel(int ms) {

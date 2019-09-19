@@ -77,14 +77,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->nicknameFilterEdit, &QLineEdit::textChanged, &proxyModel, &QSortFilterProxyModel::setFilterFixedString);
 
     mediaPlayer.setNotifyInterval(10);
-    connect(&mediaPlayer, &QMediaPlayer::positionChanged, [this] (qint64 pos) {
-        int iPos = static_cast<int>(pos);
-        int iDuration = static_cast<int>(mediaPlayer.duration());
-        if(iDuration != 0)
-            ui->playerSlider->setValue(iPos*100/iDuration);
-        else
-            ui->playerSlider->setValue(0);
-    });
+    connect(&mediaPlayer, &QMediaPlayer::durationChanged, ui->playerSlider, &TimeSlider::setMaxTime);
+    connect(&mediaPlayer, &QMediaPlayer::positionChanged, ui->playerSlider, &TimeSlider::setTime);
 }
 
 MainWindow::~MainWindow()
@@ -98,12 +92,6 @@ void MainWindow::setRecordingSliderPosition(int ms) {  // parameter "ms" in mill
     ui->recordingSlider->setValue(ms);
     QTime time = QTime(0, 0, 0, 0).addMSecs(ms);
     ui->recordingDurationLabel->setText(time.toString("mm:ss.zzz"));
-}
-
-void MainWindow::setPlayerSliderPosition(int ms) {  // parameter "ms" in milliseconds
-    ui->playerSlider->setValue(ms);
-    QTime time = QTime(0, 0, 0, 0).addMSecs(ms);
-    ui->playerTimeLabel->setText(time.toString("mm:ss.zzz"));
 }
 
 void MainWindow::connectButton(const QPushButton *button, const char *eventName) {
