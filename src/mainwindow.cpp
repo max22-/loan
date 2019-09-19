@@ -95,7 +95,10 @@ void MainWindow::setRecordingSliderPosition(int ms) {  // parameter "ms" in mill
 }
 
 void MainWindow::connectButton(const QPushButton *button, const char *eventName) {
-    connect(button, &QPushButton::clicked, [this, eventName]() { this->stateMachine.submitEvent(eventName); });
+    connect(button, &QPushButton::clicked, [this, button, eventName]() {
+        qDebug() << ("Button \"" + button->objectName() + "\" clicked").toStdString().c_str();
+        this->stateMachine.submitEvent(eventName);
+    });
 }
 
 void MainWindow::connectState(const char *stateName, void (StateHandler::*stateHandlerMember)(bool) ) {
