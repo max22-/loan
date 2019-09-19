@@ -33,7 +33,8 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         recordingsmodel.cpp \
-        statehandler.cpp
+        statehandler.cpp \
+        timeslider.cpp
 
 HEADERS += \
         audiorecorder.h \
@@ -44,7 +45,8 @@ HEADERS += \
         mainwindow.h \
         recordingsmodel.h \
         startupdatetime.h \
-        statehandler.h
+        statehandler.h \
+        timeslider.h
 
 FORMS += \
         mainwindow.ui
