@@ -409,7 +409,7 @@ void testJsonFile::testGettersSetters_data() {
 }
 
 template <typename T>
-void testGettersSettersHelperFunction(JsonFile& jsonFile, const QString methodName, T (JsonFile::*getter)(void), JsonFile& (JsonFile::*setter)(const T&), const T value) {
+void testGettersSettersHelperFunction(JsonFile& jsonFile, const QString methodName, T (JsonFile::*getter)(void) const, JsonFile& (JsonFile::*setter)(const T&), const T value) {
     QVERIFY_EXCEPTION_THROWN((jsonFile.*getter)(), QString);
     (jsonFile.*setter)(value);
     try {
