@@ -274,7 +274,7 @@ void testJsonFile::testAutoAssignment() {
     o1.setNickName("Maxime")
             .setAge(33)
             .setEvaluation(5)
-            .setMP3FileName("2019-09-01 15:58:00")
+            .setMP3FileName("2019-09-01 15:58:00.mp3")
             .setTimeStamp(QDateTime(QDate(2019, 9, 1), QTime(15, 58, 0)));
     o1 = o1; // auto assignment
     auto nickname = o1.getNickname();
