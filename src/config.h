@@ -30,6 +30,9 @@ public:
     QString checkMP3ConverterInstallationCommand();
     QString MP3ConversionCommand(const QAudioFormat& format);
 
+    QString timeStampFormat();
+    QString fileNameFormat();
+
 private:
     Config();
     ~Config();
