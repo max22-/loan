@@ -17,7 +17,6 @@ JsonFile::JsonFile(QString path)
 }
 
 JsonFile::JsonFile(const JsonFile& other) {
-    qDebug() << "Copy constructor";
     path = other.path;
 
     if(other.nickname != nullptr)
