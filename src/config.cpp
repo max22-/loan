@@ -97,10 +97,6 @@ QString Config::MP3ConversionCommand(const QAudioFormat& format) {
     return command;
 }
 
-QString Config::timeStampFormat() {
-    return "yyyy-MM-dd hh:mm:ss";
-}
-
-QString Config::fileNameFormat() {
+QString Config::timeStampFormat() {         // must be compatible with the filesystem (no colon allowed under Windows for example)
     return "yyyy-MM-dd_hh-mm-ss";
 }
