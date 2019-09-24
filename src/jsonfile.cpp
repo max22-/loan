@@ -12,7 +12,6 @@ JsonFile::JsonFile(QString path)
     age = nullptr;
     city = nullptr;
     evaluation = nullptr;
-    MP3FileName = nullptr;
     timeStamp = nullptr;
 }
 
@@ -38,11 +37,6 @@ JsonFile::JsonFile(const JsonFile& other) {
         evaluation = new int(*other.evaluation);
     else
         evaluation = nullptr;
-
-    if(other.MP3FileName != nullptr)
-        MP3FileName = new QString(*other.MP3FileName);
-    else
-        MP3FileName = nullptr;
 
     if(other.timeStamp != nullptr)
         timeStamp = new QDateTime(*other.timeStamp);
@@ -73,7 +67,6 @@ JsonFile& JsonFile::operator=(const JsonFile &other) {
     age = assign(age, other.age);
     city = assign(city, other.city);
     evaluation = assign(evaluation, other.evaluation);
-    MP3FileName = assign(MP3FileName, other.MP3FileName);
     timeStamp = assign(timeStamp, other.timeStamp);
     return *this;
 }
@@ -131,7 +124,6 @@ JsonFile& JsonFile::load() {
         age = extractIntValue(o, "age");
         city = extractStringValue(o, "city");
         evaluation = extractIntValue(o, "evaluation");
-        MP3FileName = extractStringValue(o, "filename");
         timeStamp = extractQDateTimeValue(o, "timestamp");
     } catch (QString s) {
         clear();
@@ -149,8 +141,6 @@ JsonFile& JsonFile::save() {
         throw QString("JsonFile::save : city is not set");
     if(evaluation == nullptr)
         throw QString("JsonFile::save : evaluation is not set");
-    if(MP3FileName == nullptr)
-        throw QString("JsonFile::save : MP3FileName is not set");
     if(timeStamp == nullptr)
         throw QString("JsonFile::save : timeStamp is not set");
 
@@ -159,7 +149,6 @@ JsonFile& JsonFile::save() {
     jsonObject.insert("age", *age);
     jsonObject.insert("city", *city);
     jsonObject.insert("evaluation", *evaluation);
-    jsonObject.insert("filename", *MP3FileName);
     jsonObject.insert("timestamp", timeStamp->toString("yyyy-MM-dd hh:mm:ss"));
 
     QJsonDocument jsonDocument(jsonObject);
@@ -200,11 +189,6 @@ JsonFile& JsonFile::setEvaluation(const int& evaluation) {
     return *this;
 }
 
-JsonFile& JsonFile::setMP3FileName(const QString& MP3fileName) {
-    this->MP3FileName = new QString(MP3fileName);
-    return *this;
-}
-
 
 
 
@@ -240,9 +224,7 @@ int JsonFile::getEvaluation() const {
 }
 
 QString JsonFile::getMP3FileName() const {
-    if(MP3FileName == nullptr)
-        throw QString("MP3FileName is not set.");
-    return *MP3FileName;
+    throw QString("Not implemented yet.");
 }
 
 void JsonFile::clear() {
@@ -261,10 +243,6 @@ void JsonFile::clear() {
     if(evaluation != nullptr) {
         delete evaluation;
         evaluation = nullptr;
-    }
-    if(MP3FileName != nullptr) {
-        delete MP3FileName;
-        MP3FileName = nullptr;
     }
     if(timeStamp != nullptr) {
         delete timeStamp;

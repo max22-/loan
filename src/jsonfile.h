@@ -19,7 +19,6 @@ public:
     JsonFile& setAge(const int& age);
     JsonFile& setCity(const QString& city);
     JsonFile& setEvaluation(const int& evaluation);
-    JsonFile& setMP3FileName(const QString& MP3fileName);
 
     QDateTime getTimeStamp() const;
     QString getNickname() const;
@@ -35,7 +34,6 @@ private:
     int *age = nullptr;
     QString *city = nullptr;
     int *evaluation = nullptr;
-    QString *MP3FileName = nullptr;
     QDateTime *timeStamp = nullptr;
 
     void clear();
