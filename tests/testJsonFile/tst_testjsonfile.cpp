@@ -23,6 +23,7 @@ private slots:
     void testAssignmentOperator_data();
     void testAssignmentOperator();
     void testAssignmentOperator2();
+    void testAutoAssignment_data();
     void testAutoAssignment();
     void testSimpleLoad_data();
     void testSimpleLoad();
@@ -129,21 +130,22 @@ void testJsonFile::commonData() {
     QTest::addColumn<int>("minute");
     QTest::addColumn<int>("second");
 
-    auto timeStamp1 = "2019-08-17_16-33-00";
+    auto MP3FileName1 = "2019-08-17_16-33-00.mp3";
+    auto jsonFileName1 = "2019-08-17_16-33-00.json";
     auto jsonData1 = QString(
         "{\n"
         "    \"age\": 33,\n"
         "    \"city\": \"Plérin\",\n"
         "    \"evaluation\": 3,\n"
-        "    \"filename\": \"2019-08-17_16-33-00.mp3\",\n"
         "    \"nickname\": \"Maxime\",\n"
-        "    \"timestamp\": \"2019-08-1_16-33-00\"\n"
+        "    \"timestamp\": \"2019-08-17 16:33:00\"\n"
         "}\n"
     );
+    QTest::newRow("Maxime") << jsonFileName1 << jsonData1 << "Maxime" << 33 << "Plérin" << 3 << MP3FileName1 << 2019 << 8 << 17 << 16 << 33 << 0;
 
-    QTest::newRow("Maxime") << timeStamp1 + QString(".json") << jsonData1 << "Maxime" << 33 << "Plérin" << 3 << timeStamp1 + QString(".mp3") << 2019 << 8 << 17 << 16 << 33 << 0;
 
-    auto timeStamp2 = "2020-01-15_14-45-04";
+    auto MP3FileName2 = "2020-01-15_14-45-04.MP3";
+    auto jsonFileName2 = "2020-01-15_14-45-04.json";
     auto jsonData2 = QString(
         "{\n"
         "    \"age\": 20,\n"
@@ -151,13 +153,14 @@ void testJsonFile::commonData() {
         "    \"evaluation\": 4,\n"
         "    \"filename\": \"2020-01-15_14-45-04.mp3\",\n"
         "    \"nickname\": \"J.J. Brun's\",\n"
-        "    \"timestamp\": \"2020-01-15_14-45-04\"\n"
+        "    \"timestamp\": \"2020-01-15 14:45:04\"\n"
         "}\n"
     );
+    QTest::newRow("J.J. Brun's") << jsonFileName2 << jsonData2 << "J.J. Brun's" << 20 << "Plérin" << 4 << MP3FileName2 << 2020 << 1 << 15 << 14 << 45 << 4;
 
-    QTest::newRow("J.J. Brun's") << timeStamp2 + QString(".json") << jsonData2 << "J.J. Brun's" << 20 << "Plérin" << 4 << timeStamp2 + QString(".mp3") << 2020 << 1 << 15 << 14 << 45 << 4;
 
-    auto timeStamp3 = "2021-03-27_09-32-27";
+    auto MP3FileName3 = "2021-03-27_09-32-27.mp3";
+    auto jsonFileName3 = "2021-03-27_09-32-27.mp3";
     auto jsonData3 = QString(
         "{\n"
         "    \"age\": 21,\n"
@@ -165,11 +168,10 @@ void testJsonFile::commonData() {
         "    \"evaluation\": 5,\n"
         "    \"filename\": \"2021-03-27_09-32-27.mp3\",\n"
         "    \"nickname\": \"Stéphane\",\n"
-        "    \"timestamp\": \"2021-03-27_09-32-27\"\n"
+        "    \"timestamp\": \"2021-03-27 09:32:27\"\n"
         "}\n"
     );
-
-    QTest::newRow("Stéphane") << timeStamp3 + QString(".json") << jsonData3 << "Stéphane" << 21 << "Plérin" << 5 << timeStamp3 + QString(".mp3") << 2021 << 3 << 27 << 9 << 32 << 27;
+    QTest::newRow("Stéphane") << jsonFileName3 << jsonData3 << "Stéphane" << 21 << "Plérin" << 5 << MP3FileName3 << 2021 << 3 << 27 << 9 << 32 << 27;
 }
 
 void testJsonFile::testCopyConstructor_data() {
@@ -197,7 +199,6 @@ void testJsonFile::testCopyConstructor() {
                 .setAge(age)
                 .setCity(city)
                 .setEvaluation(evaluation)
-                .setMP3FileName(MP3FileName)
                 .setTimeStamp(QDateTime(QDate(year, month, day), QTime(hour, minute, second)));
         JsonFile o2 = *o1;
         delete o1;
@@ -234,7 +235,6 @@ void testJsonFile::testAssignmentOperator() {
                 .setAge(age)
                 .setCity(city)
                 .setEvaluation(evaluation)
-                .setMP3FileName(MP3FileName)
                 .setTimeStamp(QDateTime(QDate(year, month, day), QTime(hour, minute, second)));
         JsonFile o2(databaseDirectory.absoluteFilePath("inexistentFile.json"));
         o2 = *o1;
@@ -257,7 +257,6 @@ void testJsonFile::testAssignmentOperator2() {
             .setAge(33)
             .setCity("Plérin")
             .setEvaluation(5)
-            .setMP3FileName("2019-08-31_12-13-00.mp3")
             .setTimeStamp(QDateTime(QDate(2019, 8, 31), QTime(12, 13, 0)));
     JsonFile o2(databaseDirectory.absoluteFilePath("inexistentFile2.json"));
     o1 = o2;
@@ -270,24 +269,33 @@ void testJsonFile::testAssignmentOperator2() {
     QVERIFY_EXCEPTION_THROWN(o2.getTimeStamp(), QString);
 }
 
+
+void testJsonFile::testAutoAssignment_data() {
+    commonData();
+}
+
 void testJsonFile::testAutoAssignment() {
+    QFETCH(QString, jsonFileName);
+    QFETCH(QString, jsonData);
+    QFETCH(QString, nickname);
+    QFETCH(int, age);
+    QFETCH(QString, city);
+    QFETCH(int, evaluation);
+    QFETCH(QString, MP3FileName);
+    QFETCH(int, year);
+    QFETCH(int, month);
+    QFETCH(int, day);
+    QFETCH(int, hour);
+    QFETCH(int, minute);
+    QFETCH(int, second);
+
     JsonFile o1(databaseDirectory.absoluteFilePath("inexistentFile.json"));
-    o1.setNickName("Maxime")
-            .setAge(33)
-            .setEvaluation(5)
-            .setMP3FileName("2019-09-01_15-58-00.mp3")
-            .setTimeStamp(QDateTime(QDate(2019, 9, 1), QTime(15, 58, 0)));
+    o1.setNickName(nickname)
+            .setAge(age)
+            .setEvaluation(evaluation)
+            .setTimeStamp(QDateTime(QDate(year, month, day), QTime(hour, minute, second)));
     o1 = o1; // auto assignment
-    auto nickname = o1.getNickname();
-    auto age = o1.getAge();
-    auto evaluation = o1.getEvaluation();
-    auto MP3FileName = o1.getMP3FileName();
-    auto year = o1.getTimeStamp().date().year();
-    auto month = o1.getTimeStamp().date().month();
-    auto day = o1.getTimeStamp().date().day();
-    auto hour = o1.getTimeStamp().time().hour();
-    auto minute = o1.getTimeStamp().time().minute();
-    auto second = o1.getTimeStamp().time().second();
+    VERIFY_JSONFILE_PROPERTIES(o1, nickname, age, city, evaluation, MP3FileName, year, month, day, hour, minute, second);
 }
 
 void testJsonFile::testSimpleLoad_data() {
@@ -354,7 +362,6 @@ void testJsonFile::testSimpleSave()
     jsonFile.setAge(age);
     jsonFile.setCity(city);
     jsonFile.setEvaluation(evaluation);
-    jsonFile.setMP3FileName(MP3FileName);
     jsonFile.setTimeStamp(timeStamp);
 
     jsonFile.save();
@@ -393,7 +400,6 @@ void testJsonFile::testChaining() {
             .setAge(age)
             .setCity(city)
             .setEvaluation(evaluation)
-            .setMP3FileName(MP3FileName)
             .setTimeStamp(QDateTime(QDate(year, month, day), QTime(hour, minute, second)));
 
     VERIFY_JSONFILE_PROPERTIES(o1, nickname, age, city, evaluation, MP3FileName, year, month, day, hour, minute, second);
@@ -446,8 +452,10 @@ void testJsonFile::testGettersSetters() {
     testGettersSettersHelperFunction<int>(jsonFile, "age", &JsonFile::getAge, &JsonFile::setAge, age);
     testGettersSettersHelperFunction<QString>(jsonFile, "city", &JsonFile::getCity, &JsonFile::setCity, city);
     testGettersSettersHelperFunction<int>(jsonFile, "evaluation", &JsonFile::getEvaluation, &JsonFile::setEvaluation, evaluation);
-    testGettersSettersHelperFunction<QString>(jsonFile, "MP3FileName", &JsonFile::getMP3FileName, &JsonFile::setMP3FileName, MP3FileName);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.getMP3FileName(), QString);   // there is no setter for getMP3FileName, only a getter. MP3FileName is derived from the timeStamp.
     testGettersSettersHelperFunction<QDateTime>(jsonFile, "timeStamp", &JsonFile::getTimeStamp, &JsonFile::setTimeStamp, timeStamp);
+    auto returnedMP3FileName = jsonFile.getMP3FileName();
+    QVERIFY2(returnedMP3FileName == MP3FileName, ("JsonFile::getMP3FileName : expected \"" + MP3FileName + "\", got \"" + returnedMP3FileName + "\".").toStdString().c_str());
 }
 
 void testJsonFile::testIncompleteSave_data() {
@@ -483,8 +491,6 @@ void testJsonFile::testIncompleteSave() {
     QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
     jsonFile.setEvaluation(evaluation);
     QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
-    jsonFile.setMP3FileName(MP3FileName);
-    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
     jsonFile.setTimeStamp(timeStamp);
 
     try {
@@ -502,8 +508,7 @@ void testJsonFile::invalidCommonData() {
         "{\"nickname\": \"Maxime\","
         "\"city\": \"Plérin\","
         "\"evaluation\": 3,"
-        "\"filename\": \"2019-08-17_16-33-00.mp3\","
-        "\"timestamp\": \"2019-08-17_16-33-00\""
+        "\"timestamp\": \"2019-08-17 16:33:00\""
         "}"
     );
 
@@ -512,23 +517,21 @@ void testJsonFile::invalidCommonData() {
     auto jsonData2 = QString(
         "{\"nickname\": \"J.J. Brun's\","
         "\"age\": 20,"
-        "\"filename\": \"2020-01-15_14-45-04.mp3\","
-        "\"timestamp\": \"2020-01-15_14-45-04\""
+        "\"timestamp\": \"2020-01-15 14:45:04\""
         "}"
     );
 
     QTest::newRow("J.J. Brun's") << jsonData2;  // city and evaluation are missing
 
     auto jsonData3 = QString(
-        "{\"nickname\": \"Stéphane\","
-        "\"age\": 21,"
+        "{\"age\": 21,"
         "\"city\": \"Plérin\","
         "\"evaluation\": 5,"
-        "\"timestamp\": \"2021-03-27_09-32-27\""
+        "\"timestamp\": \"2021-03-27 09:32:27\""
         "}"
     );
 
-    QTest::newRow("Stéphane") << jsonData3;  // filename missing
+    QTest::newRow("Stéphane") << jsonData3;  // nickname is missing
 
 
 
@@ -539,8 +542,7 @@ void testJsonFile::invalidCommonData() {
         "\"age\": \"33\","
         "\"city\": \"Plérin\","
         "\"evaluation\": 3,"
-        "\"filename\": \"2019-08-17_16-33-00.mp3\","
-        "\"timestamp\": \"2019-08-17_16-33-00\""
+        "\"timestamp\": \"2019-08-17_16:33:00\""
         "}"
     );
     QTest::newRow("Maxime 2") << jsonData4; // age is a string instead of an int
@@ -550,8 +552,7 @@ void testJsonFile::invalidCommonData() {
         "\"age\": 20,"
         "\"city\": 22190,"
         "\"evaluation\": 4,"
-        "\"filename\": \"2020-01-15_14-45-04.mp3\","
-        "\"timestamp\": \"2020-01-15_14-45-04\""
+        "\"timestamp\": \"2020-01-15 14:45:04\""
         "}"
     );
     QTest::newRow("J.J. Brun's 2") << jsonData5; // city is an int instead of a string
@@ -561,8 +562,7 @@ void testJsonFile::invalidCommonData() {
         "\"age\": 21,"
         "\"city\": \"Plérin\","
         "\"evaluation\": 4.5,"
-        "\"filename\": \"2021-03-27_09-32-27.mp3\","
-        "\"timestamp\": \"2021-03-27_09-32-27\""
+        "\"timestamp\": \"2021-03-27 09:32:27\""
         "}"
     );
     QTest::newRow("Stéphane 2") << jsonData6; // evaluation is a float instead of an int
@@ -572,7 +572,7 @@ void testJsonFile::invalidCommonData() {
         "\"age\": \"33\","
         "\"city\": \"Plérin\","
         "\"evaluation\": 3,"
-        "\"filename\": \"2019-08-17_16-33-00.mp3\","
+        "\"filename\": \"2019-08-17 16:33:00.mp3\","
         "\"timestamp\": \"1234\""
         "}"
     );
@@ -605,7 +605,6 @@ void testJsonFile::testGetterAfterFailedLoad() {
     jsonFile.setAge(33);
     jsonFile.setCity("Plérin");
     jsonFile.setEvaluation(3);
-    jsonFile.setMP3FileName("2019-08-17_16-33-00.mp3");
     jsonFile.setTimeStamp(QDateTime(QDate(2019, 8, 17), QTime(16, 33, 0)));
     try {
         jsonFile.load();
@@ -641,7 +640,6 @@ void testJsonFile::testGetterAfterFailedLoad2() {
     jsonFile.setAge(62);
     jsonFile.setCity("Plérin");
     jsonFile.setEvaluation(5);
-    jsonFile.setMP3FileName("2019-09-07_16-42-35.mp3");
     jsonFile.setTimeStamp(QDateTime(QDate(2019, 9, 7), QTime(16, 42, 35)));
     try {
         jsonFile.load();
