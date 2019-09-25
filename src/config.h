@@ -30,7 +30,8 @@ public:
     QString checkMP3ConverterInstallationCommand();
     QString MP3ConversionCommand(const QAudioFormat& format);
 
-    QString timeStampFormat(); // must be compatible with the filesystem (no colon allowed under Windows for example)
+    QString timeStampFormat();
+    QString fileNameFormat(); // must be compatible with the filesystem (no colon allowed under Windows for example). Does not contain the extension.
 
 private:
     Config();

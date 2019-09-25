@@ -144,14 +144,13 @@ void testJsonFile::commonData() {
     QTest::newRow("Maxime") << jsonFileName1 << jsonData1 << "Maxime" << 33 << "Plérin" << 3 << MP3FileName1 << 2019 << 8 << 17 << 16 << 33 << 0;
 
 
-    auto MP3FileName2 = "2020-01-15_14-45-04.MP3";
+    auto MP3FileName2 = "2020-01-15_14-45-04.mp3";
     auto jsonFileName2 = "2020-01-15_14-45-04.json";
     auto jsonData2 = QString(
         "{\n"
         "    \"age\": 20,\n"
         "    \"city\": \"Plérin\",\n"
         "    \"evaluation\": 4,\n"
-        "    \"filename\": \"2020-01-15_14-45-04.mp3\",\n"
         "    \"nickname\": \"J.J. Brun's\",\n"
         "    \"timestamp\": \"2020-01-15 14:45:04\"\n"
         "}\n"
@@ -166,7 +165,6 @@ void testJsonFile::commonData() {
         "    \"age\": 21,\n"
         "    \"city\": \"Plérin\",\n"
         "    \"evaluation\": 5,\n"
-        "    \"filename\": \"2021-03-27_09-32-27.mp3\",\n"
         "    \"nickname\": \"Stéphane\",\n"
         "    \"timestamp\": \"2021-03-27 09:32:27\"\n"
         "}\n"
@@ -292,6 +290,7 @@ void testJsonFile::testAutoAssignment() {
     JsonFile o1(databaseDirectory.absoluteFilePath("inexistentFile.json"));
     o1.setNickName(nickname)
             .setAge(age)
+            .setCity(city)
             .setEvaluation(evaluation)
             .setTimeStamp(QDateTime(QDate(year, month, day), QTime(hour, minute, second)));
     o1 = o1; // auto assignment

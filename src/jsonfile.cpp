@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <cmath>
 #include <QDebug>
+#include "config.h"
 
 JsonFile::JsonFile(QString path)
 {
@@ -224,7 +225,9 @@ int JsonFile::getEvaluation() const {
 }
 
 QString JsonFile::getMP3FileName() const {
-    throw QString("Not implemented yet.");
+    if(timeStamp == nullptr)
+        throw QString("Cannot return MP3FileName because timeStamp is not set.");
+    return timeStamp->toString(Config::getInstance().fileNameFormat()) + ".mp3";
 }
 
 void JsonFile::clear() {
