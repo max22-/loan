@@ -7,11 +7,19 @@
 #include "config.h"
 #include <QTextStream>
 #include "startupdatetime.h"
+#include <QMessageBox>
 
 void logger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    QFile logFile(Config::getInstance().logDirectory().absoluteFilePath(startupDateTime.toString("yyyy-MM-dd hh:mm:ss.log")));
-    logFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    QString logFilePath = Config::getInstance().logDirectory().absoluteFilePath(startupDateTime.toString("yyyy-MM-dd hh:mm:ss.log"));
+    QFile logFile(logFilePath);
+    if(logFile.open(QIODevice::WriteOnly | QIODevice::Append) == false) {
+        QMessageBox msgBox;
+        msgBox.setText("Impossible d'ouvrir le fichier log.\n Message d'erreur : \"" + logFile.errorString() +"\".");
+        msgBox.exec();
+        throw QString("Impossible to open log file " + logFilePath);
+    }
+
     QTextStream tstrm(&logFile);
     QString timeStamp = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
 
