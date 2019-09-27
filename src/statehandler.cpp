@@ -195,9 +195,7 @@ void StateHandler::saveMessageSate(bool active) {
         bool moved = MP3File.rename(config.outboxDirectory().absoluteFilePath(timeStampString + ".mp3"));
         if(!moved) {
             qCritical() << "Couldn't move MP3 file to outbox directory : " + config.outboxDirectory().absolutePath();
-            QMessageBox msgBox;
-            msgBox.setText("L'enregistrement du message dans la base de données a échoué, nous en sommes désolés.");
-            msgBox.exec();
+            QMessageBox::critical(mainWindow, "Erreur", "L'enregistrement du message dans la base de données a échoué, nous en sommes désolés.");
             stateMachine->submitEvent("error");
             return;
         }
@@ -205,9 +203,7 @@ void StateHandler::saveMessageSate(bool active) {
         try {
             jsonFile.save();
             qDebug() << "Json file has been saved correctly.";
-            QMessageBox msgBox;
-            msgBox.setText("Votre message a été enregistré.");
-            msgBox.exec();
+            QMessageBox::information(mainWindow, "Information", "Votre message a été enregistré.");
             mainWindow->audioRecorder.clear();
             stateMachine->submitEvent("saved");
         } catch (QString s) {
