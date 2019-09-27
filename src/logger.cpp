@@ -9,42 +9,48 @@
 #include "startupdatetime.h"
 #include <QMessageBox>
 
-void logger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
-    QString logFilePath = Config::getInstance().logDirectory().absoluteFilePath(startupDateTime.toString("yyyy-MM-dd hh:mm:ss.log"));
-    QFile logFile(logFilePath);
-    if(logFile.open(QIODevice::WriteOnly | QIODevice::Append) == false) {
-        QMessageBox msgBox;
-        msgBox.setText("Impossible d'ouvrir le fichier log.\n Message d'erreur : \"" + logFile.errorString() +"\".");
-        msgBox.exec();
-        throw QString("Impossible to open log file " + logFilePath);
-    }
-
-    QTextStream tstrm(&logFile);
-    QString timeStamp = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-
+std::string QtMsgTypeToString(QtMsgType type) {
+    std::string typeString = "[]";
     switch (type) {
         case QtDebugMsg:
-            std::cerr << "[Debug] " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
-            tstrm << timeStamp << "[Debug] " << msg << " (" << context.file << ":" << context.line << ", " << context.function << ")" << endl;
+            typeString = "[Debug]";
             break;
         case QtInfoMsg:
-            std::cerr << "[Info] " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
-            tstrm << timeStamp << "[Info] " << msg << " (" << context.file << ":" << context.line << ", " << context.function << ")" << endl;
+            typeString = "[Info]";
             break;
         case QtWarningMsg:
-            std::cerr << "[Warning] " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
-            tstrm << timeStamp<< "[Warning] " << msg << " (" << context.file << ":" << context.line << ", " << context.function << ")" << endl;
+            typeString = "[Warning]";
             break;
         case QtCriticalMsg:
-            std::cerr << "[Critical] : " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
-            tstrm << timeStamp << "[Critical] : " << msg << " (" << context.file << ":" << context.line << ", " << context.function << ")" << endl;
+            typeString = "[Critical]";
             break;
         case QtFatalMsg:
-            std::cerr << "[Fatal] " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
-            tstrm << timeStamp << "[Fatal] " << msg << " (" << context.file << ":" << context.line << ", " << context.function << ")" << endl;
-            abort();
+            typeString = "[Fatal]";
+            break;
     }
+    return typeString;
+}
 
-    logFile.close();
+void logger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    if(type == QtDebugMsg || type == QtInfoMsg)
+        std::cout << QtMsgTypeToString(type) << " " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
+    else
+        std::cerr << QtMsgTypeToString(type) << " " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
+
+
+    QString logFilePath = Config::getInstance().logDirectory().absoluteFilePath(startupDateTime.toString("yyyy-MM-dd hh:mm:ss.log"));
+    QFile logFile(logFilePath);
+
+    if(logFile.open(QIODevice::WriteOnly | QIODevice::Append)) {
+        QTextStream tstrm(&logFile);
+        QString timeStamp = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+        tstrm << timeStamp << QString::fromStdString(QtMsgTypeToString(type)) << " " << msg << " (" << context.file << ":" << context.line << ", " << context.function << ")" << endl;
+        logFile.close();
+    }
+    else
+        std::cerr << "Impossible to open log file " << logFilePath.toStdString();
+
+    if(type == QtFatalMsg)
+        abort();
 }
