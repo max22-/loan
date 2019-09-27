@@ -49,7 +49,7 @@ void logger(QtMsgType type, const QMessageLogContext &context, const QString &ms
         logFile.close();
     }
     else
-        std::cerr << "Impossible to open log file " << logFilePath.toStdString();
+        std::cerr << "Impossible to open log file \"" << logFilePath.toStdString() << "\"." << std::endl;
 
     if(type == QtFatalMsg)
         abort();
