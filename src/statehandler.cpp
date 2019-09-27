@@ -60,10 +60,8 @@ void StateHandler::validateFormState(bool active) {
         auto *nicknameValidator = new QRegExpValidator(QRegExp("^(?!\s*$).+"), nullptr);  // regex found on stackoverflow https://stackoverflow.com/questions/3085539/regular-expression-for-anything-but-an-empty-string
         auto *ageValidator = new QIntValidator(0, 200);
         auto *cityValidator = new QRegExpValidator(QRegExp("^(?!\s*$).+$"), nullptr);
-        QMessageBox msgBox;
         bool errorFlag = false;
-        msgBox.setWindowTitle("Erreur de saisie");
-        std::string errorMessage;
+        QString errorMessage;
         if(nicknameValidator->validate(nickname, pos) != QValidator::Acceptable) {
             errorFlag = true;
             errorMessage += "Veuillez entrer un pseudonyme.\n";
@@ -81,8 +79,7 @@ void StateHandler::validateFormState(bool active) {
             errorMessage += "Veuillez entrer une note entre 1 et 5 inclus.";
         }
         if(errorFlag) {
-            msgBox.setText(errorMessage.c_str());
-            msgBox.exec();
+            QMessageBox::warning(mainWindow, "Erreur de saisie", errorMessage);
             stateMachine->submitEvent("notOk");
         }
         else
