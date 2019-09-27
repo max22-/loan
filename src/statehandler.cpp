@@ -161,19 +161,16 @@ void StateHandler::validateMessageState(bool active) {
 }
 
 void StateHandler::MP3ConversionState(bool active) {
-    QMessageBox msgBox;
     if(active) {
         qDebug() << "entering MP3ConversionState";
         ui->stackedWidget->setCurrentIndex(4);
         try {
             mainWindow->audioRecorder.convertToMP3();
-            msgBox.setText("Ca marche !");
-            msgBox.exec();
+            QMessageBox::information(mainWindow, "Information", "Ca marche !");
             stateMachine->submitEvent("save");
         } catch(QString msg) {
             qCritical() << msg;
-            msgBox.setText("La conversion au format MP3 a échoué, nous en sommes désolés.");
-            msgBox.exec();
+            QMessageBox::critical(mainWindow, "Erreur", "La conversion au format MP3 a échoué, nous en sommes désolés.");
             stateMachine->submitEvent("error");
         }
     }
