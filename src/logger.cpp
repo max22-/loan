@@ -33,12 +33,25 @@ std::string QtMsgTypeToString(QtMsgType type) {
 
 void logger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
+    // If we are on Windows, we send all messages to cerr, because cout doesn't work with GUI apps.
+    #ifdef Q_OS_WIN
+        std::ostream& infoStream = std::cerr;
+    #else
+        std::ostream& infoStream = std::cout;
+    #endif
+    std::ostream& errorStream = std::cerr;
+
+    std::ostream* strm;
     if(type == QtDebugMsg || type == QtInfoMsg)
-        std::cout << QtMsgTypeToString(type) << " " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
+        strm = &infoStream;
     else
-        std::cerr << QtMsgTypeToString(type) << " " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
+        strm = &errorStream;
+    // ***********************************************************************************************
 
+    // We then send the message to the desired streamed, either cout or cerr. Always cerr under windows, and cout for infos and debug  and cerr only for errors under other OS.
+    *strm << QtMsgTypeToString(type) << " " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
 
+    // We then try to write the message to the log file, if we can open it.
     QString logFilePath = Config::getInstance().logDirectory().absoluteFilePath(startupDateTime.toString("yyyy-MM-dd hh:mm:ss.log"));
     QFile logFile(logFilePath);
 
