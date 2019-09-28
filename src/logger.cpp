@@ -41,7 +41,7 @@ void logger(QtMsgType type, const QMessageLogContext &context, const QString &ms
     // If we are on Windows, we use OutputDebugString for all messages.
     // If we are on another OS, we send qDebug and qInfo to std::cout, and other messages to std::cerr;
     #ifdef Q_OS_WIN
-        OutputDebugString(reinterpret_cast<const wchar_t *>(fullMessage.utf16()));
+        OutputDebugString(reinterpret_cast<const wchar_t *>((fullMessage + "\n").utf16()));
     #else
         std::ostream* strm;
         if(type == QtDebugMsg || type == QtInfoMsg)
@@ -64,7 +64,7 @@ void logger(QtMsgType type, const QMessageLogContext &context, const QString &ms
     else {
         QString logFileErrorMsg = "Impossible to open log file \"" + logFilePath + "\".";
         #ifdef Q_OS_WIN
-            OutputDebugString(reinterpret_cast<const wchar_t *>(logFileErrorMsg.utf16()));
+            OutputDebugString(reinterpret_cast<const wchar_t *>((logFileErrorMsg + "\n").utf16()));
         #else
             std::cerr << logFileErrorMsg.toStdString() << std::endl;
         #endif
