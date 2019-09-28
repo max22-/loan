@@ -36,7 +36,10 @@ QString QtMsgTypeToString(QtMsgType type) {
 
 void logger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    QString fullMessage = QtMsgTypeToString(type) + " " + msg + " (" + context.file + ":" + QString::number(context.line) + ", " + context.function + ")";
+    QString fullMessage = QtMsgTypeToString(type) + " " + msg;
+    #ifdef QT_DEBUG
+        fullMessage = fullMessage + " (" + context.file + ":" + QString::number(context.line) + ", " + context.function + ")";
+    #endif
 
     // If we are on Windows, we use OutputDebugString for all messages.
     // If we are on another OS, we send qDebug and qInfo to std::cout, and other messages to std::cerr;
