@@ -9,8 +9,8 @@
 #include "startupdatetime.h"
 #include <QMessageBox>
 
-std::string QtMsgTypeToString(QtMsgType type) {
-    std::string typeString = "[]";
+QString QtMsgTypeToString(QtMsgType type) {
+    QString typeString = "[]";
     switch (type) {
         case QtDebugMsg:
             typeString = "[Debug]";
@@ -33,23 +33,20 @@ std::string QtMsgTypeToString(QtMsgType type) {
 
 void logger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    // If we are on Windows, we send all messages to cerr, because cout doesn't work with GUI apps.
+    QString fullMessage = QtMsgTypeToString(type) + " " + msg + " (" + context.file + ":" + QString::number(context.line) + ", " + context.function + ")";
+
+    // If we are on Windows, we use OutputDebugString for all messages.
+    // If we are on another OS, we send qDebug and qInfo to std::cout, and other messages to std::cerr;
     #ifdef Q_OS_WIN
-        std::ostream& infoStream = std::cerr;
+        OutputDebugString(reinterpret_cast<const wchar_t *>(fullMessage.utf16()));
     #else
-        std::ostream& infoStream = std::cout;
+        std::ostream* strm;
+        if(type == QtDebugMsg || type == QtInfoMsg)
+            strm = &std::cout;
+        else
+            strm = &std::cerr;
+        *strm << fullMessage.toStdString() << std::endl;
     #endif
-    std::ostream& errorStream = std::cerr;
-
-    std::ostream* strm;
-    if(type == QtDebugMsg || type == QtInfoMsg)
-        strm = &infoStream;
-    else
-        strm = &errorStream;
-    // ***********************************************************************************************
-
-    // We then send the message to the desired streamed, either cout or cerr. Always cerr under windows, and cout for infos and debug  and cerr only for errors under other OS.
-    *strm << QtMsgTypeToString(type) << " " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
 
     // We then try to write the message to the log file, if we can open it.
     QString logFilePath = Config::getInstance().logDirectory().absoluteFilePath(startupDateTime.toString("yyyy-MM-dd hh:mm:ss.log"));
@@ -58,11 +55,17 @@ void logger(QtMsgType type, const QMessageLogContext &context, const QString &ms
     if(logFile.open(QIODevice::WriteOnly | QIODevice::Append)) {
         QTextStream tstrm(&logFile);
         QString timeStamp = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-        tstrm << timeStamp << QString::fromStdString(QtMsgTypeToString(type)) << " " << msg << " (" << context.file << ":" << context.line << ", " << context.function << ")" << endl;
+        tstrm << timeStamp << fullMessage << endl;
         logFile.close();
     }
-    else
-        std::cerr << "Impossible to open log file \"" << logFilePath.toStdString() << "\"." << std::endl;
+    else {
+        QString logFileErrorMsg = "Impossible to open log file \"" + logFilePath + "\".";
+        #ifdef Q_OS_WIN
+            OutputDebugString(reinterpret_cast<const wchar_t *>(logFileErrorMsg.utf16()));
+        #else
+            std::cerr << logFileErrorMsg.toStdString() << std::endl;
+        #endif
+    }
 
     if(type == QtFatalMsg)
         abort();
