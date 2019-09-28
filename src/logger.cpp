@@ -8,6 +8,9 @@
 #include <QTextStream>
 #include "startupdatetime.h"
 #include <QMessageBox>
+#ifdef Q_OS_WIN
+    #include <windows.h>
+#endif
 
 QString QtMsgTypeToString(QtMsgType type) {
     QString typeString = "[]";
