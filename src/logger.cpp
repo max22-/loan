@@ -12,31 +12,17 @@
     #include <windows.h>
 #endif
 
-QString QtMsgTypeToString(QtMsgType type) {
-    QString typeString = "[]";
-    switch (type) {
-        case QtDebugMsg:
-            typeString = "[Debug]";
-            break;
-        case QtInfoMsg:
-            typeString = "[Info]";
-            break;
-        case QtWarningMsg:
-            typeString = "[Warning]";
-            break;
-        case QtCriticalMsg:
-            typeString = "[Critical]";
-            break;
-        case QtFatalMsg:
-            typeString = "[Fatal]";
-            break;
-    }
-    return typeString;
-}
-
 void logger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    QString fullMessage = QtMsgTypeToString(type) + " " + msg;
+    QHash<QtMsgType, QString> typeToString({
+        {QtDebugMsg, "[Debug]"},
+        {QtInfoMsg, "[Info]"},
+        {QtWarningMsg, "[Warning]"},
+        {QtCriticalMsg, "[Critical]"},
+        {QtFatalMsg, "[Fatal]"}
+    });
+
+    QString fullMessage = typeToString.value(type, "[Unknown Type]") + " " + msg;
     #ifdef QT_DEBUG
         fullMessage = fullMessage + " (" + context.file + ":" + QString::number(context.line) + ", " + context.function + ")";
     #endif
