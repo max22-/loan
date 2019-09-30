@@ -188,7 +188,6 @@ void StateHandler::saveMessageSate(bool active) {
             .setAge(ui->ageLineEdit->text().toInt())
             .setCity(ui->cityLineEdit->text())
             .setEvaluation(ui->evaluationSlider->value())
-            //.setMP3FileName(timeStampString + ".mp3")
             .setTimeStamp(timeStamp);
 
         QFile MP3File(Config::getInstance().tempMP3FileName());
