@@ -105,7 +105,7 @@ QDateTime* extractQDateTimeValue(QJsonObject o, const QString& key) {
     if(val.type() != QJsonValue::String)
         throw QString("Json file : expected QDateTime, got " + QString(val.type()));
     auto datetimeString = val.toString();
-    auto dateTime = QDateTime::fromString(datetimeString, "yyyy-MM-dd hh:mm:ss");
+    auto dateTime = QDateTime::fromString(datetimeString, Config::getInstance().timeStampFormat());
     return new QDateTime(dateTime);
 }
 
@@ -150,7 +150,7 @@ JsonFile& JsonFile::save() {
     jsonObject.insert("age", *age);
     jsonObject.insert("city", *city);
     jsonObject.insert("evaluation", *evaluation);
-    jsonObject.insert("timestamp", timeStamp->toString("yyyy-MM-dd hh:mm:ss"));
+    jsonObject.insert("timestamp", timeStamp->toString(Config::getInstance().timeStampFormat()));
 
     QJsonDocument jsonDocument(jsonObject);
 

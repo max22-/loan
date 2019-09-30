@@ -14,6 +14,7 @@
 
 void logger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
+    Config& config = Config::getInstance();
     QHash<QtMsgType, QString> typeToString({
         {QtDebugMsg, "[Debug]"},
         {QtInfoMsg, "[Info]"},
@@ -41,17 +42,17 @@ void logger(QtMsgType type, const QMessageLogContext &context, const QString &ms
     #endif
 
     // We then try to write the message to the log file, if we can open it.
-    QString logFilePath = Config::getInstance().logDirectory().absoluteFilePath(startupDateTime.toString("yyyy-MM-dd hh:mm:ss.log"));
-    QFile logFile(logFilePath);
+    QString logFileName = config.logFileName(startupDateTime);
+    QFile logFile(logFileName);
 
     if(logFile.open(QIODevice::WriteOnly | QIODevice::Append)) {
         QTextStream tstrm(&logFile);
-        QString timeStamp = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+        QString timeStamp = QDateTime::currentDateTime().toString(config.timeStampFormat() + " ");
         tstrm << timeStamp << fullMessage << endl;
         logFile.close();
     }
     else {
-        QString logFileErrorMsg = "Impossible to open log file \"" + logFilePath + "\".";
+        QString logFileErrorMsg = "Impossible to open log file \"" + logFileName + "\".";
         #ifdef Q_OS_WIN
             OutputDebugString(reinterpret_cast<const wchar_t *>((logFileErrorMsg + "\n").utf16()));
         #else

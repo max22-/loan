@@ -180,10 +180,10 @@ void StateHandler::saveMessageSate(bool active) {
     if(active) {
         qDebug() << "entering saveMessageState";
         QDateTime timeStamp = QDateTime::currentDateTime();
-        QString timeStampString = timeStamp.toString("yyyy-MM-dd hh:mm:ss");
+        QString fileNamePrefix = timeStamp.toString(Config::getInstance().fileNameFormat());
 
         Config& config = Config::getInstance();
-        JsonFile jsonFile(config.outboxDirectory().absoluteFilePath(timeStampString + ".json"));
+        JsonFile jsonFile(config.outboxDirectory().absoluteFilePath(fileNamePrefix + ".json"));
         jsonFile.setNickName(ui->nicknameLineEdit->text())
             .setAge(ui->ageLineEdit->text().toInt())
             .setCity(ui->cityLineEdit->text())
@@ -191,7 +191,7 @@ void StateHandler::saveMessageSate(bool active) {
             .setTimeStamp(timeStamp);
 
         QFile MP3File(Config::getInstance().tempMP3FileName());
-        bool moved = MP3File.rename(config.outboxDirectory().absoluteFilePath(timeStampString + ".mp3"));
+        bool moved = MP3File.rename(config.outboxDirectory().absoluteFilePath(fileNamePrefix + ".mp3"));
         if(!moved) {
             qCritical() << "Couldn't move MP3 file to outbox directory : " + config.outboxDirectory().absolutePath();
             QMessageBox::critical(mainWindow, "Erreur", "L'enregistrement du message dans la base de données a échoué, nous en sommes désolés.");

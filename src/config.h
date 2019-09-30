@@ -24,6 +24,7 @@ public:
     QDir outboxDirectory();
     QDir inboxDirectory();
     QDir logDirectory();
+    QString logFileName(QDateTime);
     QString tempAudioFileName();
     QString tempMP3FileName();
 

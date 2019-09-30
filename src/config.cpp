@@ -1,6 +1,7 @@
 #include "config.h"
 #include <QDebug>
 #include <QDir>
+#include <QDateTime>
 
 Config& Config::getInstance() {
     static Config instance;
@@ -50,6 +51,10 @@ QDir Config::inboxDirectory() {
 
 QDir Config::logDirectory() {
     return QDir::current();
+}
+
+QString Config::logFileName(QDateTime startupTime) {
+    return QDir::current().absoluteFilePath(startupTime.toString(fileNameFormat()));
 }
 
 QString Config::tempAudioFileName() {
