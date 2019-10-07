@@ -64,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
     proxyModel.setSourceModel(recordingsModel);
     ui->tableView->setModel(&proxyModel);
     ui->tableView->setSortingEnabled(true);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableView->show();
 
     proxyModel.setFilterKeyColumn(NICKNAME_COLUMN);
