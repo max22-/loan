@@ -107,6 +107,7 @@ void StateHandler::recordState(bool active) {
 void StateHandler::recordHomeState(bool active) {
     if (active) {
         mainWindow->audioRecorder.clear();
+        ui->recorderStateLabel->setText("En attente...");
     }
 }
 
@@ -122,6 +123,7 @@ void StateHandler::recordingState(bool active) {
         qDebug() << "entering recordingState";
         mainWindow->audioRecorder.clear();
         mainWindow->audioRecorder.startRecording();
+        ui->recorderStateLabel->setText("Enregistrement en cours...");
     }
     else {
         mainWindow->audioRecorder.stop();
@@ -132,6 +134,7 @@ void StateHandler::recordingState(bool active) {
 void StateHandler::recordedMessageState(bool active) {
     if (active) {
         qDebug() << "recordedMessageState";
+        ui->recorderStateLabel->setText("Message enregistré.\nEn attente de validation...");
     }
 }
 
@@ -139,6 +142,7 @@ void StateHandler::listeningMessageState(bool active) {
     if (active) {
         qDebug() << "listeningMessageState";
         mainWindow->audioRecorder.startPlaying();
+        ui->recorderStateLabel->setText("Ecoute du message");
     }
     else {
         mainWindow->audioRecorder.stop();
