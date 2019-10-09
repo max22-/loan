@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectButton(ui->playButton, "play");
     connectButton(ui->cancelButton, "cancel");
     connectButton(ui->validateButton2, "validate");
-    connectButton(ui->playButtonPlayer, "play");
+    connectButton(ui->playButtonPlayer, QList<const char*>({"stop", "play"}));
     connectButton(ui->stopButtonPlayer, "stop");
 
     connectState("HomeState", &StateHandler::homeState);
@@ -87,6 +87,11 @@ void MainWindow::connectButton(const QPushButton *button, const char *eventName)
         qDebug() << ("Button \"" + button->objectName() + "\" clicked").toStdString().c_str();
         this->stateMachine.submitEvent(eventName);
     });
+}
+
+void MainWindow::connectButton(const QPushButton *button, const QList<const char *> eventNames) {
+    foreach (const char* eventName, eventNames)
+        connectButton(button, eventName);
 }
 
 void MainWindow::connectState(const char *stateName, void (StateHandler::*stateHandlerMember)(bool) ) {

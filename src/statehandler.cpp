@@ -47,6 +47,7 @@ void StateHandler::formState(bool active) {
 
 void StateHandler::listenHomeState(bool active) {
     if(active) {
+        qDebug() << "entering listenHomeState";
         ui->stackedWidget->setCurrentIndex(6);
     }
 }
@@ -255,6 +256,9 @@ void StateHandler::listeningMessageState2(bool active) {
         mainWindow->mediaPlayer.setPlaylist(&mainWindow->mediaPlayList);
         mainWindow->mediaPlayer.setVolume(50);
         mainWindow->mediaPlayer.play();
+    }
+    else {
+        mainWindow->mediaPlayer.stop();
     }
 
 }
