@@ -21,39 +21,52 @@ StateHandler::StateHandler(Ui::MainWindow *ui, Statechart *stateMachine, MainWin
 
 void StateHandler::homeState(bool active) {
     if(active) {
-        qDebug() << "entering homeState";
+        qDebug() << "Entering homeState";
         ui->stackedWidget->setCurrentIndex(0);
         ui->nicknameLineEdit->setText("");
         ui->ageLineEdit->setText("");
         ui->cityLineEdit->setText("");
         ui->evaluationSlider->setValue(0);
     }
+    else {
+        qDebug() << "Exiting homeState";
+    }
 }
 
 
 void StateHandler::tocState(bool active) {
     if(active) {
-        qDebug() << "entering tocState";
+        qDebug() << "Entering tocState";
         ui->stackedWidget->setCurrentIndex(1);
+    }
+    else {
+        qDebug() << "Exiting tocState";
     }
 }
 
 void StateHandler::formState(bool active) {
     if(active) {
-        qDebug() << "entering formState";
+        qDebug() << "Entering formState";
         ui->stackedWidget->setCurrentIndex(2);
+    }
+    else {
+        qDebug() << "Exiting formState";
     }
 }
 
 void StateHandler::listenHomeState(bool active) {
     if(active) {
-        qDebug() << "entering listenHomeState";
+        qDebug() << "Entering listenHomeState";
         ui->stackedWidget->setCurrentIndex(6);
+    }
+    else {
+        qDebug() << "Exiting listenHomeState";
     }
 }
 
 void StateHandler::validateFormState(bool active) {
     if(active) {
+        qDebug() << "Entering validateFormState";
         QString nickname = ui->nicknameLineEdit->text();
         QString age = ui->ageLineEdit->text();
         QString city = ui->cityLineEdit->text();
@@ -90,7 +103,8 @@ void StateHandler::validateFormState(bool active) {
         delete cityValidator;
     }
     else {
-        qDebug() << "*** Quitting validateFormState ***";
+        qDebug() << "Exiting validateFormState";
+        qDebug() << "**********************************";
         qDebug() << "nickname = " << ui->nicknameLineEdit->text();
         qDebug() << "age = " << ui->ageLineEdit->text();
         qDebug() << "city = " << ui->cityLineEdit->text();
@@ -101,21 +115,32 @@ void StateHandler::validateFormState(bool active) {
 
 void StateHandler::recordState(bool active) {
     if(active) {
+        qDebug() << "Entering recordState";
         ui->stackedWidget->setCurrentIndex(3);
+    }
+    else {
+        qDebug() << "Exiting recordState";
     }
 }
 
 void StateHandler::recordHomeState(bool active) {
     if (active) {
+        qDebug() << "Entering recordHomeState";
         mainWindow->audioRecorder.clear();
         ui->recorderStateLabel->setText("En attente...");
+    }
+    else {
+        qDebug() << "Exiting recordHomeState";
     }
 }
 
 void StateHandler::validateCancelState(bool active) {
     if(active) {
-        qDebug() << "validateCancel1State";
+        qDebug() << "Entering validateCancel1State";
         confirmationMessageBox("Vous avez enregistré des informations.", "Voulez-vous vraiment tout supprimer et revenir à l'écran d'accueil ?");
+    }
+    else {
+        qDebug() << "Exiting validateCancelState";
     }
 }
 
@@ -128,46 +153,55 @@ void StateHandler::recordingState(bool active) {
     }
     else {
         mainWindow->audioRecorder.stop();
-        qDebug() << "quitting recordingState";
+        qDebug() << "Exiting recordingState";
     }
 }
 
 void StateHandler::recordedMessageState(bool active) {
     if (active) {
-        qDebug() << "recordedMessageState";
+        qDebug() << "Entering recordedMessageState";
         ui->recorderStateLabel->setText("Message enregistré.\nEn attente de validation...");
+    }
+    else {
+        qDebug() << "Exiting recordedMessageState";
     }
 }
 
 void StateHandler::listeningMessageState(bool active) {
     if (active) {
-        qDebug() << "listeningMessageState";
+        qDebug() << "Entering listeningMessageState";
         mainWindow->audioRecorder.startPlaying();
         ui->recorderStateLabel->setText("Ecoute du message");
     }
     else {
         mainWindow->audioRecorder.stop();
-        qDebug() << "quitting listeningMessageState";
+        qDebug() << "Exiting listeningMessageState";
     }
 }
 
 void StateHandler::reRecordState(bool active) {
     if(active) {
-        qDebug() <<"reRecordState";
+        qDebug() << "Entering reRecordState";
         confirmationMessageBox("Vous avez enregistré un message.", "Voulez-vous vraiment l'effacer pour le réenregistrer à nouveau ?");
+    }
+    else {
+        qDebug() << "Exiting reRecordState";
     }
 }
 
 void StateHandler::validateMessageState(bool active) {
     if(active) {
-        qDebug() << "validateMessageState";
+        qDebug() << "Entering validateMessageState";
         confirmationMessageBox("Vous avez enregistré un message ainsi que des informations.", "Êtes-vous sûr de vouloir les valider ? (ceci est définitif)");
+    }
+    else {
+        qDebug() << "Exiting validateMessageState";
     }
 }
 
 void StateHandler::MP3ConversionState(bool active) {
     if(active) {
-        qDebug() << "entering MP3ConversionState";
+        qDebug() << "Entering MP3ConversionState";
         ui->stackedWidget->setCurrentIndex(4);
         try {
             mainWindow->audioRecorder.convertToMP3();
@@ -179,11 +213,14 @@ void StateHandler::MP3ConversionState(bool active) {
             stateMachine->submitEvent("error");
         }
     }
+    else {
+        qDebug() << "Exiting MP3ConversionState";
+    }
 }
 
-void StateHandler::saveMessageSate(bool active) {
+void StateHandler::saveMessageState(bool active) {
     if(active) {
-        qDebug() << "entering saveMessageState";
+        qDebug() << "Entering saveMessageState";
         QDateTime timeStamp = QDateTime::currentDateTime();
         QString fileNamePrefix = timeStamp.toString(Config::getInstance().fileNameFormat());
 
@@ -215,9 +252,9 @@ void StateHandler::saveMessageSate(bool active) {
             qCritical() << "Caught exception ! " + s;
             qDebug() << "Trying to delete MP3 file in outbox directory (" + QFileInfo(MP3File).absoluteFilePath() + ")";
             if(MP3File.remove() == true)
-                qDebug() << "MP3 file remove with success.";
+                qDebug() << "    MP3 file removed with success.";
             else
-                qDebug() << "Failed to delete MP3 file.";
+                qDebug() << "    Failed to delete MP3 file.";
             QMessageBox msgBox;
             msgBox.setText("L'enregistrement du message dans la base de données a échoué, nous en sommes désolés.");
             msgBox.exec();
@@ -225,21 +262,24 @@ void StateHandler::saveMessageSate(bool active) {
         }
     }
     else {
-        qDebug() << "quitting saveMessageState";
+        qDebug() << "Exiting saveMessageState";
     }
 }
 
-void StateHandler::savedMessageSate(bool active) {
+void StateHandler::savedMessageState(bool active) {
     if(active) {
-        qDebug() << "savedMessageState";
+        qDebug() << "Entering savedMessageState";
         ui->stackedWidget->setCurrentIndex(5);
         QTimer::singleShot(10000, [this]() { stateMachine->submitEvent("home"); });
+    }
+    else {
+        qDebug() << "Exiting savedMessageState";
     }
 }
 
 void StateHandler::listeningMessageState2(bool active) {
     if (active) {
-        qDebug("listeningMessageState2");
+        qDebug("Entering listeningMessageState2");
         if(!ui->tableView->selectionModel()->hasSelection()) {
             qDebug() << "Please select a message to play.";
             return;
@@ -259,6 +299,7 @@ void StateHandler::listeningMessageState2(bool active) {
     }
     else {
         mainWindow->mediaPlayer.stop();
+        qDebug() << "Exiting listeningMessageState2";
     }
 
 }

@@ -30,8 +30,8 @@ public slots:
     void reRecordState(bool);
     void validateMessageState(bool);
     void MP3ConversionState(bool);
-    void saveMessageSate(bool);
-    void savedMessageSate(bool);
+    void saveMessageState(bool);
+    void savedMessageState(bool);
     void listeningMessageState2(bool);
 
 private:
