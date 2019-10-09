@@ -73,6 +73,10 @@ MainWindow::MainWindow(QWidget *parent) :
     mediaPlayer.setNotifyInterval(10);
     connect(&mediaPlayer, &QMediaPlayer::durationChanged, ui->playerSlider, &TimeSlider::setMaxTime);
     connect(&mediaPlayer, &QMediaPlayer::positionChanged, ui->playerSlider, &TimeSlider::setTime);
+    connect(&mediaPlayer, &QMediaPlayer::stateChanged, [this](QMediaPlayer::State mpstate) {
+        if(mpstate == QMediaPlayer::StoppedState)
+            stateMachine.submitEvent("stop");
+    });
 }
 
 MainWindow::~MainWindow()

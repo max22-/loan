@@ -282,6 +282,7 @@ void StateHandler::listeningMessageState2(bool active) {
         qDebug("Entering listeningMessageState2");
         if(!ui->tableView->selectionModel()->hasSelection()) {
             qDebug() << "Please select a message to play.";
+            stateMachine->submitEvent("stop");
             return;
         }
         auto p = ui->tableView->selectionModel()->selectedRows();
