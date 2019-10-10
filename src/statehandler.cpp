@@ -93,6 +93,7 @@ void StateHandler::validateFormState(bool active) {
             errorMessage += "Veuillez entrer une note entre 1 et 5 inclus.";
         }
         if(errorFlag) {
+            qDebug() << "Invalid data in the form.";
             QMessageBox::warning(mainWindow, "Erreur de saisie", errorMessage);
             stateMachine->submitEvent("notOk");
         }
