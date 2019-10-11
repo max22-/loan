@@ -34,7 +34,6 @@ private:
     QMediaPlaylist mediaPlayList;
 
     void connectButton(const QPushButton *, const char *);
-    void connectButton(const QPushButton *, const QList<const char *>);
     void connectState(const char *, void (StateHandler::*)(bool));
 
 friend class StateHandler;
