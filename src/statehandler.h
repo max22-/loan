@@ -26,6 +26,7 @@ public slots:
     void validateCancelState(bool);
     void recordingState(bool);
     void recordedMessageState(bool);
+    void waitForRecorderState(bool);
     void listeningMessageState(bool);
     void reRecordState(bool);
     void validateMessageState(bool);
@@ -33,6 +34,7 @@ public slots:
     void saveMessageState(bool);
     void savedMessageState(bool);
     void listeningMessageState2(bool);
+    void waitForPlayerState(bool);
 
 private:
     Ui::MainWindow *ui;

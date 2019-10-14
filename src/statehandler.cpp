@@ -168,6 +168,16 @@ void StateHandler::recordedMessageState(bool active) {
     }
 }
 
+void StateHandler::waitForRecorderState(bool active) {
+    if (active) {
+        qDebug() << "Entering waitForRecorderState";
+        mainWindow->audioRecorder.stop();
+    }
+    else {
+        qDebug() << "Exiting waitForRecorderState";
+    }
+}
+
 void StateHandler::listeningMessageState(bool active) {
     if (active) {
         qDebug() << "Entering listeningMessageState";
@@ -304,6 +314,15 @@ void StateHandler::listeningMessageState2(bool active) {
         qDebug() << "Exiting listeningMessageState2";
     }
 
+}
+
+void StateHandler::waitForPlayerState(bool active) {
+    if(active) {
+        qDebug() << "Entering waitForPlayerState";
+    }
+    else {
+        qDebug() << "Exiting waitForPlayerState";
+    }
 }
 
 void StateHandler::confirmationMessageBox(const QString& text, const QString& informativeText) {

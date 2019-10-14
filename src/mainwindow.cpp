@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectState("ValidateCancelState", &StateHandler::validateCancelState);
     connectState("RecordingState", &StateHandler::recordingState);
     connectState("RecordedMessageState", &StateHandler::recordedMessageState);
+    connectState("WaitForRecorderState", &StateHandler::waitForRecorderState);
     connectState("ListeningMessageState", &StateHandler::listeningMessageState);
     connectState("ReRecordState", &StateHandler::reRecordState);
     connectState("ValidateMessageState", &StateHandler::validateMessageState);
@@ -49,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectState("SaveMessageState", &StateHandler::saveMessageState);
     connectState("SavedMessageState", &StateHandler::savedMessageState);
     connectState("ListeningMessageState2", &StateHandler::listeningMessageState2);
+    connectState("WaitForPlayerState", &StateHandler::waitForPlayerState);
 
     stateMachine.start();
 
@@ -57,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(&audioRecorder, &AudioRecorder::stateChanged, [this](AudioRecorderState newState) {
         if(newState == AudioRecorderState::IDLE)
-            stateMachine.submitEvent("stop");
+            stateMachine.submitEvent("recorderStopped");
     });
 
     recordingsModel = new RecordingsModel(nullptr);
@@ -75,7 +77,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&mediaPlayer, &QMediaPlayer::positionChanged, ui->playerSlider, &TimeSlider::setTime);
     connect(&mediaPlayer, &QMediaPlayer::stateChanged, [this](QMediaPlayer::State mpstate) {
         if(mpstate == QMediaPlayer::StoppedState)
-            stateMachine.submitEvent("stop");
+            stateMachine.submitEvent("playerStopped");
     });
 }
 
