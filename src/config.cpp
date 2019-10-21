@@ -54,7 +54,7 @@ QDir Config::logDirectory() {
 }
 
 QString Config::logFileName(QDateTime startupTime) {
-    return QDir::current().absoluteFilePath(startupTime.toString(fileNameFormat()));
+    return QDir::current().absoluteFilePath(startupTime.toString(fileNameFormat()) + ".log");
 }
 
 QString Config::tempAudioFileName() {
