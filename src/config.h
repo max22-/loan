@@ -34,6 +34,8 @@ public:
     QString timeStampFormat();
     QString fileNameFormat(); // must be compatible with the filesystem (no colon allowed under Windows for example). Does not contain the extension.
 
+    int initialPlayerVolume();
+
 private:
     Config();
     ~Config();

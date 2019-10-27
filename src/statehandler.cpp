@@ -58,6 +58,7 @@ void StateHandler::listenHomeState(bool active) {
     if(active) {
         qDebug() << "Entering listenHomeState";
         ui->stackedWidget->setCurrentIndex(6);
+        ui->playerVolumeSlider->setValue(Config::getInstance().initialPlayerVolume());  // Reset volume to its initial value
     }
     else {
         qDebug() << "Exiting listenHomeState";
@@ -306,7 +307,6 @@ void StateHandler::listeningMessageState2(bool active) {
             mainWindow->mediaPlayList.addMedia(QUrl::fromLocalFile(Config::getInstance().inboxDirectory().absoluteFilePath(fileName)));
         }
         mainWindow->mediaPlayer.setPlaylist(&mainWindow->mediaPlayList);
-        mainWindow->mediaPlayer.setVolume(50);
         mainWindow->mediaPlayer.play();
     }
     else {

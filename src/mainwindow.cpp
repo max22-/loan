@@ -79,6 +79,16 @@ MainWindow::MainWindow(QWidget *parent) :
         if(mpstate == QMediaPlayer::StoppedState)
             stateMachine.submitEvent("playerStopped");
     });
+
+    // Media player volume control
+    connect(ui->playerVolumeSlider, &QSlider::valueChanged, [this](int logarithmicVolume) {
+        qDebug() << "QSlider::valueChanged";
+        qreal linearVolume = QAudio::convertVolume(logarithmicVolume / qreal(100.0),
+                                                   QAudio::LogarithmicVolumeScale,
+                                                   QAudio::LinearVolumeScale);
+        mediaPlayer.setVolume(qRound(linearVolume * 100));
+        ui->playerVolumeLabel->setText(QString::number(logarithmicVolume) + "%");
+    });
 }
 
 MainWindow::~MainWindow()
