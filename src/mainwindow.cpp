@@ -66,7 +66,12 @@ MainWindow::MainWindow(QWidget *parent) :
     proxyModel.setSourceModel(recordingsModel);
     ui->tableView->setModel(&proxyModel);
     ui->tableView->setSortingEnabled(true);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(DATE_COLUMN, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(NICKNAME_COLUMN, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(AGE_COLUMN, QHeaderView::ResizeToContents);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(CITY_COLUMN, QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(EVALUATION_COLUMN, QHeaderView::ResizeToContents);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(MP3FILENAME_COLUMN, QHeaderView::Stretch);
     ui->tableView->show();
 
     proxyModel.setFilterKeyColumn(NICKNAME_COLUMN);
