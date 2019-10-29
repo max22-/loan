@@ -297,9 +297,9 @@ void StateHandler::listeningMessageState2(bool active) {
             stateMachine->submitEvent("stop");
             return;
         }
+        mainWindow->mediaPlayList.clear();
         auto p = ui->tableView->selectionModel()->selectedRows();
         QListIterator<QModelIndex> i(p);
-        mainWindow->mediaPlayList.clear();
         while(i.hasNext()) {
             QModelIndex index = i.next();
             QString fileName = mainWindow->proxyModel.data(index.siblingAtColumn(MP3FILENAME_COLUMN)).toString();
