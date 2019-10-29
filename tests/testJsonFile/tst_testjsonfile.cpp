@@ -80,7 +80,7 @@ void testJsonFile::cleanup() {
 }
 
 void testJsonFile::testEmptyJsonFile() {
-    JsonFile jsonFile(databaseDirectory.absoluteFilePath("inexistentFile.json"));
+    JsonFile jsonFile;
     QVERIFY_EXCEPTION_THROWN(jsonFile.getNickname(), QString);
     QVERIFY_EXCEPTION_THROWN(jsonFile.getAge(), QString);
     QVERIFY_EXCEPTION_THROWN(jsonFile.getCity(), QString);
@@ -192,7 +192,7 @@ void testJsonFile::testCopyConstructor() {
     QFETCH(int, second);
 
     try {
-        JsonFile* o1 = new JsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+        JsonFile* o1 = new JsonFile;
         o1->setNickName(nickname)
                 .setAge(age)
                 .setCity(city)
@@ -228,13 +228,13 @@ void testJsonFile::testAssignmentOperator() {
     QFETCH(int, second);
 
     try {
-        JsonFile* o1 = new JsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+        JsonFile* o1 = new JsonFile;
         o1->setNickName(nickname)
                 .setAge(age)
                 .setCity(city)
                 .setEvaluation(evaluation)
                 .setTimeStamp(QDateTime(QDate(year, month, day), QTime(hour, minute, second)));
-        JsonFile o2(databaseDirectory.absoluteFilePath("inexistentFile.json"));
+        JsonFile o2;
         o2 = *o1;
         delete o1;
 
@@ -250,13 +250,13 @@ void testJsonFile::testAssignmentOperator2() {
 
     // We test if the destination object if cleared if we assign it a blank JsonFile.
 
-    JsonFile o1(databaseDirectory.absoluteFilePath("inexistentFile.json"));
+    JsonFile o1;
     o1.setNickName("Maxime")
             .setAge(33)
             .setCity("Plérin")
             .setEvaluation(5)
             .setTimeStamp(QDateTime(QDate(2019, 8, 31), QTime(12, 13, 0)));
-    JsonFile o2(databaseDirectory.absoluteFilePath("inexistentFile2.json"));
+    JsonFile o2;
     o1 = o2;
 
     QVERIFY_EXCEPTION_THROWN(o2.getNickname(), QString);
@@ -287,7 +287,7 @@ void testJsonFile::testAutoAssignment() {
     QFETCH(int, minute);
     QFETCH(int, second);
 
-    JsonFile o1(databaseDirectory.absoluteFilePath("inexistentFile.json"));
+    JsonFile o1;
     o1.setNickName(nickname)
             .setAge(age)
             .setCity(city)
@@ -325,7 +325,7 @@ void testJsonFile::testSimpleLoad()
         out << jsonData;
         file.close();
 
-        JsonFile jsonFile = JsonFile(databaseDirectory.absoluteFilePath(jsonFileName)).load();
+        JsonFile jsonFile = JsonFile().load(databaseDirectory.absoluteFilePath(jsonFileName));
         VERIFY_JSONFILE_PROPERTIES(jsonFile, nickname, age, city, evaluation, MP3FileName, year, month, day, hour, minute, second);
     } catch (QString s) {
         QFAIL(s.toStdString().c_str());
@@ -356,14 +356,14 @@ void testJsonFile::testSimpleSave()
     QTime time(hour, minute, second);
     QDateTime timeStamp(date, time);
 
-    JsonFile jsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+    JsonFile jsonFile;
     jsonFile.setNickName(nickname);
     jsonFile.setAge(age);
     jsonFile.setCity(city);
     jsonFile.setEvaluation(evaluation);
     jsonFile.setTimeStamp(timeStamp);
 
-    jsonFile.save();
+    jsonFile.save(databaseDirectory.absoluteFilePath(jsonFileName));
 
     QFile file(databaseDirectory.absoluteFilePath(jsonFileName));
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -394,7 +394,7 @@ void testJsonFile::testChaining() {
     QFETCH(int, minute);
     QFETCH(int, second);
 
-    JsonFile o1 = JsonFile(databaseDirectory.absoluteFilePath(jsonFileName))
+    JsonFile o1 = JsonFile()
             .setNickName(nickname)
             .setAge(age)
             .setCity(city)
@@ -405,8 +405,8 @@ void testJsonFile::testChaining() {
 }
 
 void testJsonFile::testFileDoesntExist() {
-    JsonFile jsonFile(databaseDirectory.absoluteFilePath("inexistentFile.json"));
-    QVERIFY_EXCEPTION_THROWN(jsonFile.load(), QString);
+    JsonFile jsonFile;
+    QVERIFY_EXCEPTION_THROWN(jsonFile.load(databaseDirectory.absoluteFilePath("inexistentFile.json")), QString);
 }
 
 
@@ -420,7 +420,7 @@ void testGettersSettersHelperFunction(JsonFile& jsonFile, const QString methodNa
     (jsonFile.*setter)(value);
     try {
         T returnValue = (jsonFile.*getter)();
-        QVERIFY2(returnValue == value, (methodName + "getter didn't return the correct nickname.").toStdString().c_str());
+        QVERIFY2(returnValue == value, (methodName + "getter didn't return the correct value.").toStdString().c_str());
     } catch (QString s) {
         QFAIL(("Getting " + methodName + " after setting threw an exception.").toStdString().c_str());
     }
@@ -445,7 +445,7 @@ void testJsonFile::testGettersSetters() {
     QTime time(hour, minute, second);
     QDateTime timeStamp(date, time);
 
-    JsonFile jsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+    JsonFile jsonFile;
 
     testGettersSettersHelperFunction<QString>(jsonFile, "nickname", &JsonFile::getNickname, &JsonFile::setNickName, nickname);
     testGettersSettersHelperFunction<int>(jsonFile, "age", &JsonFile::getAge, &JsonFile::setAge, age);
@@ -480,20 +480,22 @@ void testJsonFile::testIncompleteSave() {
     QTime time(hour, minute, second);
     QDateTime timeStamp(date, time);
 
-    JsonFile jsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
-    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
+    QString absoluteJsonFilePath = databaseDirectory.absoluteFilePath(jsonFileName);
+
+    JsonFile jsonFile;
+    QVERIFY_EXCEPTION_THROWN(jsonFile.save(absoluteJsonFilePath), QString);
     jsonFile.setNickName(nickname);
-    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.save(absoluteJsonFilePath), QString);
     jsonFile.setAge(age);
-    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.save(absoluteJsonFilePath), QString);
     jsonFile.setCity(city);
-    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.save(absoluteJsonFilePath), QString);
     jsonFile.setEvaluation(evaluation);
-    QVERIFY_EXCEPTION_THROWN(jsonFile.save(), QString);
+    QVERIFY_EXCEPTION_THROWN(jsonFile.save(absoluteJsonFilePath), QString);
     jsonFile.setTimeStamp(timeStamp);
 
     try {
-        jsonFile.save();
+        jsonFile.save(databaseDirectory.absoluteFilePath(jsonFileName));
     } catch (QString s) {
         QFAIL("When every parameter is set, no exception should be thrown when saving.");
     }
@@ -594,19 +596,19 @@ void testJsonFile::testInvalidFile() {
     out << jsonData;
     file.close();
 
-    QVERIFY_EXCEPTION_THROWN(JsonFile jsonFile = JsonFile(databaseDirectory.absoluteFilePath(jsonFileName)).load(), QString);
+    QVERIFY_EXCEPTION_THROWN(JsonFile jsonFile = JsonFile().load(databaseDirectory.absoluteFilePath(jsonFileName)), QString);
 
 }
 
 void testJsonFile::testGetterAfterFailedLoad() {
-    auto jsonFile = JsonFile(databaseDirectory.absoluteFilePath("inexistantFile.json"));
+    JsonFile jsonFile;
     jsonFile.setNickName("Maxime");
     jsonFile.setAge(33);
     jsonFile.setCity("Plérin");
     jsonFile.setEvaluation(3);
     jsonFile.setTimeStamp(QDateTime(QDate(2019, 8, 17), QTime(16, 33, 0)));
     try {
-        jsonFile.load();
+        jsonFile.load(databaseDirectory.absoluteFilePath("inexistantFile.json"));
     } catch (QString s) {
         // do nothing, an exception should be thrown and it's normal
     }
@@ -634,14 +636,14 @@ void testJsonFile::testGetterAfterFailedLoad2() {
     out << jsonData;
     file.close();
 
-    JsonFile jsonFile(databaseDirectory.absoluteFilePath(jsonFileName));
+    JsonFile jsonFile;
     jsonFile.setNickName("Monique");
     jsonFile.setAge(62);
     jsonFile.setCity("Plérin");
     jsonFile.setEvaluation(5);
     jsonFile.setTimeStamp(QDateTime(QDate(2019, 9, 7), QTime(16, 42, 35)));
     try {
-        jsonFile.load();
+        jsonFile.load(databaseDirectory.absoluteFilePath(jsonFileName));
     } catch (QString s) {
         // do nothing, an exception should be thrown and it's normal
     }

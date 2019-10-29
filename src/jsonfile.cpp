@@ -6,9 +6,8 @@
 #include <QDebug>
 #include "config.h"
 
-JsonFile::JsonFile(QString path)
+JsonFile::JsonFile()
 {
-    this->path=path;
     nickname = nullptr;
     age = nullptr;
     city = nullptr;
@@ -17,7 +16,6 @@ JsonFile::JsonFile(QString path)
 }
 
 JsonFile::JsonFile(const JsonFile& other) {
-    path = other.path;
 
     if(other.nickname != nullptr)
         nickname = new QString(*other.nickname);
@@ -109,7 +107,7 @@ QDateTime* extractQDateTimeValue(QJsonObject o, const QString& key) {
     return new QDateTime(dateTime);
 }
 
-JsonFile& JsonFile::load() {
+JsonFile& JsonFile::load(QString path) {
     qDebug() << "Loading Json file " + path;
     try {
         QFile file(path);
@@ -133,7 +131,7 @@ JsonFile& JsonFile::load() {
     return *this;
 }
 
-JsonFile& JsonFile::save() {
+JsonFile& JsonFile::save(QString path) {
     if(nickname == nullptr)
         throw QString("JsonFile::save : nickname is not set");
     if(age == nullptr)

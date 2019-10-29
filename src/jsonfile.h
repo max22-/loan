@@ -7,13 +7,13 @@
 class JsonFile
 {
 public:
-    JsonFile(QString path);
+    JsonFile();
     JsonFile(const JsonFile& other);
     JsonFile& operator=(const JsonFile& other);
     ~JsonFile();
 
-    JsonFile& load();
-    JsonFile& save();
+    JsonFile& load(QString path);
+    JsonFile& save(QString path);
 
     JsonFile& setTimeStamp(const QDateTime& timeStamp);
     JsonFile& setNickName(const QString& nickname);
@@ -29,7 +29,6 @@ public:
     QString getMP3FileName() const;
 
 private:
-    QString path;
 
     QString *nickname = nullptr;
     int *age = nullptr;
