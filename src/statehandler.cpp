@@ -302,9 +302,10 @@ void StateHandler::listeningMessageState2(bool active) {
         QListIterator<QModelIndex> i(p);
         while(i.hasNext()) {
             QModelIndex index = i.next();
-            QString fileName = mainWindow->proxyModel.data(index.siblingAtColumn(MP3FILENAME_COLUMN)).toString();
-            qDebug() << mainWindow->proxyModel.data(index.siblingAtColumn(MP3FILENAME_COLUMN)).toString();
-            mainWindow->mediaPlayList.addMedia(QUrl::fromLocalFile(Config::getInstance().inboxDirectory().absoluteFilePath(fileName)));
+            QString fileName = mainWindow->proxyModel.data(index, Qt::UserRole).value<JsonFile>().getMP3FileName();
+            QString absoluteMP3FilePath = Config::getInstance().inboxDirectory().absoluteFilePath(fileName);
+            qDebug() << "Adding " + absoluteMP3FilePath + " to the playlist.";
+            mainWindow->mediaPlayList.addMedia(QUrl::fromLocalFile(absoluteMP3FilePath));
         }
         mainWindow->mediaPlayer.setPlaylist(&mainWindow->mediaPlayList);
         mainWindow->mediaPlayer.play();

@@ -2,6 +2,7 @@
 #define JSONFILE_H
 
 #include <QDateTime>
+#include <QMetaType>
 
 class JsonFile
 {
@@ -38,5 +39,7 @@ private:
 
     void clear();
 };
+
+Q_DECLARE_METATYPE(JsonFile)
 
 #endif // JSONFILE_H

@@ -45,6 +45,10 @@ QVariant RecordingsModel::data(const QModelIndex &index, int role) const {
         }
 
     }
+
+    if(role == Qt::UserRole)                                        // Qt::UserRole will be used to retrieve the jsonFile object
+        return QVariant::fromValue(jsonFiles.at(index.row()));
+
     return QVariant();
 }
 
