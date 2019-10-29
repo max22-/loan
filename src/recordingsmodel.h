@@ -30,8 +30,7 @@ private:
 #define AGE_COLUMN 2
 #define CITY_COLUMN 3
 #define EVALUATION_COLUMN 4
-#define MP3FILENAME_COLUMN 5
 
-#define LAST_COLUMN 5
+#define LAST_COLUMN 4
 
 #endif // RECORDINGSMODEL_H

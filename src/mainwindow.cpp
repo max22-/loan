@@ -71,7 +71,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableView->horizontalHeader()->setSectionResizeMode(AGE_COLUMN, QHeaderView::ResizeToContents);
     ui->tableView->horizontalHeader()->setSectionResizeMode(CITY_COLUMN, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(EVALUATION_COLUMN, QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(MP3FILENAME_COLUMN, QHeaderView::Stretch);
     ui->tableView->show();
 
     proxyModel.setFilterKeyColumn(NICKNAME_COLUMN);

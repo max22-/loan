@@ -36,8 +36,6 @@ QVariant RecordingsModel::data(const QModelIndex &index, int role) const {
                     return jsonFiles.at(index.row()).getCity();
                 case EVALUATION_COLUMN:
                     return jsonFiles.at(index.row()).getEvaluation();
-                case MP3FILENAME_COLUMN:
-                    return jsonFiles.at(index.row()).getMP3FileName();
             }
         } catch (QString s) {
             qCritical() << "Caught exception : " + s;
@@ -67,8 +65,6 @@ QVariant RecordingsModel::headerData(int section, Qt::Orientation orientation, i
                     return QString("Ville");
                 case EVALUATION_COLUMN:
                     return QString("Evaluation");
-                case MP3FILENAME_COLUMN:
-                    return QString("Fichier MP3");
             }
         }
     }
