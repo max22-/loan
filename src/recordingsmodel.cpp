@@ -83,9 +83,9 @@ void RecordingsModel::update() {
 
     QListIterator<QString> i(jsonFileNames);
     while (i.hasNext()) {
-        JsonFile j(inbox.absoluteFilePath(i.next()));
+        JsonFile j;
         try {
-            j.load();
+            j.load(inbox.absoluteFilePath(i.next()));
             jsonFiles << j;
         } catch (QString s) {
             qCritical() << "Caught exception : " + s;

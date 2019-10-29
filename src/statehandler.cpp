@@ -237,14 +237,14 @@ void StateHandler::saveMessageState(bool active) {
         QString fileNamePrefix = timeStamp.toString(Config::getInstance().fileNameFormat());
 
         Config& config = Config::getInstance();
-        JsonFile jsonFile(config.outboxDirectory().absoluteFilePath(fileNamePrefix + ".json"));
+        JsonFile jsonFile;
         jsonFile.setNickName(ui->nicknameLineEdit->text())
             .setAge(ui->ageLineEdit->text().toInt())
             .setCity(ui->cityLineEdit->text())
             .setEvaluation(ui->evaluationSlider->value())
             .setTimeStamp(timeStamp);
 
-        QFile MP3File(Config::getInstance().tempMP3FileName());
+        QFile MP3File(config.tempMP3FileName());
         bool moved = MP3File.rename(config.outboxDirectory().absoluteFilePath(fileNamePrefix + ".mp3"));
         if(!moved) {
             qCritical() << "Couldn't move MP3 file to outbox directory : " + config.outboxDirectory().absolutePath();
@@ -254,7 +254,7 @@ void StateHandler::saveMessageState(bool active) {
         }
 
         try {
-            jsonFile.save();
+            jsonFile.save(config.outboxDirectory().absoluteFilePath(fileNamePrefix + ".json"));
             qDebug() << "Json file has been saved correctly.";
             QMessageBox::information(mainWindow, "Information", "Votre message a été enregistré.");
             mainWindow->audioRecorder.clear();
