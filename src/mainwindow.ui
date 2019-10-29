@@ -1329,6 +1329,9 @@ QPushButton:pressed {
           </item>
           <item>
            <widget class="QTableView" name="tableView">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(211, 215, 207);</string>
+            </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
