@@ -13,11 +13,11 @@ RecordingsModel::RecordingsModel(QObject *parent) : QAbstractTableModel (parent)
     connect(&filesWatcher, &QFileSystemWatcher::directoryChanged, this, &RecordingsModel::update);
 }
 
-int RecordingsModel::rowCount(const QModelIndex &parent) const {
+int RecordingsModel::rowCount(const QModelIndex &) const {
     return jsonFiles.length();
 }
 
-int RecordingsModel::columnCount(const QModelIndex &parent) const {
+int RecordingsModel::columnCount(const QModelIndex &) const {
     return LAST_COLUMN + 1;
 }
 
