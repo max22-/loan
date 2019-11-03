@@ -1266,20 +1266,19 @@ QPushButton:pressed {
        </layout>
       </widget>
       <widget class="QWidget" name="listenPage">
-       <layout class="QHBoxLayout" name="horizontalLayout_33" stretch="5,90,5">
-        <item>
-         <spacer name="horizontalSpacer_48">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>44</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
+       <layout class="QHBoxLayout" name="horizontalLayout_33" stretch="66,33">
+        <property name="spacing">
+         <number>50</number>
+        </property>
+        <property name="leftMargin">
+         <number>50</number>
+        </property>
+        <property name="rightMargin">
+         <number>50</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_11">
           <item>
@@ -1384,6 +1383,13 @@ QPushButton:pressed {
              </widget>
             </item>
            </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="currentPlayingMessageLabel">
+            <property name="text">
+             <string>Message en cours de lecture : </string>
+            </property>
+           </widget>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_32">
@@ -1498,22 +1504,42 @@ QPushButton:pressed {
               </property>
              </spacer>
             </item>
+            <item>
+             <widget class="QPushButton" name="togglePlaylistButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Playlist &gt;&gt;</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
         </item>
         <item>
-         <spacer name="horizontalSpacer_49">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+         <widget class="QGroupBox" name="playlist">
+          <property name="font">
+           <font>
+            <pointsize>24</pointsize>
+           </font>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>44</width>
-            <height>20</height>
-           </size>
+          <property name="title">
+           <string>Playlist</string>
           </property>
-         </spacer>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="QListView" name="playlistView"/>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>

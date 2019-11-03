@@ -32,6 +32,7 @@ SOURCES += \
         logger.cpp \
         main.cpp \
         mainwindow.cpp \
+        mediaplayerwrapper.cpp \
         recordingsmodel.cpp \
         statehandler.cpp \
         timeslider.cpp
@@ -43,6 +44,7 @@ HEADERS += \
         jsonfile.h \
         logger.h \
         mainwindow.h \
+        mediaplayerwrapper.h \
         recordingsmodel.h \
         startupdatetime.h \
         statehandler.h \

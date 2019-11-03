@@ -76,22 +76,30 @@ MainWindow::MainWindow(QWidget *parent) :
     proxyModel.setFilterKeyColumn(NICKNAME_COLUMN);
     connect(ui->nicknameFilterEdit, &QLineEdit::textChanged, &proxyModel, &QSortFilterProxyModel::setFilterFixedString);
 
-    mediaPlayer.setNotifyInterval(10);
-    connect(&mediaPlayer, &QMediaPlayer::durationChanged, ui->playerSlider, &TimeSlider::setMaxTime);
-    connect(&mediaPlayer, &QMediaPlayer::positionChanged, ui->playerSlider, &TimeSlider::setTime);
-    connect(&mediaPlayer, &QMediaPlayer::stateChanged, [this](QMediaPlayer::State mpstate) {
-        if(mpstate == QMediaPlayer::StoppedState)
-            stateMachine.submitEvent("playerStopped");
+    connect(&mediaPlayer, &MediaPlayerWrapper::durationChanged, ui->playerSlider, &TimeSlider::setMaxTime);
+    connect(&mediaPlayer, &MediaPlayerWrapper::positionChanged, ui->playerSlider, &TimeSlider::setTime);
+    connect(&mediaPlayer, &MediaPlayerWrapper::playerStopped, [this]() {
+        stateMachine.submitEvent("playerStopped");
+    });
+    connect(&mediaPlayer, &MediaPlayerWrapper::playingNewMessage, [this](int messageNumber) {
+        JsonFile jsonFile = mediaPlayer.getFiles().at(messageNumber);
+        ui->currentPlayingMessageLabel->setText("Message de " + jsonFile.getNickname() + ", " + QString::number(jsonFile.getAge()) + " ans, de " + jsonFile.getCity());
     });
 
     // Media player volume control
     connect(ui->playerVolumeSlider, &QSlider::valueChanged, [this](int logarithmicVolume) {
-        qDebug() << "QSlider::valueChanged";
         qreal linearVolume = QAudio::convertVolume(logarithmicVolume / qreal(100.0),
                                                    QAudio::LogarithmicVolumeScale,
                                                    QAudio::LinearVolumeScale);
         mediaPlayer.setVolume(qRound(linearVolume * 100));
         ui->playerVolumeLabel->setText(QString::number(logarithmicVolume) + "%");
+    });
+
+    connect(ui->togglePlaylistButton, &QPushButton::clicked, [this]() {
+        if(ui->playlist->isVisible())
+            ui->playlist->setVisible(false);
+        else
+            ui->playlist->setVisible(true);
     });
 }
 
