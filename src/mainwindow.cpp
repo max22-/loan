@@ -101,6 +101,10 @@ MainWindow::MainWindow(QWidget *parent) :
         else
             ui->playlist->setVisible(true);
     });
+
+    // Playlist
+    playlistModel = new PlaylistModel(mediaPlayer, nullptr);
+    ui->playlistView->setModel(playlistModel);
 }
 
 MainWindow::~MainWindow()

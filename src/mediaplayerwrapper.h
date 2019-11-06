@@ -12,13 +12,15 @@ class MediaPlayerWrapper : public QObject
 public:
     explicit MediaPlayerWrapper(QObject *parent = nullptr);
     void add(const JsonFile&);
-    QList<JsonFile> getFiles();
+    QList<JsonFile> getFiles() const;
+    int playlistLength() const;
 
 signals:
     void playingNewMessage(int messageNumber);
     void playerStopped();
     void durationChanged(qint64 duration);
     void positionChanged(qint64 position);
+    void playlistChanged();
 
 public slots:
     void play(int messageNumber = 0);

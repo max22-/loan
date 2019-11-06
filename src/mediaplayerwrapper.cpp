@@ -16,10 +16,15 @@ MediaPlayerWrapper::MediaPlayerWrapper(QObject *parent) : QObject(parent), index
 void MediaPlayerWrapper::add(const JsonFile& file) {
     qDebug() << "Adding " + Config::getInstance().inboxDirectory().absoluteFilePath(file.getMP3FileName()) + " to the playlist.";
     files.append(file);
+    emit playlistChanged();
 }
 
-QList<JsonFile> MediaPlayerWrapper::getFiles() {
+QList<JsonFile> MediaPlayerWrapper::getFiles() const {
     return files;
+}
+
+int MediaPlayerWrapper::playlistLength() const {
+    return files.length();
 }
 
 void MediaPlayerWrapper::play(int messageNumber) {
@@ -64,6 +69,7 @@ void MediaPlayerWrapper::clear() {
     qDebug() << "Clearing the playlist.";
     stop();
     files = QList<JsonFile>();
+    emit playlistChanged();
 }
 
 void MediaPlayerWrapper::setVolume(int volume) {

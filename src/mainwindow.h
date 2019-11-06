@@ -8,6 +8,7 @@
 #include "recordingsmodel.h"
 #include <QSortFilterProxyModel>
 #include "mediaplayerwrapper.h"
+#include "playlistmodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -30,6 +31,8 @@ private:
     RecordingsModel *recordingsModel;
     QSortFilterProxyModel proxyModel;
     MediaPlayerWrapper mediaPlayer;
+    PlaylistModel *playlistModel;
+
 
     void connectButton(const QPushButton *, const char *);
     void connectState(const char *, void (StateHandler::*)(bool));
